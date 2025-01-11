@@ -1,0 +1,19 @@
+---
+import config from "@/config"
+import ThemeToggle from "./ThemeToggle.vue"
+---
+
+<header class="mb-6 flex items-center justify-between" transition:name="header">
+  <nav class="flex items-center gap-4">
+    {config.header.navLinks.map((link) => (
+      <a href={link.href}> {link.text} </a>
+    ))}
+  </nav>
+  <ThemeToggle client:load />
+</header>
+
+<style>
+  a {
+    @apply font-medium text-zinc-500 hover:text-zinc-900 hover:underline dark:hover:text-zinc-100;
+  }
+</style>

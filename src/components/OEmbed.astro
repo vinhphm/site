@@ -1,0 +1,7 @@
+---
+import OEmbedContent from '@/components/OEmbedContent.vue'
+
+const { url, maxWidth } = Astro.props
+---
+
+<OEmbedContent client:only="vue" url={url} maxWidth={maxWidth} />

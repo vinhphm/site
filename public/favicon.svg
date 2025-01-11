@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:svgjs="http://svgjs.dev/svgjs" width="512" height="512">
+  <svg width="512" height="512" viewBox="0 0 512 512" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_1_2)">
+      <path d="M256 427.464C350.7 427.464 427.464 350.7 427.464 256C427.464 161.3 350.7 84.5358 256 84.5358C161.3 84.5358 84.5358 161.3 84.5358 256C84.5358 350.7 161.3 427.464 256 427.464Z" fill="#292929"></path>
+    </g>
+  </svg>
+  <style>
+    @media (prefers-color-scheme: light) { :root { filter: none; } }
+    @media (prefers-color-scheme: dark) { :root { filter: invert(100%); } }
+  </style>
+</svg>

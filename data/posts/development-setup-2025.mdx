@@ -1,0 +1,70 @@
+---
+title: "Development setup in 2025"
+date: "2025-01-11T14:29:12.895+07:00"
+description: "My setup for web development in 2025"
+---
+import { Image } from 'astro:assets';
+import OEmbed from '@/components/OEmbed.astro'
+import ghostty from '@/assets/images/2025/ghostty.png'
+import zenBrowser from '@/assets/images/2025/zen-browser.png'
+
+It has been while since I last wrote about my web development setup. A lot has changed since then. So let's take a look at my current setup for web development in 2025.
+
+## Operating system
+
+At work, I use Windows 11. While my personal laptop runs on macOS. This means I prefer most of my choices of tools and configurations can work on both operating systems without any issues.
+
+## Editor
+
+I'm still at the stage of switching from Visual Studio Code to [Zed](https://zed.dev). It still does not have a stable version for Windows yet but apparently, it's coming soon this year. I'm excited to see how it will turn out.
+
+<OEmbed url="https://bsky.app/profile/vinh.dev/post/3lawexdabl22h" />
+
+For AI assistance features, Zed does have those but not as extended as other new editors like Cursor or Windsurf. But it does not have be a bad thing depending on your preference on this matter. Cursor/Windsurf is nice but they can't connect to GitHub Codespaces which is a deal-breaker for me. I find myself using Codespaces more and more these days.
+
+## Terminal
+
+I use [Windows Terminal](https://aka.ms/terminal) on Windows and [Ghostty](https://ghostty.org) on macOS. Both use [Starship](https://starship.rs) prompt with PowerShell on Windows and Fish shell on macOS.
+
+Ghostty is a new terminal that I've been using for a while. It's fast and simple, my favorite combination. Here is the configuration I used for Ghostty:
+
+```text
+font-family = Geist Mono
+shell-integration-features = no-cursor
+cursor-style = block
+cursor-style-blink = false
+background-opacity = 0.95
+background-blur-radius = 20
+window-save-state = default
+window-height = 25
+window-width = 80
+quit-after-last-window-closed = true
+```
+
+<figure class="md:py-5 lg:py-12">
+  <div class="lg:scale-120 md:scale-110">
+    <Image src={ghostty} alt="Ghostty main UI" class="rounded-xl" />
+  </div>
+</figure>
+
+## Browser
+
+My main browser on Windows is [Zen](https://zen-browser.app), while on macOS, I use Safari. I still use Chrome for testing purposes but not as my main browser.
+
+I used to love Arc browser but since the team behind shifted their focus to something else, I had to find a new browser. Zen is a good alternative, it's fast and has a somewhat similar UI to Arc. I don't use it as main browser on macOS because it, being Firefox-based, is currently have some issues with passkey management on macOS. But still it does look nice:
+
+<figure class="md:py-5 lg:py-12">
+  <div class="lg:scale-120 md:scale-110">
+    <Image src={zenBrowser} alt="Zen browser main UI" />
+  </div>
+</figure>
+
+## Other tools
+
+Since I use a lot of tools, I will only mention some of the most remarkable ones that I found recently:
+
+- [**fnm** (Fast Node Manager)](https://github.com/Schniz/fnm): A fast Node.js version manager. It's faster than NVM and has a simpler CLI.
+- [**Bruno**](https://brunoapi.com): I had been finding a Postman alternative for a while and Bruno is the one. It's simple and fast, open-source.
+- **AI**: I prefer Claude over other AI chat assistants for coding. But sometimes I do use ChatGPT, or [DeepSeek](https://chat.deepseek.com) just for double-checking.
+
+I believe that's all for now. I will update this post if I find something new and interesting. If you have any suggestions, feel free to reach out to me below.

@@ -1,0 +1,249 @@
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 80.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 80.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 80.1%;
+  --accent-foreground: 0 0% 9%;
+  --additive: 112 50% 36%;
+  --additive-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
+}
+
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --additive: 112 50% 36%;
+  --additive-foreground: 0 0% 9%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+}
+
+html.dark {
+  .img-light,
+  [img-light] {
+    display: none;
+  }
+}
+
+html:not(.dark) {
+  .img-dark,
+  [img-dark] {
+    display: none;
+  }
+}
+
+*,
+*::before,
+*::after {
+  @apply border-border;
+}
+
+article {
+  p {
+    @apply my-4 leading-relaxed;
+  }
+  h1 {
+    @apply my-4 text-xl font-medium dark:text-white;
+  }
+  h2 {
+    @apply my-4 text-lg font-medium dark:text-white;
+  }
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply my-4 font-medium dark:text-white;
+  }
+
+  hr {
+    @apply hr-line;
+  }
+
+  blockquote {
+    @apply my-4 border-l-2 pl-4 border-border;
+  }
+  a {
+    @apply text-blue-500 underline;
+  }
+  table {
+    @apply my-4 w-full table-auto border-collapse text-sm;
+    th {
+      @apply border-b p-4 text-left font-medium border-border;
+    }
+    td {
+      @apply border-b p-4 bg-secondary/20 border-border;
+    }
+  }
+  ol {
+    @apply my-1 pl-6 list-outside marker:text-sm marker:text-gray-500 list-decimal space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
+  }
+  ul {
+    @apply my-1 pl-6 list-outside marker:text-gray-500 list-disc space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
+  }
+  kbd {
+    @apply rounded border border-b-2 border-ring/20 bg-secondary/20 px-1 py-0.5 font-mono text-xs font-medium;
+  }
+  .katex-display {
+    @apply overflow-x-auto overflow-y-hidden py-4;
+  }
+
+  mark {
+    background-color: transparent;
+  }
+
+  figure figcaption {
+    /* color: #6b7280;
+    font-size: 0.875em;
+    line-height: 1.4285714;
+    margin-top: 0.8571429em; */
+    @apply text-gray-500 text-sm leading-relaxed mt-2;
+  }
+
+  code[data-theme*=' '] {
+    span {
+      color: var(--shiki-light);
+    }
+
+    .dark & span {
+      color: var(--shiki-dark);
+    }
+  }
+
+  /* Inline code */
+  :not(pre) > code {
+    @apply relative rounded border border-border bg-secondary/20 px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium;
+  }
+
+  /* Code blocks */
+  figure[data-rehype-pretty-code-figure] {
+    @apply relative my-4;
+
+    /* Code block titles */
+    [data-rehype-pretty-code-title] {
+      @apply break-words rounded-t-xl border-x border-t px-4 py-2 text-sm font-medium text-foreground;
+
+      /* Remove top margin from code block if a title is present */
+      & + pre {
+        @apply mt-0 rounded-t-none;
+      }
+    }
+
+    /* Code block styles */
+    pre {
+      @apply static max-h-[600px] overflow-auto rounded-xl border bg-secondary/20 py-4 text-sm leading-loose;
+
+      /* Code block content */
+      > code {
+        @apply whitespace-pre-wrap font-mono;
+        counter-reset: line;
+
+        /* For code blocks with line numbers */
+        &[data-line-numbers] {
+          > [data-line]::before {
+            counter-increment: line;
+            content: counter(line);
+            @apply mr-4 inline-block w-4 text-right text-muted-foreground;
+          }
+        }
+
+        /* For each line in the code block */
+        > [data-line] {
+          @apply px-4;
+        }
+
+        /* Highlighted lines */
+        [data-highlighted-line] {
+          @apply bg-foreground/10;
+        }
+
+        /* Highlighted characters */
+        [data-highlighted-chars] > span {
+          @apply bg-muted-foreground/40 py-[7px];
+        }
+
+        /* Diff lines */
+        .diff {
+          &.add {
+            @apply bg-additive/15;
+          }
+          &.remove {
+            @apply bg-destructive/15;
+          }
+        }
+
+        /* Copy button */
+        > button:has(> span) {
+          @apply right-0.5 top-0.5 m-0 size-8 rounded-lg bg-background p-1 backdrop-blur-none transition-all;
+        }
+      }
+    }
+  }
+}
+
+/* Theme transition animation */
+.theme-transition::view-transition-old(root),
+.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+.theme-transition::view-transition-old(root) {
+  z-index: 1;
+}
+.theme-transition::view-transition-new(root) {
+  z-index: 9999;
+}
+.theme-transition.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+.theme-transition.dark::view-transition-new(root) {
+  z-index: 1;
+}
+
+a.header-anchor {
+  float: left;
+  margin-top: 0.125em;
+  margin-left: -1.2em;
+  padding-right: 0.5em;
+  font-size: 0.85em;
+  opacity: 0;
+  text-decoration: none !important;
+  border: 0 !important;
+}
+
+a.header-anchor:hover,
+a.header-anchor:focus {
+  text-decoration: none;
+}
+
+h1:hover .header-anchor,
+h1:focus .header-anchor,
+h2:hover .header-anchor,
+h2:focus .header-anchor,
+h3:hover .header-anchor,
+h3:focus .header-anchor,
+h4:hover .header-anchor,
+h4:focus .header-anchor,
+h5:hover .header-anchor,
+h5:focus .header-anchor,
+h6:hover .header-anchor,
+h6:focus .header-anchor {
+  opacity: 0.5;
+}
