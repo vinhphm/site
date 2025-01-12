@@ -7,7 +7,7 @@ const props = defineProps<{
   maxWidth?: number
 }>()
 
-const isDark = useDark()
+const isDark = useDark({ storageKey: 'color-scheme' })
 const oembedData = ref<any>(null)
 const containerRef = ref<HTMLElement>()
 
