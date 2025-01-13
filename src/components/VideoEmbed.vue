@@ -19,13 +19,13 @@ function getVideoUrl(videoPath: string): string {
 
 function getContainerClass() {
   return `flex flex-col items-center justify-center${
-    props.size === 'large' ? ' lg:py-10 md:py-5' : ''
+    props.size === 'large' ? ' extended-py' : ''
   }`
 }
 
 function getWrapperClass() {
   return `flex justify-center ${
-    props.size === 'large' ? ' lg:scale-120 md:scale-110' : ''
+    props.size === 'large' ? ' extended-wrapper' : ''
   }`
 }
 
