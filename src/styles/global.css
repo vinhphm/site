@@ -61,16 +61,25 @@ article {
     @apply my-4 leading-relaxed;
   }
   h1 {
-    @apply my-4 text-xl font-medium dark:text-white;
+    @apply my-4 text-xl font-medium;
+    :root.dark & {
+      @apply text-white;
+    }
   }
   h2 {
-    @apply my-4 text-lg font-medium dark:text-white;
+    @apply my-4 text-lg font-medium;
+    :root.dark & {
+        @apply text-white;
+    }
   }
   h3,
   h4,
   h5,
   h6 {
-    @apply my-4 font-medium dark:text-white;
+    @apply my-4 font-medium;
+    :root.dark & {
+        @apply text-white;
+    }
   }
 
   hr {
@@ -86,10 +95,16 @@ article {
   table {
     @apply my-4 w-full table-auto border-collapse text-sm;
     th {
-      @apply border-b p-4 text-left font-medium border-border;
+      @apply border-b p-4 text-left font-medium;
+      :root.dark & {
+        @apply border-zinc-700;
+      }
     }
     td {
-      @apply border-b p-4 bg-secondary/20 border-border;
+      @apply border-b bg-zinc-50 p-4;
+      :root.dark & {
+        @apply border-zinc-700 bg-zinc-800;
+      }
     }
   }
   ol {
@@ -99,21 +114,22 @@ article {
     @apply my-1 pl-6 list-outside marker:text-gray-500 list-disc space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
   }
   kbd {
-    @apply rounded border border-b-2 border-ring/20 bg-secondary/20 px-1 py-0.5 font-mono text-xs font-medium;
+    @apply rounded border border-b-2 bg-zinc-100 px-1 py-0.5 font-mono text-xs font-medium text-black;
+    :root.dark & {
+      @apply border-zinc-700 bg-zinc-800 text-white;
+    }
   }
   .katex-display {
     @apply overflow-x-auto overflow-y-hidden py-4;
   }
 
   mark {
-    background-color: transparent;
+    :root.dark & {
+      @apply bg-yellow-500/50 text-white;
+    }
   }
 
   figure figcaption {
-    /* color: #6b7280;
-    font-size: 0.875em;
-    line-height: 1.4285714;
-    margin-top: 0.8571429em; */
     @apply text-gray-500 text-sm leading-relaxed mt-2;
   }
 
