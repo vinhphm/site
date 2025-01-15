@@ -3,7 +3,11 @@ import type { Config } from '@/types'
 const EMAIL = 'vinh@vinh.dev'
 
 export const config: Config = {
-  author: 'Vinh Pham',
+  author: {
+    name: 'Vinh Pham',
+    email: EMAIL,
+    alias: 'vinhphm',
+  },
   title: 'Vinh Pham',
   site: 'https://vinh.dev',
   subtitle: 'Thoughts and ideas',
@@ -12,7 +16,6 @@ export const config: Config = {
     src: '/hero.jpg',
     alt: 'Vinh Pham',
   },
-  email: EMAIL,
   header: {
     logo: {
       src: '/logo.svg',

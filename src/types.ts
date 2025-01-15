@@ -4,6 +4,12 @@ export type PostKey = 'posts'
 
 export type CollectionPosts = CollectionEntry<PostKey>
 
+export interface Author {
+  name: string
+  email: string
+  alias: string
+}
+
 export interface NavLink {
   text: string
   href: string
@@ -30,13 +36,12 @@ export interface Footer {
 }
 
 export interface Config {
-  author: string
+  author: Author
   title: string
   site: string
   subtitle: string
   description: string
   image: Image
-  email: string
   header: Header
   footer: Footer
 }

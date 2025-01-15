@@ -1,6 +1,7 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import config from "@/config";
+import Layout from "@/layouts/Layout.astro"
+import Name from "@/components/Name.astro"
+import config from "@/config"
 ---
 
 <Layout
@@ -8,7 +9,7 @@ import config from "@/config";
   className="flex h-svh max-w-sm flex-col justify-center"
 >
   <main class="space-y-4">
-    <h1 class="font-medium text-xl">{config.author}</h1>
+    <Name />
     <p>/ curious mind · developer · explorer /</p>
     <p>
       I build high-quality, performant, and accessible solutions at PwC, making
