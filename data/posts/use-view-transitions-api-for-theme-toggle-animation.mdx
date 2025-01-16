@@ -7,7 +7,7 @@ tag: Web
 duration: 2 min read
 ---
 import themeTransitionAnimation from '@/assets/videos/2024/theme-transition-animation.mp4'
-import VideoEmbed from '@/components/VideoEmbed.vue'
+import Video from '@/components/Video.vue'
 
 If you haven't heard about the View Transitions API, it's a new API that provides a mechanism for easily creating animated transitions between different website views. There are a few articles on the web about it already, here are some:
 
@@ -18,7 +18,7 @@ If you haven't heard about the View Transitions API, it's a new API that provide
 Since Safari will soon join the Chromium browser family to support the View Transitions API in version 18, so let's use its magic with the theme transition animation.
 
 
-<VideoEmbed client:idle src={themeTransitionAnimation} videoClass="rounded-xl w-2/3 md:w-1/2" />
+<Video client:idle src={themeTransitionAnimation} videoClass="rounded-xl w-2/3 md:w-1/2" />
 
 This animation takes inspiration from [**@hooray**'s snippets](https://github.com/vuejs/vitepress/pull/2347) with some minor tweaks to avoid comflicting with Astro's **View Transitions** feature. You can find my implementation at [<span class="i-ph-file-vue" /> ThemeToggle.vue](https://github.com/vinhphm/site/blob/archives/2024/src/components/ThemeToggle.vue), with some additional CSS rules as shown below:
 

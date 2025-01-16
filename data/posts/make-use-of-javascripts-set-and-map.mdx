@@ -7,7 +7,7 @@ tag: JavaScript
 duration: 4 min read
 ---
 import javascriptSetMap from '@/assets/videos/2024/javascripts-set-and-map.mp4'
-import VideoEmbed from '@/components/VideoEmbed.vue'
+import Video from '@/components/Video.vue'
 
 Everyone who works with JavaScript knows about **Array** (storing ordered collections) and **Object** (storing keyed collections). But not so many know about the other two data structures, **Set** and **Map**. For those who don't know:
 
@@ -119,6 +119,6 @@ return (
 That's it! And to be fair, the logic behind the selection handling, in fact, is different from the previous one so the increase in performance is not entirely credited to the use of **Set** and **Map** here but they do contribute a lot to it. I'm not sure if it's the best solution, but it sure gives better results for now.
 
 
-<VideoEmbed client:idle src={javascriptSetMap} size="large" videoClass="rounded-lg shadow-lg" />
+<Video client:idle src={javascriptSetMap} extended videoClass="rounded-lg shadow-lg" />
 
 I hope this can help you in similar cases. Happy coding!

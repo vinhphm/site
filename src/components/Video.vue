@@ -3,12 +3,12 @@ import { onMounted, ref } from 'vue'
 
 interface Props {
   src: string
-  size: 'default' | 'large'
+  extended: boolean
   videoClass?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 'default',
+  extended: false,
 })
 
 const videoSrc = ref<string | undefined>()
@@ -19,13 +19,13 @@ function getVideoUrl(videoPath: string): string {
 
 function getContainerClass() {
   return `flex flex-col items-center justify-center${
-    props.size === 'large' ? ' extended-py' : ''
+    props.extended ? ' extended-py' : ''
   }`
 }
 
 function getWrapperClass() {
   return `flex justify-center ${
-    props.size === 'large' ? ' extended-wrapper' : ''
+    props.extended ? ' extended-wrapper' : ''
   }`
 }
 

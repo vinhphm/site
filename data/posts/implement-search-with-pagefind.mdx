@@ -7,13 +7,13 @@ tag: Web
 duration: 3 min read
 ---
 import pagefindSearch from '@/assets/videos/2024/pagefind-search.mp4'
-import VideoEmbed from '@/components/VideoEmbed.vue'
+import Video from '@/components/Video.vue'
 
 > This post is recently updated on Jan 16, 2025 to use the new implemention of Pagefind.
 
 The site is having more and more of blog posts now. And sometimes, when I need to find a specific post, it takes time. So a search function is much needed. After some quick research, I found a library called [Pagefind](https://pagefind.app/). It is a search engine that can be integrated with any static site generator. In this post, I will walk you through the basic way to integrate it so that you can have something like this:
 
-<VideoEmbed client:idle src={pagefindSearch} size="large" videoClass="rounded shadow-lg" />
+<Video client:idle src={pagefindSearch} extended videoClass="rounded shadow-lg" />
 
 ## Why Pagefind?
 
