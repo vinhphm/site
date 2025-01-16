@@ -87,7 +87,10 @@ article {
   }
 
   blockquote {
-    @apply my-4 border-l-2 pl-4 border-border;
+    @apply my-4 border-l-2 pl-4 border-zinc-400;
+    :root.dark & {
+      @apply border-zinc-600;
+    }
   }
   a {
     @apply text-blue-500 hover:underline;
@@ -171,7 +174,7 @@ article {
 
       /* Code block content */
       > code {
-        @apply whitespace-pre-wrap font-mono;
+        @apply font-mono;
         counter-reset: line;
 
         /* For code blocks with line numbers */
