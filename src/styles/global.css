@@ -87,9 +87,9 @@ article {
   }
 
   blockquote {
-    @apply my-4 border-l-2 pl-4 border-zinc-400;
+    @apply my-4 border-l-2 pl-4 border-gray-400;
     :root.dark & {
-      @apply border-zinc-600;
+      @apply border-gray-600;
     }
   }
   a {
@@ -103,13 +103,13 @@ article {
     th {
       @apply border-b p-4 text-left font-medium;
       :root.dark & {
-        @apply border-zinc-700;
+        @apply border-gray-700;
       }
     }
     td {
-      @apply border-b bg-zinc-50 p-4;
+      @apply border-b bg-gray-50 p-4;
       :root.dark & {
-        @apply border-zinc-700 bg-zinc-800;
+        @apply border-gray-700 bg-gray-800;
       }
     }
   }
@@ -120,9 +120,9 @@ article {
     @apply my-1 pl-6 list-outside marker:text-gray-500 list-disc space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
   }
   kbd {
-    @apply rounded border border-b-2 bg-zinc-100 px-1 py-0.5 font-mono text-xs font-medium text-black;
+    @apply rounded border border-b-2 bg-gray-100 px-1 py-0.5 font-mono text-xs font-medium text-black;
     :root.dark & {
-      @apply border-zinc-700 bg-zinc-800 text-white;
+      @apply border-gray-700 bg-gray-800 text-white;
     }
   }
   .katex-display {
