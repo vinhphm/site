@@ -57,7 +57,7 @@ function toggleDark(event: MouseEvent) {
   <button
     aria-label="Toggle theme"
     i-ri-circle-fill
-    nav-link
+    class="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
     @click="toggleDark"
   >
     <span class="sr-only">Toggle theme</span>
