@@ -5,12 +5,6 @@ function getRobotsTxt(sitemapURL: URL) {
 User-agent: *
 Allow: /
 
-Host: archive.vinh.dev
-Disallow: /
-
-Host: workers.vinh.dev
-Disallow: /
-
 Sitemap: ${sitemapURL.href}
 `
 }
