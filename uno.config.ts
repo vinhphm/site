@@ -15,6 +15,7 @@ export default defineConfig({
     {
       'extended-wrapper': 'lg:scale-120 md:scale-110',
       'extended-py': 'md:py-5 lg:py-12',
+      'extended-pt': 'md:pt-5 lg:pt-12',
       'hr-line': 'w-14 mx-auto border-solid border-1px',
     },
   ],
