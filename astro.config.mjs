@@ -60,7 +60,9 @@ export default defineConfig({
             dark: 'github-dark-high-contrast',
           },
           transformers: [
-            transformerNotationDiff(),
+            transformerNotationDiff({
+              matchAlgorithm: 'v3',
+            }),
             transformerMetaHighlight(),
             transformerCopyButton({
               visibility: 'hover',
