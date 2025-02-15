@@ -94,9 +94,9 @@ article {
   }
   a {
     @apply text-blue-500 hover:underline;
-    :root.dark & {
+    /* :root.dark & {
       @apply text-blue-400;
-    }
+    } */
   }
   table {
     @apply my-4 w-full table-auto border-collapse text-sm;
