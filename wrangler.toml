@@ -6,9 +6,7 @@ compatibility_date = "2024-11-11"
 mode = "smart"
 
 [vars]
-BUN_VERSION = "1.2.2"
-NODE_VERSION = "22.14.0"
+BUN_VERSION = "1.2.3"
 
 [env.production.vars]
-BUN_VERSION = "1.2.2"
-NODE_VERSION = "22.14.0"
+BUN_VERSION = "1.2.3"
