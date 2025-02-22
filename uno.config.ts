@@ -1,10 +1,10 @@
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
+import { presetWind3 } from '@unocss/preset-wind3'
 import {
   defineConfig,
   presetAttributify,
   presetIcons,
   presetTypography,
-  presetUno,
   presetWebFonts,
   transformerDirectives,
   transformerVariantGroup,
@@ -20,7 +20,7 @@ export default defineConfig({
     },
   ],
   presets: [
-    presetUno(),
+    presetWind3(),
     presetAttributify(),
     presetIcons({
       scale: 1.2,
