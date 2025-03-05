@@ -1,6 +1,7 @@
 import type { Config } from '@/types'
 
-const EMAIL = 'vinh@vinh.dev'
+const EMAIL = import.meta.env.PUBLIC_EMAIL
+const WORKER_HOST = import.meta.env.PUBLIC_WORKER_HOST
 
 export const config: Config = {
   author: {
@@ -10,6 +11,7 @@ export const config: Config = {
   },
   title: 'Vinh Pham',
   site: 'https://vinh.dev',
+  workerHost: WORKER_HOST,
   subtitle: 'Thoughts and ideas',
   description: 'Thoughts and ideas',
   image: {

@@ -21,7 +21,7 @@ const {
   className,
 } = Astro.props
 
-const defaultImage = `https://workers.vinh.dev/og?title=${encodeURIComponent(
+const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
     Astro.props.title || '',
   )}`
 

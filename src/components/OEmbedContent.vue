@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import config from '@/config'
 import { useDark } from '@vueuse/core'
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
@@ -14,7 +15,7 @@ const containerRef = ref<HTMLElement>()
 async function fetchOembedData() {
   try {
     const response = await fetch(
-      `https://workers.vinh.dev/oembed?url=${encodeURIComponent(props.url)}&theme=${isDark.value ? 'dark' : 'light'}`,
+      `${config.workerHost}/oembed?url=${encodeURIComponent(props.url)}&theme=${isDark.value ? 'dark' : 'light'}`,
     )
     oembedData.value = await response.json()
     if (oembedData.value?.type === 'rich') {

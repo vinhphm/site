@@ -39,6 +39,7 @@ export interface Config {
   author: Author
   title: string
   site: string
+  workerHost: string
   subtitle: string
   description: string
   image: Image

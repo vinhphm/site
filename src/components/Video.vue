@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 
 interface Props {
   src: string
-  extended: boolean
+  extended?: boolean
   videoClass?: string
 }
 
