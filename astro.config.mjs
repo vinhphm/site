@@ -12,10 +12,9 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypePrettyCode from 'rehype-pretty-code'
 import UnoCSS from 'unocss/astro'
-import config from './src/config'
 
 export default defineConfig({
-  site: config.site,
+  site: 'https://vinh.dev',
   trailingSlash: 'never',
   build: {
     assets: '_assets',

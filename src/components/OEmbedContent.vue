@@ -32,11 +32,23 @@ function injectContent(html: string) {
   containerRef.value.innerHTML = ''
   const temp = document.createElement('div')
   temp.innerHTML = html
+
+  // Add data-bluesky-embed-color-mode attribute to blockquote elements for Bluesky embeds
+  const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
+  blockquotes.forEach((blockquote) => {
+    if (blockquote.classList.contains('bluesky-embed') ||
+      (blockquote.getAttribute('data-bluesky-uri') && blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))) {
+      blockquote.setAttribute('data-bluesky-embed-color-mode', isDark.value ? 'dark' : 'light')
+    }
+  })
+
   const scripts = Array.from(temp.getElementsByTagName('script'))
   scripts.forEach((oldScript) => {
     oldScript.parentNode?.removeChild(oldScript)
   })
+
   containerRef.value.innerHTML = temp.innerHTML
+
   scripts.forEach((oldScript) => {
     const newScript = document.createElement('script')
     Array.from(oldScript.attributes).forEach((attr) => {
