@@ -30,6 +30,7 @@ const imageToUse = image || defaultImage
 const title = [Astro.props.title, config.title].filter(Boolean).join(' / ')
 
 const resolvedImage = new URL(imageToUse, Astro.site).toString()
+const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === ''
 ---
 
 <html lang="en">
@@ -73,10 +74,10 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
     <ClientRouter />
   </head>
   <body
-    class="font-sans text-zinc-900 antialiased transition-colors dark:bg-zinc-900 dark:text-zinc-200"
+    class="font-sans text-zinc-900 antialiased tracking-tight transition-colors dark:bg-zinc-900 dark:text-zinc-200"
   >
-    <div class={cn("max-w-xl mx-auto p-4", className)}>
-      <Header />
+    <div class={cn("max-w-[60ch] mx-auto p-8", className)}>
+      <Header className={isHomePage ? "mb-4" : "mb-8"} />
       <slot />
       <Footer />
     </div>

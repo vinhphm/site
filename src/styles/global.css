@@ -56,9 +56,13 @@ html:not(.dark) {
   @apply border-border;
 }
 
+body {
+  text-rendering: optimizeLegibility;
+}
+
 article {
   p {
-    @apply my-4 leading-relaxed;
+    @apply my-4 leading-snug;
   }
   h1 {
     @apply my-4 text-xl font-medium;
@@ -67,18 +71,30 @@ article {
     }
   }
   h2 {
-    @apply my-4 text-lg font-medium;
+    @apply mt-8 mb-3 text-lg font-medium;
     :root.dark & {
         @apply text-white;
     }
   }
-  h3,
+  h3 {
+    @apply mt-8 mb-3 font-medium;
+    :root.dark & {
+        @apply text-white;
+    }
+  }
   h4,
   h5,
   h6 {
     @apply my-4 font-medium;
     :root.dark & {
         @apply text-white;
+    }
+  }
+
+  strong {
+    @apply font-medium;
+    :root.dark & {
+      @apply text-white;
     }
   }
 

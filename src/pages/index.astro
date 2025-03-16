@@ -8,9 +8,15 @@ import config from "@/config"
   description={config.description}
   className="flex h-svh max-w-sm flex-col justify-center"
 >
+  <style>
+    /* Override header margin for homepage only */
+    :global(header) {
+      @apply mb-4;
+    }
+  </style>
+
   <main class="space-y-4">
     <Name />
-    <p>/ curious mind · developer · explorer /</p>
     <p>
       I build high-quality, performant, and accessible solutions at PwC, making
       work easier for others. But the most exciting ideas don't always fit in a
