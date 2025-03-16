@@ -61,8 +61,12 @@ body {
 }
 
 article {
+  @apply space-y-6;
   p {
-    @apply my-4 leading-snug;
+    @apply text-gray-800 leading-snug;
+    :root.dark & {
+      @apply text-zinc-300;
+    }
   }
   h1 {
     @apply my-4 text-xl font-medium;
@@ -71,13 +75,13 @@ article {
     }
   }
   h2 {
-    @apply mt-8 mb-3 text-lg font-medium;
+    @apply mt-8! mb-3! text-lg font-medium;
     :root.dark & {
         @apply text-white;
     }
   }
   h3 {
-    @apply mt-8 mb-3 font-medium;
+    @apply mt-8! mb-3! font-medium;
     :root.dark & {
         @apply text-white;
     }
@@ -89,6 +93,16 @@ article {
     :root.dark & {
         @apply text-white;
     }
+  }
+
+  /* Cancel out space-y effect after headings */
+  & > h1 + *,
+  & > h2 + *,
+  & > h3 + *,
+  & > h4 + *,
+  & > h5 + *,
+  & > h6 + * {
+    @apply mt-0!;
   }
 
   strong {
