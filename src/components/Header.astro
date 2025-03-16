@@ -3,7 +3,7 @@ import config from "@/config"
 import ThemeToggle from "./ThemeToggle.vue"
 ---
 
-<header class="mb-6 flex items-center justify-between" transition:name="header">
+<header class="mb-8 flex items-center justify-between" transition:name="header">
   <nav class="flex items-center gap-4">
     {config.header.navLinks.map((link) => (
       <a href={link.href}> {link.text} </a>
