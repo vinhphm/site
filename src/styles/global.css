@@ -91,6 +91,13 @@ article {
     }
   }
 
+  strong {
+    @apply font-medium;
+    :root.dark & {
+      @apply text-white;
+    }
+  }
+
   hr {
     @apply hr-line;
   }
