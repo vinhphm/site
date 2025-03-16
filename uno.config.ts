@@ -1,5 +1,5 @@
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
-import { presetWind3 } from '@unocss/preset-wind3'
+import { presetWind4 } from '@unocss/preset-wind4'
 import {
   defineConfig,
   presetAttributify,
@@ -16,11 +16,10 @@ export default defineConfig({
       'extended-wrapper': 'lg:scale-120 md:scale-110',
       'extended-py': 'md:py-5 lg:py-12',
       'extended-pt': 'md:pt-5 lg:pt-12',
-      'hr-line': 'w-14 mx-auto border-solid border-1px',
     },
   ],
   presets: [
-    presetWind3(),
+    presetWind4(),
     presetAttributify(),
     presetIcons({
       scale: 1.2,
@@ -39,38 +38,11 @@ export default defineConfig({
       processors: [
         createLocalFontProcessor(),
       ],
+      themeKey: 'font',
     }),
   ],
   theme: {
     colors: {
-      background: 'hsl(var(--background))',
-      foreground: 'hsl(var(--foreground))',
-      primary: {
-        DEFAULT: 'hsl(var(--primary))',
-        foreground: 'hsl(var(--primary-foreground))',
-      },
-      secondary: {
-        DEFAULT: 'hsl(var(--secondary))',
-        foreground: 'hsl(var(--secondary-foreground))',
-      },
-      muted: {
-        DEFAULT: 'hsl(var(--muted))',
-        foreground: 'hsl(var(--muted-foreground))',
-      },
-      accent: {
-        DEFAULT: 'hsl(var(--accent))',
-        foreground: 'hsl(var(--accent-foreground))',
-      },
-      additive: {
-        DEFAULT: 'hsl(var(--additive))',
-        foreground: 'hsl(var(--additive-foreground))',
-      },
-      destructive: {
-        DEFAULT: 'hsl(var(--destructive))',
-        foreground: 'hsl(var(--destructive-foreground))',
-      },
-      border: 'hsl(var(--border))',
-      ring: 'hsl(var(--ring))',
       bluesky: 'rgb(10, 122, 255)',
     },
   },

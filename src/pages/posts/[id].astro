@@ -21,15 +21,15 @@ const { Content } = await render(post)
   description={post.data.description}
   image={post.data.image}
 >
-  <main>
-    <h1 class="mb-2 text-xl font-medium">
+  <div>
+    <h1 class="mb-0 text-xl font-medium">
       {post.data.title}
     </h1>
-    <p class="pb-4 font-medium text-zinc-500">
+    <p class="font-medium text-gray-500 dark:text-zinc-500">
       {formatDate(post.data.date)}
     </p>
-    <article>
-      <Content />
-    </article>
-  </main>
+  </div>
+  <article>
+    <Content />
+  </article>
 </Layout>

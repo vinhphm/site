@@ -7,15 +7,9 @@ import config from "@/config"
 <Layout
   description={config.description}
   className="flex h-svh max-w-sm flex-col justify-center"
+  headerClassName="mb-0"
 >
-  <style>
-    /* Override header margin for homepage only */
-    :global(header) {
-      @apply mb-4;
-    }
-  </style>
-
-  <main class="space-y-4">
+  <div class="space-y-6">
     <Name />
     <p>
       I build high-quality, performant, and accessible solutions at PwC, making
@@ -27,5 +21,14 @@ import config from "@/config"
       from my development journey.
     </p>
     <p>Beyond code: coffee ☕, tea 🧋, and exploring new places 🚌</p>
-  </main>
+  </div>
 </Layout>
+
+<style scoped>
+  p {
+    @apply my-4 text-gray-800 leading-snug;
+    :root.dark & {
+      @apply text-zinc-300;
+    }
+  }
+</style>
