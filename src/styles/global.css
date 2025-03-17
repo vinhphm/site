@@ -75,7 +75,10 @@ article {
   }
 
   hr {
-    @apply hr-line;
+    @apply w-14 mx-auto border border-gray-300;
+    :root.dark & {
+      @apply border-zinc-700;
+    }
   }
 
   blockquote {
