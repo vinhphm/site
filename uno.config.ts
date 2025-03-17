@@ -1,5 +1,5 @@
 import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
-import { presetWind3 } from '@unocss/preset-wind3'
+import { presetWind4 } from '@unocss/preset-wind4'
 import {
   defineConfig,
   presetAttributify,
@@ -20,7 +20,7 @@ export default defineConfig({
     },
   ],
   presets: [
-    presetWind3(),
+    presetWind4(),
     presetAttributify(),
     presetIcons({
       scale: 1.2,
@@ -39,6 +39,7 @@ export default defineConfig({
       processors: [
         createLocalFontProcessor(),
       ],
+      themeKey: 'font',
     }),
   ],
   theme: {

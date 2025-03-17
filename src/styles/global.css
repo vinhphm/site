@@ -1,41 +1,3 @@
-:root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 3.9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 80.1%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 80.1%;
-  --muted-foreground: 0 0% 45.1%;
-  --accent: 0 0% 80.1%;
-  --accent-foreground: 0 0% 9%;
-  --additive: 112 50% 36%;
-  --additive-foreground: 0 0% 9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 89.8%;
-  --ring: 0 0% 3.9%;
-}
-
-.dark {
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 14.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
-  --accent: 0 0% 14.9%;
-  --accent-foreground: 0 0% 98%;
-  --additive: 112 50% 36%;
-  --additive-foreground: 0 0% 9%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --ring: 0 0% 83.1%;
-}
-
 html.dark {
   .img-light,
   [img-light] {
@@ -53,7 +15,10 @@ html:not(.dark) {
 *,
 *::before,
 *::after {
-  @apply border-border;
+  @apply border-gray-200;
+  :root.dark & {
+    @apply border-zinc-800;
+  }
 }
 
 body {
@@ -102,16 +67,6 @@ article {
     }
   }
 
-  /* Cancel out space-y effect after headings */
-  & > h1 + *,
-  & > h2 + *,
-  & > h3 + *,
-  & > h4 + *,
-  & > h5 + *,
-  & > h6 + * {
-    @apply mt-0!;
-  }
-
   strong {
     @apply font-medium;
     :root.dark & {
@@ -138,13 +93,13 @@ article {
   table {
     @apply my-4 w-full table-auto border-collapse text-sm;
     th {
-      @apply border-b p-4 text-left font-medium;
+      @apply border-b border-gray-200 p-4 text-left font-medium;
       :root.dark & {
         @apply border-zinc-700;
       }
     }
     td {
-      @apply border-b bg-zinc-50 p-4;
+      @apply border-b border-gray-200 bg-zinc-50 p-4;
       :root.dark & {
         @apply border-zinc-700 bg-zinc-800;
       }
@@ -166,7 +121,7 @@ article {
     @apply pl-1;
   }
   kbd {
-    @apply rounded border border-b-2 bg-zinc-100 px-1 py-0.5 font-mono text-xs font-medium text-black;
+    @apply rounded border border-b-2 border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs font-medium text-black;
     :root.dark & {
       @apply border-zinc-700 bg-zinc-800 text-white;
     }
@@ -184,7 +139,10 @@ article {
   figure {
     @apply my-4;
     figcaption {
-      @apply text-zinc-500 text-sm mt-2;
+      @apply text-gray-500 text-sm mt-2;
+      :root.dark & {
+        @apply text-zinc-500;
+      }
     }
   }
 
@@ -200,7 +158,10 @@ article {
 
   /* Inline code */
   :not(pre) > code {
-    @apply relative rounded border border-border bg-secondary/20 px-[0.3em] py-[0.05em] font-mono text-sm font-medium;
+    @apply relative rounded border border-gray-200 bg-gray-100 px-[0.3em] py-[0.05em] font-mono text-sm font-medium;
+    :root.dark & {
+      @apply border-zinc-700 bg-zinc-900;
+    }
   }
 
   /* Code blocks */
@@ -209,7 +170,10 @@ article {
 
     /* Code block titles */
     [data-rehype-pretty-code-title] {
-      @apply break-words rounded-t-xl border-x border-t px-4 py-2 text-sm font-medium text-foreground;
+      @apply break-words rounded-t-xl border-x border-t border-gray-200 px-4 py-2 text-sm font-medium;
+      :root.dark & {
+        @apply border-zinc-800;
+      }
 
       /* Remove top margin from code block if a title is present */
       & + pre {
@@ -219,7 +183,10 @@ article {
 
     /* Code block styles */
     pre {
-      @apply static max-h-[600px] overflow-auto rounded-xl border bg-secondary/20 py-4 text-sm leading-loose;
+      @apply static max-h-[600px] overflow-auto rounded-xl border border-gray-200 bg-gray-50 py-4 text-sm leading-loose;
+      :root.dark & {
+        @apply border-zinc-800 bg-zinc-900;
+      }
 
       /* Code block content */
       > code {
@@ -231,7 +198,10 @@ article {
           > [data-line]::before {
             counter-increment: line;
             content: counter(line);
-            @apply mr-4 inline-block w-4 text-right text-muted-foreground;
+            @apply mr-4 inline-block w-4 text-right text-gray-500;
+            :root.dark & {
+              @apply text-zinc-500;
+            }
           }
         }
 
@@ -242,27 +212,42 @@ article {
 
         /* Highlighted lines */
         [data-highlighted-line] {
-          @apply bg-foreground/10;
+          @apply bg-gray-200;
+          :root.dark & {
+            @apply bg-zinc-800;
+          }
         }
 
         /* Highlighted characters */
         [data-highlighted-chars] > span {
-          @apply bg-muted-foreground/40 py-[7px];
+          @apply bg-gray-400/40 py-[7px];
+          :root.dark & {
+            @apply bg-zinc-500/40;
+          }
         }
 
         /* Diff lines */
         .diff {
           &.add {
-            @apply bg-additive/15;
+            @apply bg-green-500/15;
+            :root.dark & {
+              @apply bg-green-600/15;
+            }
           }
           &.remove {
-            @apply bg-destructive/15;
+            @apply bg-red-500/15;
+            :root.dark & {
+              @apply bg-red-600/15;
+            }
           }
         }
 
         /* Copy button */
         > button:has(> span) {
-          @apply right-0.5 top-0.5 m-0 size-8 rounded-lg bg-background p-1 backdrop-blur-none transition-all;
+          @apply right-0.5 top-0.5 m-0 size-8 rounded-lg bg-gray-100 p-1 backdrop-blur-none transition-all;
+          :root.dark & {
+            @apply bg-zinc-800;
+          }
         }
       }
     }
