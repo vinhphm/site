@@ -77,8 +77,8 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
   <body
     class="font-sans text-gray-900 bg-white antialiased tracking-tight transition-colors dark:bg-zinc-950 dark:text-zinc-200"
   >
-    <div class="px-8 py-4">
-      <main class={cn("max-w-[60ch] mx-auto w-full space-y-6", className)}>
+    <div class={cn("px-8 py-4 mx-auto", className)}>
+      <main class="max-w-[60ch] mx-auto w-full space-y-6">
         <Header className={headerClassName} />
         <slot />
         <Footer />
