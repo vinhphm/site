@@ -40,13 +40,13 @@ article {
     }
   }
   h2 {
-    @apply mb-3! text-lg font-medium;
+    @apply mb-8! mb-3! text-lg font-medium;
     :root.dark & {
         @apply text-white;
     }
   }
   h3 {
-    @apply mb-3! font-medium;
+    @apply mb-8! mb-3! font-medium;
     :root.dark & {
         @apply text-white;
     }
@@ -54,7 +54,7 @@ article {
   h4,
   h5,
   h6 {
-    @apply my-4! mb-3! font-medium;
+    @apply mb-6! my-4! mb-3! font-medium;
     :root.dark & {
         @apply text-white;
     }
@@ -223,7 +223,7 @@ article {
 
         /* Highlighted characters */
         [data-highlighted-chars] > span {
-          @apply bg-gray-400/40 py-[7px];
+          @apply bg-gray-400/40 py-[0.3435em];
           :root.dark & {
             @apply bg-zinc-500/40;
           }
