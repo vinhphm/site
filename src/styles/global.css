@@ -89,9 +89,16 @@ article {
   h4,
   h5,
   h6 {
-    @apply my-4 font-medium;
+    @apply my-4! mb-3! font-medium;
     :root.dark & {
         @apply text-white;
+    }
+  }
+
+  strong {
+    @apply font-medium;
+    :root.dark & {
+      @apply text-white;
     }
   }
 
@@ -117,9 +124,9 @@ article {
   }
 
   blockquote {
-    @apply my-4 border-l-2 pl-4 border-zinc-400;
+    @apply ml-[0.075em] border-l-3 border-gray-300 pl-4 text-gray-700;
     :root.dark & {
-      @apply border-zinc-600;
+      @apply border-zinc-600 text-zinc-300;
     }
   }
   a {
@@ -144,10 +151,19 @@ article {
     }
   }
   ol {
-    @apply my-1 pl-6 list-outside marker:text-sm marker:text-zinc-500 list-decimal space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
+    @apply text-gray-800 list-decimal pl-5 space-y-2;
+    :root.dark & {
+      @apply text-zinc-300;
+    }
   }
   ul {
-    @apply my-1 pl-6 list-outside marker:text-zinc-500 list-disc space-y-1 [&_ol]:pl-5 [&_ul]:pl-5;
+    @apply text-gray-800 list-disc pl-5 space-y-1;
+    :root.dark & {
+      @apply text-zinc-300;
+    }
+  }
+  li {
+    @apply pl-1;
   }
   kbd {
     @apply rounded border border-b-2 bg-zinc-100 px-1 py-0.5 font-mono text-xs font-medium text-black;
@@ -165,8 +181,11 @@ article {
     }
   }
 
-  figure figcaption {
-    @apply text-zinc-500 text-sm leading-relaxed mt-2;
+  figure {
+    @apply my-4;
+    figcaption {
+      @apply text-zinc-500 text-sm mt-2;
+    }
   }
 
   code[data-theme*=' '] {
@@ -181,7 +200,7 @@ article {
 
   /* Inline code */
   :not(pre) > code {
-    @apply relative rounded border border-border bg-secondary/20 px-[0.2em] py-[0.05em] font-mono text-sm font-medium;
+    @apply relative rounded border border-border bg-secondary/20 px-[0.3em] py-[0.05em] font-mono text-sm font-medium;
   }
 
   /* Code blocks */
