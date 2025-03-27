@@ -2,7 +2,7 @@
   "name": "vinh-dev",
   "type": "module",
   "version": "2.2.0",
-  "packageManager": "bun@1.2.5",
+  "packageManager": "bun@1.2.7",
   "scripts": {
     "prepare": "simple-git-hooks",
     "dev": "astro dev",
@@ -24,18 +24,18 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",
     "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.2.1",
+    "@astrojs/mdx": "^4.2.2",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.3.0",
-    "@astrojs/vue": "^5.0.7",
-    "@iconify/json": "^2.2.319",
+    "@astrojs/vue": "^5.0.8",
+    "@iconify/json": "^2.2.321",
     "@rehype-pretty/transformers": "^0.13.2",
     "@shikijs/transformers": "^3.2.1",
     "@types/prompts": "^2.4.9",
-    "@unocss/eslint-plugin": "^66.1.0-beta.6",
-    "@unocss/preset-wind4": "^66.1.0-beta.6",
-    "@unocss/reset": "^66.1.0-beta.6",
-    "astro": "^5.5.4",
+    "@unocss/eslint-plugin": "^66.1.0-beta.7",
+    "@unocss/preset-wind4": "^66.1.0-beta.7",
+    "@unocss/reset": "^66.1.0-beta.7",
+    "astro": "^5.5.5",
     "bumpp": "^10.1.0",
     "eslint": "^9.23.0",
     "eslint-plugin-astro": "^1.3.1",
@@ -51,7 +51,7 @@
     "simple-git": "^3.27.0",
     "simple-git-hooks": "^2.12.1",
     "typescript": "^5.8.2",
-    "unocss": "^66.1.0-beta.6"
+    "unocss": "^66.1.0-beta.7"
   },
   "simple-git-hooks": {
     "pre-commit": "bunx lint-staged"
