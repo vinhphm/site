@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content"
-import config from "@/config"
-import Layout from "@/layouts/Layout.astro"
-import { formatDate } from "@/lib/utils"
+import config from '@/config'
+import Layout from '@/layouts/Layout.astro'
+import { formatDate } from '@/lib/utils'
+import { getCollection } from 'astro:content'
 
-const collection = await getCollection("posts")
+const collection = await getCollection('posts')
 const posts = collection.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 )
@@ -13,14 +13,14 @@ const posts = collection.sort(
 <Layout title="Posts" description={config.description}>
   <ul class="flex flex-col gap-1.5">
     {
-      posts.map((post) => (
+      posts.map(post => (
         <li>
           <a
             href={`/posts/${post.id}`}
-            class="group flex justify-between gap-3"
+            class="group flex gap-3 justify-between"
           >
             <span class="group-hover:underline">{post.data.title}</span>
-            <span class="text-nowrap text-gray-500 dark:text-zinc-500">
+            <span class="text-gray-500 text-nowrap dark:text-zinc-500">
               {formatDate(post.data.date)}
             </span>
           </a>

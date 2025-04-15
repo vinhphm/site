@@ -3,8 +3,8 @@ import config from '@/config'
 ---
 
 <footer class="text-center">
-  <div class="flex justify-center items-center gap-4 tracking-tight">
-    {config.footer.navLinks.map((link) => (
+  <div class="tracking-tight flex gap-4 items-center justify-center">
+    {config.footer.navLinks.map(link => (
       <a
         href={link.href}
         target="_blank"

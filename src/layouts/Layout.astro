@@ -1,10 +1,10 @@
 ---
-import { ClientRouter } from "astro:transitions"
-import Header from "@/components/Header.astro"
-import Footer from "@/components/Footer.astro"
-import { cn } from "@/lib/utils"
-import config from "@/config"
-import "@/styles/global.css"
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import config from '@/config'
+import { cn } from '@/lib/utils'
+import { ClientRouter } from 'astro:transitions'
+import '@/styles/global.css'
 
 interface Props {
   title?: string
@@ -20,7 +20,7 @@ const {
   description,
   image,
   className,
-  headerClassName = "mb-8",
+  headerClassName = 'mb-8',
 } = Astro.props
 
 const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
@@ -39,7 +39,7 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
     <!-- Global Metadata -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" >
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"/> -->
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -75,10 +75,10 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
     <ClientRouter />
   </head>
   <body
-    class="font-sans text-gray-900 bg-white antialiased tracking-tight transition-colors dark:bg-zinc-950 dark:text-zinc-200"
+    class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950"
   >
-    <div class={cn("px-8 py-4 mx-auto", className)}>
-      <main class="max-w-[60ch] mx-auto w-full space-y-6">
+    <div class={cn('px-8 py-4 mx-auto', className)}>
+      <main class="mx-auto max-w-[60ch] w-full space-y-6">
         <Header className={headerClassName} />
         <slot />
         <Footer />
@@ -98,6 +98,6 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
       document.documentElement.classList.toggle('dark', true)
   }
 
-  document.addEventListener("astro:after-swap", () => preloadTheme())
+  document.addEventListener('astro:after-swap', () => preloadTheme())
   preloadTheme()
 </script>

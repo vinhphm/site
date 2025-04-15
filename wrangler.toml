@@ -7,6 +7,8 @@ mode = "smart"
 
 [vars]
 BUN_VERSION = "1.2.8"
+SKIP_DEPENDENCY_INSTALL = true
 
 [env.production.vars]
 BUN_VERSION = "1.2.8"
+SKIP_DEPENDENCY_INSTALL = true
