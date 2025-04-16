@@ -1,16 +1,24 @@
-import { createLocalFontProcessor } from '@unocss/preset-web-fonts/local'
 import { presetWind4 } from '@unocss/preset-wind4'
 import {
   defineConfig,
   presetAttributify,
   presetIcons,
   presetTypography,
-  presetWebFonts,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
 
 export default defineConfig({
+  preflights: [
+    {
+      getCSS: () => `
+        :root {
+          --font-sans: var(--font-inter);
+          --font-mono: var(--font-geist-mono);
+        }
+      `,
+    },
+  ],
   shortcuts: [
     {
       'extended-wrapper': 'lg:scale-120 md:scale-110',
@@ -30,16 +38,6 @@ export default defineConfig({
       },
     }),
     presetTypography(),
-    presetWebFonts({
-      fonts: {
-        sans: 'Inter:100..900',
-        mono: 'Geist Mono:400..700',
-      },
-      processors: [
-        createLocalFontProcessor(),
-      ],
-      themeKey: 'font',
-    }),
   ],
   theme: {
     colors: {

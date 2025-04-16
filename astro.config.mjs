@@ -7,7 +7,7 @@ import {
   transformerMetaHighlight,
   transformerNotationDiff,
 } from '@shikijs/transformers'
-import { defineConfig } from 'astro/config'
+import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypePrettyCode from 'rehype-pretty-code'
@@ -21,7 +21,22 @@ export default defineConfig({
     format: 'file',
   },
   experimental: {
-    svg: true,
+    fonts: [
+      {
+        provider: fontProviders.google(),
+        name: 'Inter',
+        weights: ['400 600'],
+        subsets: ['latin', 'vietnamese'],
+        cssVariable: '--font-inter',
+      },
+      {
+        provider: fontProviders.google(),
+        name: 'Geist Mono',
+        subsets: ['latin'],
+        cssVariable: '--font-geist-mono',
+        fallbacks: ['monospace'],
+      },
+    ],
     responsiveImages: true,
     contentIntellisense: true,
   },
