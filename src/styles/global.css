@@ -12,6 +12,8 @@
   --color-bluesky: rgb(10, 122, 255);
 }
 
+@source "../components/ThemeToggle.vue";
+
 @layer base {
   html.dark .img-light,
   html.dark [img-light] {
