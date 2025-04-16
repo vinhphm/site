@@ -7,19 +7,22 @@ import {
   transformerMetaHighlight,
   transformerNotationDiff,
 } from '@shikijs/transformers'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
+
 import rehypePrettyCode from 'rehype-pretty-code'
-import UnoCSS from 'unocss/astro'
 
 export default defineConfig({
   site: 'https://vinh.dev',
   trailingSlash: 'never',
+
   build: {
     assets: '_assets',
     format: 'file',
   },
+
   experimental: {
     fonts: [
       {
@@ -40,12 +43,13 @@ export default defineConfig({
     responsiveImages: true,
     contentIntellisense: true,
   },
+
   integrations: [
     mdx(),
     sitemap(),
-    UnoCSS({ injectReset: true }),
     vue(),
   ],
+
   markdown: {
     syntaxHighlight: false,
     rehypePlugins: [
@@ -86,5 +90,9 @@ export default defineConfig({
         },
       ],
     ],
+  },
+
+  vite: {
+    plugins: [tailwindcss()],
   },
 })

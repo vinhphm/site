@@ -7,20 +7,19 @@ interface Props {
   className?: string
 }
 
-const { className = 'mb-8' } = Astro.props
+const { className = 'mb-6' } = Astro.props
 ---
 
 <header class={cn('flex items-center justify-between', className)} transition:name="header">
   <nav class="flex gap-4 items-center">
     {config.header.navLinks.map(link => (
-      <a href={link.href}> {link.text} </a>
+      <a
+        class="font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100"
+        href={link.href}
+      >
+          {link.text}
+      </a>
     ))}
   </nav>
   <ThemeToggle client:load />
 </header>
-
-<style>
-  a {
-    @apply font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100;
-  }
-</style>

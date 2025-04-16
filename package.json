@@ -17,6 +17,7 @@
     "release": "bumpp"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.4",
     "@vueuse/core": "^13.1.0",
     "tailwind-merge": "^3.2.0",
     "vue": "^3.5.13"
@@ -29,12 +30,10 @@
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/vue": "^5.0.10",
     "@iconify/json": "^2.2.327",
+    "@iconify/tailwind4": "^1.0.6",
     "@rehype-pretty/transformers": "^0.13.2",
     "@shikijs/transformers": "^3.2.2",
     "@types/prompts": "^2.4.9",
-    "@unocss/eslint-plugin": "66.1.0-beta.8",
-    "@unocss/preset-wind4": "66.1.0-beta.8",
-    "@unocss/reset": "66.1.0-beta.8",
     "astro": "^5.7.0",
     "bumpp": "^10.1.0",
     "eslint": "^9.24.0",
@@ -50,8 +49,8 @@
     "sharp": "^0.34.1",
     "simple-git": "^3.27.0",
     "simple-git-hooks": "^2.12.1",
-    "typescript": "^5.8.3",
-    "unocss": "66.1.0-beta.8"
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3"
   },
   "simple-git-hooks": {
     "pre-commit": "bunx lint-staged"
