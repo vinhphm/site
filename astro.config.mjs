@@ -11,7 +11,6 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
-
 import rehypePrettyCode from 'rehype-pretty-code'
 
 export default defineConfig({
