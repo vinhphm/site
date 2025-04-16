@@ -36,6 +36,11 @@
   body {
     text-rendering: optimizeLegibility;
   }
+
+  [class^="i-"], [class*=" i-"] {
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
 }
 
 @layer components {
@@ -162,7 +167,7 @@
 
   /* Remove top margin from code block if a title is present */
   article [data-rehype-pretty-code-title] + pre {
-    @apply mt-0 rounded-t-none;
+    @apply mt-0 !rounded-t-none;
   }
 
   /* Code block styles */
@@ -208,7 +213,7 @@
 
   /* Copy button */
   article figure[data-rehype-pretty-code-figure] pre > code > button:has(> span) {
-    @apply right-0.5 top-0.5 m-0 size-8 rounded-lg bg-gray-100 p-1 backdrop-blur-none transition-all dark:bg-zinc-800;
+    @apply right-0.5 top-0.5 m-0 size-8 rounded-lg cursor-pointer bg-gray-100 p-1 backdrop-blur-none transition-all dark:bg-zinc-800;
   }
 
   /* Theme transition animation */
