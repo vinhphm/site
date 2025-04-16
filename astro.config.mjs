@@ -93,5 +93,8 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      external: ['@iconify/json', '@iconify/tailwind4'],
+    },
   },
 })

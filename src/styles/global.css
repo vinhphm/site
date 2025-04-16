@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@source inline("icon-[ri--circle-fill]");
 
 @plugin "@iconify/tailwind4" {
   scale: 1.2;
