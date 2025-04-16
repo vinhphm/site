@@ -7,7 +7,7 @@ import Layout from '@/layouts/Layout.astro'
 <Layout
   description={config.description}
   className="flex flex-col max-w-sm justify-center h-svh"
-  headerClassName="mb-0"
+  headerClassName="mb-6"
 >
   <div class="space-y-6">
     <Name />
@@ -25,6 +25,8 @@ import Layout from '@/layouts/Layout.astro'
 </Layout>
 
 <style scoped>
+  @reference "../styles/global.css";
+
   p {
     @apply my-4 text-gray-800 leading-snug;
     :root.dark & {
