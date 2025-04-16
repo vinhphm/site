@@ -1,8 +1,9 @@
 @import "tailwindcss";
-@plugin "@iconify/tailwind4" {
-  prefix: "i";
+
+/* @plugin "@iconify/tailwind4" {
   scale: 1.2;
-}
+} */
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -12,7 +13,6 @@
 }
 
 @layer base {
-
   html.dark .img-light,
   html.dark [img-light] {
     display: none;
@@ -33,7 +33,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  [class^="i-"], [class*=" i-"] {
+  [class^="icon-"], [class*=" icon-"] {
     display: inline-block;
     vertical-align: text-bottom;
   }
@@ -239,5 +239,4 @@
   :is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-within) .header-anchor {
      @apply opacity-50;
   }
-
 }

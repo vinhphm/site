@@ -5,6 +5,7 @@ lang: en
 description: Discover how to use Cloudflare Workers to interact with the Spotify API and display your current playing song on your website. Explore how to use Vite and Vue to create a Spotify widget with animation and style.
 duration: 4 min read
 ---
+import PhFileTs from '~icons/ph/file-ts'
 import spotifyCurrentPlaying from '@/assets/images/2023/spotify-current-playing.webp'
 
 In a previous post, we discussed how to [generate refresh tokens for Spotify API calls](/posts/spotify-refresh-token). Now, let's dive into the exciting part: using Cloudflare Workers to interact with the Spotify API.. Now, let's dive into the exciting part: using Cloudflare Workers to interact with the Spotify API.
@@ -46,7 +47,7 @@ wrangler secret put `KEY`
 
 Depending on your preference, you can structure your source code. For instance, I prefer splitting it into two files: **index.ts** and **spotify.ts**.
 
-In [<span class="i-[ph--file-ts]" /> spotify.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/spotify.ts), you can encapsulate the logic related to Spotify API interactions. In [<span class="i-[ph--file-ts]" /> index.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/index.ts), you can handle the routing and overall structure of your Cloudflare Worker.
+In [<PhFileTs /> spotify.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/spotify.ts), you can encapsulate the logic related to Spotify API interactions. In [<PhFileTs /> index.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/index.ts), you can handle the routing and overall structure of your Cloudflare Worker.
 
 ## Vite/Vue Spotify components
 

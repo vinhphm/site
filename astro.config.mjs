@@ -11,8 +11,8 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
-
 import rehypePrettyCode from 'rehype-pretty-code'
+import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
   site: 'https://vinh.dev',
@@ -93,6 +93,13 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      tailwindcss(),
+      Icons({
+        scale: 1.2,
+        defaultClass: 'inline-block align-text-bottom',
+        compiler: 'vue3',
+      }),
+    ],
   },
 })
