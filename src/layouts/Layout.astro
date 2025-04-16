@@ -3,6 +3,7 @@ import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import config from '@/config'
 import { cn } from '@/lib/utils'
+import { Font } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
 import '@/styles/global.css'
 
@@ -45,6 +46,9 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
     <meta name="generator" content={Astro.generator} />
+
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-geist-mono" preload />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
