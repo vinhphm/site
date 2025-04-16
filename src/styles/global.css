@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source inline("icon-[ri--circle-fill]");
 
 @plugin "@iconify/tailwind4" {
   scale: 1.2;
@@ -11,8 +12,6 @@
   --font-mono: var(--font-geist-mono);
   --color-bluesky: rgb(10, 122, 255);
 }
-
-@source "../components/ThemeToggle.vue";
 
 @layer base {
   html.dark .img-light,
