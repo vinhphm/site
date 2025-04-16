@@ -29,7 +29,6 @@
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/vue": "^5.0.10",
     "@iconify/json": "^2.2.328",
-    "@iconify/tailwind4": "^1.0.6",
     "@rehype-pretty/transformers": "^0.13.2",
     "@shikijs/transformers": "^3.2.2",
     "@types/prompts": "^2.4.9",
