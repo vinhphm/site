@@ -53,7 +53,7 @@
     "typescript": "^5.8.3"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "bunx lint-staged"
   },
   "lint-staged": {
     "*": "eslint --fix"
