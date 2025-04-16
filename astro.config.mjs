@@ -2,7 +2,6 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import vue from '@astrojs/vue'
-import tailwindIconify from '@iconify/tailwind4'
 import { transformerCopyButton } from '@rehype-pretty/transformers'
 import {
   transformerMetaHighlight,
@@ -94,13 +93,7 @@ export default defineConfig({
 
   vite: {
     plugins: [
-      tailwindcss({
-        plugins: [
-          tailwindIconify({
-            scale: 1.2, // Match the scale in your CSS
-          }),
-        ],
-      }),
+      tailwindcss(),
     ],
   },
 })

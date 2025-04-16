@@ -4,6 +4,8 @@
   scale: 1.2;
 }
 
+@source "..";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
