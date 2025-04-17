@@ -28,9 +28,6 @@ import Layout from '@/layouts/Layout.astro'
   @reference "../styles/global.css";
 
   p {
-    @apply my-4 text-gray-800 leading-snug;
-    :root.dark & {
-      @apply text-zinc-300;
-    }
+    @apply my-4 text-gray-800 leading-snug dark:text-zinc-300;
   }
 </style>
