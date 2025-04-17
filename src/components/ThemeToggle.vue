@@ -3,7 +3,11 @@ import { useDark } from '@vueuse/core'
 import { nextTick } from 'vue'
 import RiCircleFill from '~icons/ri/circle-fill'
 
-const isDark = useDark({ storageKey: 'color-scheme' })
+const isDark = useDark({
+  storageKey: 'color-scheme',
+  attribute: 'data-theme',
+  valueLight: 'light',
+})
 
 function toggleDark(event: MouseEvent) {
   // @ts-expect-error experimental API

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
   --font-sans: var(--font-inter);
@@ -9,13 +9,13 @@
 }
 
 @layer base {
-  html.dark .img-light,
-  html.dark [img-light] {
+  html[data-theme="dark"] .img-light,
+  html[data-theme="dark"] [img-light] {
     display: none;
   }
 
-  html:not(.dark) .img-dark,
-  html:not(.dark) [img-dark] {
+  html:not([data-theme="dark"]) .img-dark,
+  html:not([data-theme="dark"]) [img-dark] {
     display: none;
   }
 
@@ -27,11 +27,6 @@
 
   body {
     text-rendering: optimizeLegibility;
-  }
-
-  [class^="icon-"], [class*=" icon-"] {
-    display: inline-block;
-    vertical-align: text-bottom;
   }
 }
 
@@ -119,10 +114,10 @@
       }
     }
 
-    code[data-theme*=' '] span {
+    code[data-theme*='light'] span {
       color: var(--shiki-light);
     }
-    &:where(.dark, .dark *) code[data-theme*=' '] span {
+    &:where([data-theme="dark"], [data-theme="dark"] *) code[data-theme*='light'] span {
       color: var(--shiki-dark);
     }
 
@@ -197,7 +192,7 @@
     }
   }
 
-  :where(.dark, .dark *) article figure[data-rehype-pretty-code-figure] pre > code[data-line-numbers] > [data-line]::before {
+  :where([data-theme="dark"], [data-theme="dark"] *) article figure[data-rehype-pretty-code-figure] pre > code[data-line-numbers] > [data-line]::before {
     color: var(--color-zinc-500);
   }
 
@@ -213,12 +208,12 @@
   .theme-transition::view-transition-new(root) {
     z-index: 9999;
   }
-  .theme-transition:where(.dark, .dark *)::view-transition-old(root),
-  .theme-transition.dark::view-transition-old(root) {
+  .theme-transition:where([data-theme="dark"], [data-theme="dark"] *)::view-transition-old(root),
+  .theme-transition[data-theme="dark"]::view-transition-old(root) {
     z-index: 9999;
   }
-  .theme-transition:where(.dark, .dark *)::view-transition-new(root),
-  .theme-transition.dark::view-transition-new(root) {
+  .theme-transition:where([data-theme="dark"], [data-theme="dark"] *)::view-transition-new(root),
+  .theme-transition[data-theme="dark"]::view-transition-new(root) {
     z-index: 1;
   }
 

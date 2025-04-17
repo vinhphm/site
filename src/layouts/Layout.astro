@@ -93,13 +93,27 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
 
 <script is:inline>
   function preloadTheme() {
+    const root = document.documentElement
     const prefersDark =
       window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
     const setting = localStorage.getItem('color-scheme') || 'auto'
 
-    if (setting === 'dark' || (prefersDark && setting !== 'light'))
-      document.documentElement.classList.toggle('dark', true)
+    let applyDarkMode
+
+    if (setting === 'dark') {
+      applyDarkMode = true
+    } else if (setting === 'light') {
+      applyDarkMode = false
+    } else {
+      applyDarkMode = prefersDark
+    }
+
+    if (applyDarkMode) {
+      root.setAttribute('data-theme', 'dark')
+    } else {
+      root.removeAttribute('data-theme')
+    }
   }
 
   document.addEventListener('astro:after-swap', () => preloadTheme())
