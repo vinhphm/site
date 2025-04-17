@@ -33,7 +33,7 @@ export default defineConfig({
         cssVariable: '--font-inter',
       },
       {
-        provider: fontProviders.google(),
+        provider: fontProviders.fontsource(),
         name: 'Geist Mono',
         subsets: ['latin'],
         cssVariable: '--font-geist-mono',

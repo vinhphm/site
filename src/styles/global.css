@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* @plugin "@iconify/tailwind4" {
-  scale: 1.2;
-} */
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
