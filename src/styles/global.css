@@ -185,7 +185,7 @@
 
           /* Copy button */
           > button:has(> span) {
-            @apply right-0.5 top-0.5 m-0 size-8 cursor-pointer rounded-lg bg-gray-100 p-1 backdrop-blur-none transition-all dark:bg-zinc-800;
+            @apply !right-0.5 !top-0.5 !m-0 !size-8 cursor-pointer !rounded-lg bg-gray-100 !p-1 backdrop-blur-none transition-all dark:bg-zinc-800;
           }
         }
       }
