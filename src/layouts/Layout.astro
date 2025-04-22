@@ -11,8 +11,8 @@ interface Props {
   title?: string
   description: string
   image?: string
-  className?: string
-  headerClassName?: string
+  containerClassName?: string
+  contentClassName?: string
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -20,8 +20,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 const {
   description,
   image,
-  className,
-  headerClassName,
+  containerClassName,
+  contentClassName = 'space-y-8',
+
 } = Astro.props
 
 const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
@@ -81,9 +82,9 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
   <body
     class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950"
   >
-    <div class={cn('px-8 py-4 mx-auto', className)}>
-      <main class="mx-auto max-w-[60ch] w-full space-y-8">
-        <Header className={headerClassName} />
+    <div class={cn('px-8 py-4 mx-auto', containerClassName)}>
+      <main class={cn('mx-auto max-w-[60ch] w-full', contentClassName)}>
+        <Header />
         <slot />
         <Footer />
       </main>

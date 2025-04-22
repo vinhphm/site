@@ -1,16 +1,9 @@
 ---
 import config from '@/config'
-import { cn } from '@/lib/utils'
 import ThemeToggle from './ThemeToggle.vue'
-
-interface Props {
-  className?: string
-}
-
-const { className = 'mb-8' } = Astro.props
 ---
 
-<header class={cn('flex items-center justify-between', className)} transition:name="header">
+<header class="flex items-center justify-between" transition:name="header">
   <nav class="flex gap-4 items-center">
     {config.header.navLinks.map(link => (
       <a

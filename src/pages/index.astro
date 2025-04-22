@@ -6,22 +6,21 @@ import Layout from '@/layouts/Layout.astro'
 
 <Layout
   description={config.description}
-  className="flex flex-col max-w-sm justify-center h-svh"
+  containerClassName="flex flex-col max-w-sm justify-center h-svh"
+  contentClassName="space-y-4"
 >
-  <div class="space-y-8">
+  <div class="space-y-4">
     <Name />
-    <div class="space-y-6">
-      <p>
-        I build high-quality, performant, and accessible solutions at PwC, making
-        work easier for others. But the most exciting ideas don't always fit in a
-        9-to-5 box.
-      </p>
-      <p>
-        This is my playground for side projects, experimental code, and insights
-        from my development journey.
-      </p>
-      <p>Beyond code: coffee ☕, tea 🧋, and exploring new places 🚌</p>
-    </div>
+    <p>
+      I build high-quality, performant, and accessible solutions at PwC, making
+      work easier for others. But the most exciting ideas don't always fit in a
+      9-to-5 box.
+    </p>
+    <p>
+      This is my playground for side projects, experimental code, and insights
+      from my development journey.
+    </p>
+    <p>Beyond code: coffee ☕, tea 🧋, and exploring new places 🚌</p>
   </div>
 </Layout>
 
