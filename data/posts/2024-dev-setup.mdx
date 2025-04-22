@@ -25,7 +25,7 @@ Let's start with the most important tool for a developer: the code editor. I use
 
 Not exactly feel like everyone else's VS Code, right? In this particular setup, I set the activity bar to the top instead of the left side using
 
-```json
+```json showLineNumbers=false
 {
   // ...
   "workbench.activityBar.location": "top"
@@ -64,8 +64,7 @@ Though I use different shells on different machines, I want to have the same exp
 
 Starship tends to use a default preset that need a nerdfont to work properly. But since I want to stick with the original Geist Mono, I have to customize it a bit. Here's my Starship config:
 
-```toml
-# ~/.config/starship.toml
+```toml title=".config⠀›⠀starship.toml"
 [battery]
 full_symbol = "• "
 charging_symbol = "⇡ "

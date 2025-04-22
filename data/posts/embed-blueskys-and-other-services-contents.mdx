@@ -23,7 +23,7 @@ Aparently, Bluesky uses the [oEmbed](https://oembed.com/) API format to allow em
 
 So I had to change the component to Vue to make use of prevous setup regarding theme management. But Vue component are client-side code, and most of these oEmbed endpoints won't allow the app to fetch data from them because of CORS policy. So I had to create a Cloudflare Worker to act as a proxy to fetch data from these endpoints. And here is how it looks like:
 
-```javascript title="worker.js" showLineNumbers
+```javascript title="worker.js"
 // Cache for providers list
 let providersCache = null;
 let providersCacheTime = 0;
@@ -222,7 +222,7 @@ export default {
 
 ## The Vue component
 
-```vue title="src/components/OEmbed.vue" showLineNumbers
+```vue title="src⠀›⠀components⠀›⠀OEmbed.vue"
 <script setup lang="ts">
 import config from '@/config'
 import { useDark } from '@vueuse/core'
@@ -365,7 +365,7 @@ Noticed that we need a `injectContent` function to inject the HTML content into 
 
 Now we can use the `OEmbed` component to embed content from Bluesky and other services with the following code in MDX files:
 
-```mdx
+```mdx showLineNumbers=false
 import OEmbed from '@/components/OEmbed.vue'
 
 <OEmbed client:only="vue" url="https://bsky.app/profile/vinh.dev/post/3lalirzsyuc2i" />

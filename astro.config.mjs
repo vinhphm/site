@@ -2,16 +2,13 @@ import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import vue from '@astrojs/vue'
-import { transformerCopyButton } from '@rehype-pretty/transformers'
-import {
-  transformerMetaHighlight,
-  transformerNotationDiff,
-} from '@shikijs/transformers'
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
+import expressiveCode from 'astro-expressive-code'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
-import rehypePrettyCode from 'rehype-pretty-code'
 import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
@@ -45,6 +42,47 @@ export default defineConfig({
   },
 
   integrations: [
+    expressiveCode({
+      themes: ['github-light', 'github-dark'],
+      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
+      useDarkModeMediaQuery: false,
+      themeCssSelector: theme => `[data-theme='${theme.name.split('-')[1]}']`,
+      defaultProps: {
+        wrap: true,
+        collapseStyle: 'collapsible-auto',
+        overridesByLang: {
+          'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
+            {
+              showLineNumbers: false,
+            },
+        },
+      },
+      styleOverrides: {
+        borderColor: 'var(--border)',
+        codeFontFamily: 'var(--font-mono)',
+        codeBackground:
+          'color-mix(in oklab, var(--secondary) 25%, transparent)',
+        frames: {
+          editorActiveTabForeground: 'var(--muted-foreground)',
+          editorActiveTabBackground:
+            'color-mix(in oklab, var(--secondary) 25%, transparent)',
+          editorActiveTabIndicatorBottomColor: 'transparent',
+          editorActiveTabIndicatorTopColor: 'transparent',
+          editorTabBarBackground: 'transparent',
+          editorTabBarBorderBottomColor: 'transparent',
+          frameBoxShadowCssValue: 'none',
+          terminalBackground:
+            'color-mix(in oklab, var(--secondary) 25%, transparent)',
+          terminalTitlebarBackground: 'transparent',
+          terminalTitlebarBorderBottomColor: 'transparent',
+          terminalTitlebarForeground: 'var(--muted-foreground)',
+        },
+        lineNumbers: {
+          foreground: 'var(--muted-foreground)',
+        },
+        uiFontFamily: 'var(--font-sans)',
+      },
+    }),
     mdx(),
     sitemap(),
     vue(),
@@ -67,25 +105,6 @@ export default defineConfig({
               type: 'text',
               value: '#',
             },
-          ],
-        },
-      ],
-      [
-        rehypePrettyCode,
-        {
-          theme: {
-            light: 'github-light-high-contrast',
-            dark: 'github-dark-high-contrast',
-          },
-          transformers: [
-            transformerNotationDiff({
-              matchAlgorithm: 'v3',
-            }),
-            transformerMetaHighlight(),
-            transformerCopyButton({
-              visibility: 'hover',
-              feedbackDuration: 1000,
-            }),
           ],
         },
       ],

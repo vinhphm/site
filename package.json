@@ -17,8 +17,11 @@
     "release": "bumpp"
   },
   "dependencies": {
+    "@expressive-code/plugin-collapsible-sections": "^0.41.1",
+    "@expressive-code/plugin-line-numbers": "^0.41.1",
     "@tailwindcss/vite": "^4.1.4",
     "@vueuse/core": "^13.1.0",
+    "astro-expressive-code": "^0.41.1",
     "tailwind-merge": "^3.2.0",
     "vue": "^3.5.13"
   },
@@ -29,8 +32,6 @@
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/vue": "^5.0.10",
     "@iconify/json": "^2.2.329",
-    "@rehype-pretty/transformers": "^0.13.2",
-    "@shikijs/transformers": "^3.2.2",
     "@types/prompts": "^2.4.9",
     "astro": "^5.7.4",
     "bumpp": "^10.1.0",
@@ -43,7 +44,6 @@
     "prompts": "^2.4.2",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-external-links": "^3.0.0",
-    "rehype-pretty-code": "^0.14.1",
     "sharp": "^0.34.1",
     "simple-git": "^3.27.0",
     "simple-git-hooks": "^2.12.1",

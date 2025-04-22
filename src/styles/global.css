@@ -6,6 +6,55 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
   --color-bluesky: rgb(10, 122, 255);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-additive: var(--additive);
+  --color-additive-foreground: var(--additive-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+:root[data-theme="dark"] {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --ring: oklch(0.556 0 0);
 }
 
 @layer base {
@@ -114,86 +163,19 @@
       }
     }
 
-    code[data-theme*='light'] span {
-      color: var(--shiki-light);
+    code {
+      @apply bg-muted/50 text-foreground relative rounded-sm px-[0.3rem] py-[0.2rem] text-sm;
+      @apply [&>span[data-line='']>*]:text-(--shiki-light) dark:[&>span[data-line='']>*]:text-(--shiki-dark);
     }
-    &:where([data-theme="dark"], [data-theme="dark"] *) code[data-theme*='light'] span {
-      color: var(--shiki-dark);
+
+    .expressive-code {
+      @apply my-6 [&_.title]:font-medium!;
     }
 
     /* Inline code */
     :not(pre) > code {
       @apply relative rounded border border-gray-200 bg-gray-100 px-[0.3em] py-[0.05em] font-mono text-sm font-medium dark:border-zinc-700 dark:bg-zinc-900;
     }
-
-    /* Code blocks via rehype-pretty-code */
-    figure[data-rehype-pretty-code-figure] {
-      @apply relative my-4;
-
-      /* Code block titles */
-      [data-rehype-pretty-code-title] {
-        @apply break-words rounded-t-xl border-x border-t border-gray-200 px-4 py-2 text-sm font-medium dark:border-zinc-800;
-
-        /* Remove top margin from code block if a title is present */
-        & + pre {
-          @apply mt-0 rounded-t-none;
-        }
-      }
-
-      /* Code block styles */
-      pre {
-        @apply static max-h-[600px] overflow-auto rounded-xl border border-gray-200 bg-gray-50 py-4 text-sm leading-loose dark:border-zinc-800 dark:bg-zinc-900;
-
-        /* Code block content */
-        > code {
-          @apply font-mono;
-          counter-reset: line;
-
-          /* For code blocks with line numbers */
-          &[data-line-numbers] {
-            > [data-line]::before {
-              counter-increment: line;
-              content: counter(line);
-              @apply mr-4 inline-block w-4 text-right text-gray-500;
-            }
-          }
-
-          /* For each line in the code block */
-          > [data-line] {
-            @apply px-4;
-          }
-
-          /* Highlighted lines */
-          [data-highlighted-line] {
-            @apply bg-gray-200 dark:bg-zinc-800;
-          }
-
-          /* Highlighted characters */
-          [data-highlighted-chars] > span {
-            @apply bg-gray-400/40 py-[0.3435em] dark:bg-zinc-500/40;
-          }
-
-          /* Diff lines */
-          .diff {
-            &.add {
-              @apply bg-green-500/15 dark:bg-green-600/15;
-            }
-            &.remove {
-              @apply bg-red-500/15 dark:bg-red-600/15;
-            }
-          }
-
-          /* Copy button */
-          > button:has(> span) {
-            @apply !right-0.5 !top-0.5 !m-0 !size-8 cursor-pointer !rounded-lg bg-gray-100 !p-1 backdrop-blur-none transition-all dark:bg-zinc-800;
-          }
-        }
-      }
-    }
-  }
-
-  :where([data-theme="dark"], [data-theme="dark"] *) article figure[data-rehype-pretty-code-figure] pre > code[data-line-numbers] > [data-line]::before {
-    color: var(--color-zinc-500);
   }
 
   /* Theme transition animation */
