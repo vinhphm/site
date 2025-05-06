@@ -90,6 +90,9 @@
 
   .extended-pt {
     @apply md:pt-5 lg:pt-12;
+    figcaption {
+      @apply mt-4 lg:mt-16;
+    }
   }
 
   article {
@@ -159,7 +162,7 @@
     figure {
       @apply my-4;
       figcaption {
-        @apply mt-2 text-sm text-gray-500 dark:text-zinc-500;
+        @apply mt-4 text-sm text-gray-500 dark:text-zinc-500;
       }
     }
 
