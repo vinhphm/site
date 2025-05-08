@@ -1,0 +1,66 @@
+---
+title: "Make the most out of Zed's Agentic Editing"
+date: "2025-05-08T19:05:10.098+07:00"
+description: "A new post about Make the most out of Zed's Agentic Editing"
+---
+import Video from '@/components/Video.vue'
+import { Image } from 'astro:assets'
+import review from '@/assets/videos/2025/zed-agentic-editing-review.mp4'
+import agenticEditing from '@/assets/images/2025/zed-agentic-editing.png'
+
+With the latest update, Zed now finally has "Agentic Editing" - which means the AI can use tools to automatically search, read, and make changes to appropriate files in your projects to complete user queries. This capability is what makes editors like Cursor or Windsurf so popular right now, so it's great to see a new, built-from-the-ground-up editor like Zed implement it as well.
+
+<figure class="extended-pt">
+  <div class="extended-wrapper">
+    <Image src={agenticEditing} class="shadow-xl" alt="Zed's Agentic Editing" />
+  </div>
+  <figcaption class="text-center">
+    Zed's Agentic Editing
+  </figcaption>
+</figure>
+
+But it wouldn't be special if things stopped there, would it? This blog post is about how you can actually make effective use of this feature, rather than diving blindly into this new field of AI-assisted coding. Let's get started.
+
+## Provider options
+
+Even before releasing Agentic Editing, Zed offered a variety of provider options to choose from, ensuring you're not limited to just one. These options, at the time of writing, are:
+
+- **Zed**: Models (Anthropic's) hosted by Zed themselves
+
+- **GitHub Copilot**: Models (Anthropic's and OpenAI's) provided by GitHub Copilot
+
+- **OpenAI**: Direct integration with OpenAI's models
+
+- **Anthropic**: Direct integration with Anthropic's models
+
+The latter two require API keys from their respective portal consoles where you manage credits and payments yourself. That's pretty straightforward, so there's not much to discuss there.
+
+The first two options are both different and similar in some ways. Both offer two packages: Free and Pro, with some limitations on the Free tier.
+
+If you're not ready to spend money yet, this is where Zed already outperforms other editors since you have two free options instead of just one like many competitors offer.
+
+And if you're willing to invest, having GitHub Copilot available here could be even more significant since the price for their "Pro" version is among the lowest of any comparable service. That's definitely something to consider!
+
+Here are the package details and pricing:
+
+- [Zed](https://zed.dev/pricing)
+
+- [GitHub Copilot](https://github.com/features/copilot/plans)
+
+Please note that the number of prompts/requests per month for these two Pro packages differs (500 in Zed vs. 300 in GitHub Copilot), with options to purchase additional capacity in both services.
+
+## Local models support
+
+The options don't end there. Zed also allows you to configure and use models that run locally with the help of Ollama. This is perfect for developers who prefer to keep AI assistance on their own machines for privacy, performance, or offline work. You can check out the complete setup guide on [Zed's official website](https://zed.dev/docs/ai/custom-api-keys#ollama).
+
+## Reviewing changes
+
+It's always important to review all changes made by AI models. Having a UI that works seamlessly with this review process is something I deeply appreciate. If you've ever done a project search with Zed before, you're likely familiar with Zed's fully editable unified diff experience that I love so much. This same interface now assists us with AI-generated changes reviewing step:
+
+<Video client:idle src={review} extended videoClass="rounded shadow-lg" />
+
+## Wrapping up
+
+Zed's implementation of Agentic Editing, combined with its flexible provider options and excellent review interface, makes it a strong contender in the increasingly competitive space of AI-assisted coding editors. Whether you're privacy-conscious and want to run local models, budget-conscious and appreciate the free tiers, or simply want the best tool for the job, Zed offers compelling options for developers at all levels.
+
+Have you tried it? I'd love to hear your experience.
