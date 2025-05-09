@@ -23,7 +23,7 @@ const { Content } = await render(post)
   image={post.data.image}
 >
   <div class="mb-5">
-    <h1 class="text-xl font-medium mb-5">
+    <h1 class="text-xl font-medium mb-5" transition:name={`post-title-${post.id}`}>
       {post.data.title}
     </h1>
     <span class="font-medium text-gray-500 dark:text-zinc-500">
