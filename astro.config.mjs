@@ -118,7 +118,6 @@ export default defineConfig({
       Icons({
         scale: 1.2,
         defaultClass: 'inline-block align-text-bottom',
-        compiler: 'vue3',
       }),
     ],
   },

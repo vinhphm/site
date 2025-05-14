@@ -6,7 +6,7 @@ compatibility_date = "2024-11-11"
 mode = "smart"
 
 [vars]
-BUN_VERSION = "1.2.12"
+BUN_VERSION = "1.2.13"
 
 [env.production.vars]
-BUN_VERSION = "1.2.12"
+BUN_VERSION = "1.2.13"
