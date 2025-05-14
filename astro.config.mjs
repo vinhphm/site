@@ -43,10 +43,10 @@ export default defineConfig({
 
   integrations: [
     expressiveCode({
-      themes: ['github-light', 'github-dark'],
+      themes: ['poimandres', 'snazzy-light'],
       plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
       useDarkModeMediaQuery: false,
-      themeCssSelector: theme => `[data-theme='${theme.name.split('-')[1]}']`,
+      themeCssSelector: theme => `[data-theme='${theme.name === 'poimandres' ? 'dark' : 'light'}']`,
       defaultProps: {
         wrap: true,
         collapseStyle: 'collapsible-auto',
