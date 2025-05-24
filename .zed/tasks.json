@@ -1,0 +1,9 @@
+[
+  {
+    "label": "bun dev",
+    "command": "bun",
+    "args": ["dev"],
+    "allow_concurrent_runs": true,
+    "use_new_terminal": false
+  }
+]
