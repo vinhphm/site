@@ -1,10 +1,10 @@
 ---
-import { Font } from 'astro:assets'
-import { ClientRouter } from 'astro:transitions'
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import config from '@/config'
 import { cn } from '@/lib/utils'
+import { Font } from 'astro:assets'
+import { ClientRouter } from 'astro:transitions'
 import '@/styles/global.css'
 
 interface Props {
@@ -34,6 +34,8 @@ const imageToUse = image || defaultImage
 const title = [Astro.props.title, config.title].filter(Boolean).join(' \\ ')
 
 const resolvedImage = new URL(imageToUse, Astro.site).toString()
+
+const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === ''
 ---
 
 <html lang="en">
@@ -76,6 +78,17 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
         <meta property="twitter:image" content={resolvedImage} />
       )
     }
+
+    {isHomepage && (
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": config.title,
+          "url": Astro.site?.toString()
+        })}
+      </script>
+    )}
 
     <ClientRouter />
   </head>
