@@ -1,10 +1,10 @@
 ---
+import { Font } from 'astro:assets'
+import { ClientRouter } from 'astro:transitions'
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import config from '@/config'
 import { cn } from '@/lib/utils'
-import { Font } from 'astro:assets'
-import { ClientRouter } from 'astro:transitions'
 import '@/styles/global.css'
 
 interface Props {
@@ -31,7 +31,7 @@ const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
 
 const imageToUse = image || defaultImage
 
-const title = [Astro.props.title, config.title].filter(Boolean).join(' / ')
+const title = [Astro.props.title, config.title].filter(Boolean).join(' \\ ')
 
 const resolvedImage = new URL(imageToUse, Astro.site).toString()
 ---

@@ -1,0 +1,59 @@
+---
+title: Tận dụng tối đa Agentic Editing của Zed
+date: 2025-05-25T13:05:10.198+07:00
+description: Agentic Editing của Zed là bước ngoặt cho lập trình hỗ trợ AI. Đây là cách sử dụng hiệu quả tính năng này.
+---
+import Video from '@/components/Video.vue'
+import { Image } from 'astro:assets'
+import review from '@/assets/videos/2025/zed-agentic-editing-review.mp4'
+import agenticEditing from '@/assets/images/2025/zed-agentic-editing.png'
+
+Với bản cập nhật mới nhất, Zed cuối cùng cũng có **“Agentic Editing”** – nghĩa là AI có thể sử dụng các công cụ để tự động search, đọc và chỉnh sửa những file phù hợp trong project của bạn để hoàn thành yêu cầu. Đây chính là tính năng làm cho các editor như Cursor hay Windsurf trở nên phổ biến hiện nay, nên thật tuyệt khi thấy một editor mới được xây dựng từ đầu như Zed cũng đã tích hợp nó.
+
+<figure class="extended-pt">
+  <div class="extended-wrapper">
+    <Image src={agenticEditing} class="shadow-xl" alt="Agentic Editing của Zed" />
+  </div>
+  <figcaption class="text-center">
+    Agentic Editing của Zed
+  </figcaption>
+</figure>
+
+Nhưng nếu chỉ dừng lại ở đó thì có gì đặc biệt đâu, đúng không? Bài viết này sẽ chia sẻ cách bạn có thể sử dụng hiệu quả tính năng này, thay vì lao đầu vào "vibe-coding" một cách mù quáng. Bắt đầu thôi.
+
+## Các lựa chọn provider
+
+Ngay cả trước khi Agentic Editing ra mắt, Zed đã cho phép chọn giữa nhiều provider khác nhau, giúp bạn không bị giới hạn bởi một lựa chọn duy nhất. Tính đến thời điểm viết bài, các provider hiện có gồm:
+
+- **Zed**: Model (Anthropic) được host bởi Zed
+- **GitHub Copilot**: Model (của Anthropic và OpenAI) do GitHub Copilot cung cấp
+- **OpenAI**: Tích hợp trực tiếp với model của OpenAI
+- **Anthropic**: Tích hợp trực tiếp với model của Anthropic
+
+Hai lựa chọn cuối yêu cầu bạn có API key từ trang quản lý riêng, nơi bạn tự quản lý credit và thanh toán. Phần này đơn giản nên không bàn thêm.
+
+Hai lựa chọn đầu thì vừa giống vừa khác nhau. Cả hai đều có gói Free và Pro, với một vài giới hạn cho Free.
+- Nếu bạn chưa muốn trả tiền, Zed đã nổi bật hơn nhiều editor khác vì bạn có tận hai lựa chọn miễn phí thay vì chỉ một.
+- Còn nếu bạn sẵn sàng bỏ tiền, việc có GitHub Copilot là một điểm cộng lớn vì giá gói Pro của họ nằm trong nhóm rẻ nhất hiện nay.
+
+Chi tiết gói và giá:
+- [Zed](https://zed.dev/pricing)
+- [GitHub Copilot](https://github.com/features/copilot/plans)
+
+Lưu ý số lượng prompt/yêu cầu mỗi tháng của hai gói Pro này khác nhau (500 ở Zed vs. 300 ở GitHub Copilot), và cả hai đều cho phép mua thêm dung lượng nếu cần.
+
+## Hỗ trợ model local
+
+Không chỉ dừng lại ở các provider online, Zed còn cho phép bạn cấu hình và sử dụng model chạy local thông qua **Ollama**. Rất phù hợp với dev nào muốn giữ việc xử lý AI trên máy cá nhân vì lý do bảo mật, hiệu năng hoặc làm việc offline. Bạn có thể xem hướng dẫn chi tiết trên [trang docs của Zed](https://zed.dev/docs/ai/custom-api-keys#ollama).
+
+## Review các chỉnh sửa
+
+Điều luôn luôn quan trọng là phải review lại tất cả thay đổi do AI thực hiện. Giao diện review mượt mà của Zed thực sự rất tiện. Nếu bạn từng search trong project bằng Zed, chắc quen với giao diện unified diff có thể edit trực tiếp – riêng mình thì cực kỳ mê. Giờ nó cũng hỗ trợ review các chỉnh sửa do AI tạo ra:
+
+<Video client:idle src={review} extended videoClass="rounded shadow-lg" />
+
+## Tổng kết
+
+Zed tích hợp Agentic Editing, kết hợp với các lựa chọn provider linh hoạt và UI review hiệu quả, biến nó thành một editor đáng gờm trong thời buổi hiện nay. Dù bạn ưu tiên quyền riêng tư và muốn dùng model local, quan tâm ngân sách với gói free, hay chỉ đơn giản muốn công cụ tốt nhất – Zed đều có option phù hợp cho mọi dev.
+
+Bạn đã thử chưa? Mình rất muốn nghe trải nghiệm của bạn.
