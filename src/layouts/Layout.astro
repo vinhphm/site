@@ -34,8 +34,6 @@ const imageToUse = image || defaultImage
 const title = [Astro.props.title, config.title].filter(Boolean).join(' \\ ')
 
 const resolvedImage = new URL(imageToUse, Astro.site).toString()
-
-const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === ''
 ---
 
 <html lang="en">
@@ -79,16 +77,7 @@ const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === ''
       )
     }
 
-    {isHomepage && (
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": config.title,
-          "url": Astro.site?.toString()
-        })}
-      </script>
-    )}
+    <slot name="structured-data" />
 
     <ClientRouter />
   </head>
