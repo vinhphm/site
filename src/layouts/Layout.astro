@@ -81,12 +81,12 @@ const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === ''
 
     {isHomepage && (
       <script type="application/ld+json">
-        {JSON.stringify({
+        {
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": config.title,
-          "url": Astro.site?.toString()
-        })}
+          "name": "Vinh Pham",
+          "url": "https://vinh.dev/"
+        }
       </script>
     )}
 
