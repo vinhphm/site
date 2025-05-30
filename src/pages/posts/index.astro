@@ -24,29 +24,29 @@ const posts = collection.sort(
             href={`/posts/${post.id}`}
             class="group flex gap-3 justify-between items-center"
           >
-            <span class="flex items-center gap-2" transition:name={`post-title-${post.id}`}>
+            <span transition:name={`post-title-${post.id}`}>
               {post.data.updatedDate
-? (
+                ? (
                 <>
-                  <span class="group-hover:underline">{post.data.title}</span>
+                  <span class="group-hover:underline">{post.data.title}</span>{' '}
                   <Badge
                     title={`Published on ${formatDate(post.data.createdDate)}\nUpdated on ${formatDate(post.data.updatedDate)}`}
-                    class="text-gray-500 text-nowrap dark:text-zinc-500"
+                    class="text-gray-500 text-nowrap dark:text-zinc-500 inline-block -translate-y-[0.1em]"
                   >
                     Updated
                   </Badge>
                 </>
               )
-: (
+              : (
                 <span class="group-hover:underline">{post.data.title}</span>
               )}
             </span>
             <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
               {post.data.updatedDate
-? (
+                ? (
                 formatDate(post.data.updatedDate)
               )
-: (
+              : (
                 formatDate(post.data.createdDate)
               )}
             </span>
