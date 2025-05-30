@@ -1,0 +1,141 @@
+---
+title: AI context management across editors
+date: 2025-05-30T09:43:02.283+07:00
+description: A practical comparison of how Cursor, Windsurf, VS Code, and Zed handle persistent instructions and team consistency. Covers rule systems, auto-generation features, and solving collaboration pain points with AI coding assistants.
+---
+import VscodeIconsFileTypeCursorrules from '~icons/vscode-icons/file-type-cursorrules'
+import SimpleIconsWindsurf from '~icons/simple-icons/windsurf'
+import SimpleIconsGithubcopilot from '~icons/simple-icons/githubcopilot'
+import SimpleIconsZedindustries from '~icons/simple-icons/zedindustries'
+
+Let's be honest, telling your AI assistant the same thing over and over again gets old fast. "Use TypeScript interfaces, not types." "Follow our component naming convention." "Please don't suggest jQuery in 2025."
+
+But here's what's even more frustrating: when you're working on a team and everyone's AI is giving different suggestions. Your AI knows you prefer functional components, but your teammate's AI is still suggesting class components. Someone gets a perfect code review response, but when you ask the same question, you get generic advice that doesn't fit the project's patterns.
+
+This inconsistency becomes a real collaboration pain point. Code reviews get real messy when different AI assistants are suggesting conflicting approaches. Onboarding new team members becomes harder when their AI doesn't understand your team's conventions. And don't get me started on trying to maintain consistent architecture across a project when everyone's AI has different ideas about "best practices."
+
+Worry not though, modern AI-powered editors have developed their own way to remember your preferences and maintain consistency across coding sessions. But still, each has their own "definition" of this so let's dive into how four popular editors handle this challenge.
+
+## <VscodeIconsFileTypeCursorrules /> Cursor
+
+Cursor doesn't mess around. It's got the most comprehensive rule system I've seen, and here's the kicker - it can actually generate rules from your conversations.
+
+### Project rules
+
+Stored right in your `.cursor/rules` folder, these play nicely with git:
+
+*Activation flavors:*
+
+- **Always**: Can't escape these (use wisely)
+
+- **Auto Attached**: Triggered by file patterns
+
+- **Agent Requested**: AI decides based on context
+
+- **Manual**: Only when you explicitly ask
+
+The cool stuff? You can reference other files with `@filename.ts`, create nested rule structures, and they automatically attach when you're working on matching files.
+
+### Rule generation
+
+Here's where Cursor really shines. Mid-conversation, you can literally say "turn this into a rule" or use `/Generate Cursor Rules`. Found yourself explaining the same architectural decision three times this week? Boom - now it's a reusable rule.
+
+### User rules
+
+These apply everywhere, all the time. Perfect for those "I always want..." preferences that follow you across projects.
+
+## <SimpleIconsWindsurf /> Windsurf/Cascade
+
+Windsurf feels like working with an AI that actually pays attention. It uses two clever systems: **Memories** and **Rules**.
+
+### Memories
+
+Think of memories as your AI taking notes while you work:
+
+- Cascade automatically captures useful context during conversations (pretty cool, right?)
+
+- You can also manually create memories by saying "create a memory of..."
+
+- They're tied to your specific workspace - no cross-contamination between projects
+
+- Best part? Auto-generated memories don't eat into your credits
+
+### Rules
+
+Rules are where you get specific about how things should work:
+
+*How they activate:*
+
+- **Manual**: Only when you @mention them (for those special cases)
+
+- **Always On**: Every single interaction (your non-negotiables)
+
+- **Model Decision**: Let the AI decide when it's relevant (surprisingly smart)
+
+- **Glob**: Automatically kick in for specific file types or patterns
+
+You can set rules globally or per workspace, but there's a catch - 6,000 characters per rule file, 12,000 total. Global rules win if you hit the limit.
+
+## <SimpleIconsGithubcopilot /> VS Code/GitHub Copilot
+
+GitHub Copilot keeps things recognizable if you're already living in VS Code. Two main approaches here:
+
+### Custom instructions
+
+*File-based options:*
+
+- `.github/copilot-instructions.md`: One file to rule them all (workspace-wide)
+
+- `.instructions.md`: Task-specific files with fancy Front Matter metadata
+
+> Both support glob patterns and can reference each other.
+
+*Settings-based:* Configure everything directly in VS Code settings. Less glamorous, but it works.
+
+### Prompt files
+
+Still experimental, but these `.prompt.md` files are like having a collection of starter prompts. You can even use variables like `${variableName}` for dynamic content.
+
+## <SimpleIconsZedindustries /> Zed
+
+Zed takes the "why complicate things?" approach, and honestly, it's refreshing.
+
+### .rules files
+
+Just create a `.rules` file at your project root. Zed will find it (along with `.cursorrules`, `.windsurfrules`, and a few others - nice compatibility touch).
+
+### Rules library
+
+This is where Zed gets clever. The Rules Library isn't just a settings panel - it's a full editor for managing your rules. Create, duplicate, delete, and organize with a proper interface.
+
+## Quick comparison
+
+| Feature                       | Windsurf        | Cursor          | VS Code/Copilot | Zed            |
+| :---------------------------- | :-------------- | :-------------- | :-------------- | :------------- |
+| **Auto-Generated Context**    | ✅ Memories      | ❌               | ❌               | ❌              |
+| **Rule Generation from Chat** | ❌               | ✅               | ❌               | ❌              |
+| **Workspace-Scoped Rules**    | ✅               | ✅               | ✅               | ✅              |
+| **Global Rules**              | ✅               | ✅               | ✅               | ✅              |
+| **File Pattern Matching**     | ✅ Glob          | ✅ Auto Attached | ✅ applyTo       | ❌              |
+| **Version Control Friendly**  | ✅               | ✅               | ✅               | ✅              |
+| **Credit/Token Cost**         | Free (memories) | Standard        | Standard        | Standard       |
+| **Manual Rule Activation**    | ✅ @mention      | ✅ @ruleName     | ✅ Manual mode   | ✅ @rule        |
+| **Rule Size Limits**          | 12k chars total | None specified  | None specified  | None specified |
+| **Learning Curve**            | Medium          | High            | Medium          | Low            |
+
+## So which one now?
+
+- **Go with Windsurf if:** You want an AI that learns and remembers without much effort on your part. The automatic memory generation is genuinely helpful.
+
+- **Choose Cursor if:** You're serious about customization and love the idea of generating rules from conversations. It's the most powerful but requires the most setup time.
+
+- **Stick with VS Code/Copilot if:** You're already in the VS Code ecosystem and want something that works without too much change to your workflow.
+
+- **Try Zed if:** You prefer simplicity and want a clean, straightforward approach to rule management.
+
+## Conclusions
+
+Each editor solves the same core problem - keeping AI responses consistent without repeating yourself constantly. The main differences come down to how much automation you want versus how much control you need.
+
+My advice? Start simple with whatever editor you're already using, then gradually add more sophisticated rules as you discover patterns in your work. And remember - the best rule system is the one you'll actually use consistently.
+
