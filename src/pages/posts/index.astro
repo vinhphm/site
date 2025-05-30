@@ -33,12 +33,9 @@ const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
 
         return (
           <li>
-            <a
-              href={`/posts/${post.id}`}
-              class="group flex gap-3 justify-between items-start"
-            >
+            <span class="group flex gap-3 justify-between items-start">
               <span>
-                <span transition:name={`post-title-${post.id}`} class="group-hover:underline">{post.data.title}</span>
+                <a href={`/posts/${post.id}`} transition:name={`post-title-${post.id}`} class="group-hover:underline">{post.data.title}</a>
                 {updated && post.data.updatedDate && (
                   <Indicator
                     title={`Published on ${formatDate(post.data.createdDate)}\nUpdated on ${formatDate(post.data.updatedDate)}`}
@@ -51,7 +48,7 @@ const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
               <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
                 {formatDate(displayDate)}
               </span>
-            </a>
+            </span>
           </li>
         )
       })
