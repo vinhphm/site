@@ -1,58 +1,60 @@
 ---
-import Badge from '@components/Badge.astro'
+import type { CollectionEntry } from 'astro:content'
+import Indicator from '@components/Indicator.astro'
 import config from '@config'
 import Layout from '@layouts/Layout.astro'
 import { formatDate } from '@lib/utils'
 import { getCollection } from 'astro:content'
 
 const collection = await getCollection('posts')
-const posts = collection.sort(
-  (a, b) => {
-    const aDate = a.data.updatedDate || a.data.createdDate
-    const bDate = b.data.updatedDate || b.data.createdDate
-    return bDate.valueOf() - aDate.valueOf()
-  },
-)
+
+function getDisplayDate(post: CollectionEntry<'posts'>): Date {
+  return post.data.updatedDate || post.data.createdDate
+}
+
+function getSortDate(post: CollectionEntry<'posts'>): number {
+  const date = post.data.updatedDate || post.data.createdDate
+  return date.valueOf()
+}
+
+function isUpdated(post: CollectionEntry<'posts'>): boolean {
+  return !!post.data.updatedDate
+}
+
+const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
 ---
 
 <Layout title="Posts" description={config.description}>
   <ul class="flex flex-col gap-1.5">
     {
-      posts.map(post => (
-        <li>
-          <a
-            href={`/posts/${post.id}`}
-            class="group flex gap-3 justify-between items-center"
-          >
-            <span transition:name={`post-title-${post.id}`}>
-              {post.data.updatedDate
-                ? (
-                <>
-                  <span class="group-hover:underline">{post.data.title}</span>{' '}
-                  <Badge
+      posts.map((post) => {
+        const displayDate = getDisplayDate(post)
+        const updated = isUpdated(post)
+
+        return (
+          <li>
+            <a
+              href={`/posts/${post.id}`}
+              class="group flex gap-3 justify-between items-start"
+            >
+              <span>
+                <span transition:name={`post-title-${post.id}`} class="group-hover:underline">{post.data.title}</span>
+                {updated && post.data.updatedDate && (
+                  <Indicator
                     title={`Published on ${formatDate(post.data.createdDate)}\nUpdated on ${formatDate(post.data.updatedDate)}`}
-                    class="text-gray-500 text-nowrap dark:text-zinc-500 inline-block -translate-y-[0.1em]"
+                    class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
                   >
-                    Updated
-                  </Badge>
-                </>
-              )
-              : (
-                <span class="group-hover:underline">{post.data.title}</span>
-              )}
-            </span>
-            <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
-              {post.data.updatedDate
-                ? (
-                formatDate(post.data.updatedDate)
-              )
-              : (
-                formatDate(post.data.createdDate)
-              )}
-            </span>
-          </a>
-        </li>
-      ))
+                   Updated
+                  </Indicator>
+                )}
+              </span>
+              <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
+                {formatDate(displayDate)}
+              </span>
+            </a>
+          </li>
+        )
+      })
     }
   </ul>
 </Layout>

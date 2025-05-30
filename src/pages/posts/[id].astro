@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-import Badge from '@components/Badge.astro'
+import Indicator from '@components/Indicator.astro'
 import Layout from '@layouts/Layout.astro'
 import { formatDate } from '@lib/utils'
 import { getCollection, render } from 'astro:content'
@@ -27,10 +27,12 @@ const { Content } = await render(post)
     <h1 class="text-xl font-medium mb-5" transition:name={`post-title-${post.id}`}>
       {post.data.title}
     </h1>
-    <div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-3">
+    <div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-2">
       <span title={`Published on ${formatDate(post.data.createdDate)}`}>{formatDate(post.data.createdDate)}</span>
       {post.data.updatedDate && (
-        <Badge>Updated on {formatDate(post.data.updatedDate)}</Badge>
+        <Indicator alwaysShowLabel>
+          Updated on {formatDate(post.data.updatedDate)}
+        </Indicator>
       )}
     </div>
   </div>
