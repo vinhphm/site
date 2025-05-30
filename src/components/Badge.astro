@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from 'astro/types'
+import { cn } from '@lib/utils'
+
+interface Props extends HTMLAttributes<'span'> {
+  variant?: 'default' | 'accent'
+  size?: 'sm' | 'md'
+  class?: string
+}
+
+const { variant = 'default', size = 'sm', class: className, ...attrs } = Astro.props
+
+const variantClasses = {
+  default: 'border',
+  accent: 'border border-accent',
+}
+
+const sizeClasses = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-2.5 py-1 text-sm',
+}
+---
+
+<span class={cn('inline-flex items-center rounded-full', variantClasses[variant], sizeClasses[size], className)} {...attrs}>
+  <slot />
+</span>
