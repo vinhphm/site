@@ -13,15 +13,15 @@ const { post } = Astro.props
 
 <div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-2 flex-wrap">
   <time
-    datetime={post.data.createdDate.toISOString()}
-    title={`Published on ${formatDate(post.data.createdDate)}`}
+    datetime={post.data.publishedAt.toISOString()}
+    title={`Published on ${formatDate(post.data.publishedAt)}`}
   >
-    {formatDate(post.data.createdDate)}
+    {formatDate(post.data.publishedAt)}
   </time>
-  {post.data.updatedDate && (
+  {post.data.updatedAt && (
     <Indicator alwaysShowLabel>
-      <time datetime={post.data.updatedDate.toISOString()}>
-        Updated on {formatDate(post.data.updatedDate)}
+      <time datetime={post.data.updatedAt.toISOString()}>
+        Updated on {formatDate(post.data.updatedAt)}
       </time>
     </Indicator>
   )}

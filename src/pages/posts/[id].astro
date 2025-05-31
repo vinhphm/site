@@ -27,8 +27,8 @@ const structuredData = {
     '@type': 'Person',
     'name': 'Vinh',
   },
-  'datePublished': post.data.createdDate.toISOString(),
-  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+  'datePublished': post.data.publishedAt.toISOString(),
+  ...(post.data.updatedAt && { dateModified: post.data.updatedAt.toISOString() }),
 }
 ---
 

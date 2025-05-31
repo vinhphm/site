@@ -31,12 +31,12 @@ const fileName = `${slug}.mdx`
 const filePath = path.join(contentDir, fileName)
 
 const now = new Date()
-const utc7Date = new Date(now.getTime() + (7 * 60 * 60 * 1000))
-const formattedDate = utc7Date.toISOString().replace('Z', '+07:00')
+const utc7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000))
+const formattedTime = utc7Time.toISOString().replace('Z', '+07:00')
 
 const template = `---
 title: "${title}"
-date: "${formattedDate}"
+publishedAt: "${formattedTime}"
 description: "A new post about ${title}"
 ---
 

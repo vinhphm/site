@@ -9,16 +9,16 @@ import { formatDate } from '@/lib/utils'
 const collection = await getCollection('posts')
 
 function getDisplayDate(post: CollectionEntry<'posts'>): Date {
-  return post.data.updatedDate || post.data.createdDate
+  return post.data.updatedAt || post.data.publishedAt
 }
 
 function getSortDate(post: CollectionEntry<'posts'>): number {
-  const date = post.data.updatedDate || post.data.createdDate
+  const date = post.data.updatedAt || post.data.publishedAt
   return date.valueOf()
 }
 
 function isUpdated(post: CollectionEntry<'posts'>): boolean {
-  return !!post.data.updatedDate
+  return !!post.data.updatedAt
 }
 
 const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
@@ -36,9 +36,9 @@ const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
             <span class="group flex gap-3 justify-between items-start">
               <span>
                 <a href={`/posts/${post.id}`} transition:name={`post-title-${post.id}`} class="group-hover:underline">{post.data.title}</a>
-                {updated && post.data.updatedDate && (
+                {updated && post.data.updatedAt && (
                   <Indicator
-                    title={`Published on ${formatDate(post.data.createdDate)}\nUpdated on ${formatDate(post.data.updatedDate)}`}
+                    title={`Published on ${formatDate(post.data.publishedAt)}\nUpdated on ${formatDate(post.data.updatedAt)}`}
                     class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
                   >
                    Updated
