@@ -1,7 +1,7 @@
 import type { Config } from '@/types'
 
 const EMAIL = import.meta.env.PUBLIC_EMAIL ?? 'vinh@vinh.dev'
-const WORKER_HOST = import.meta.env.PUBLIC_WORKER_HOST ?? 'https://workers.vinh.dev'
+const WORKER_HOST = import.meta.env.PUBLIC_WORKER_HOST ?? 'https://worker.vinh.dev'
 
 export const config: Config = {
   author: {
