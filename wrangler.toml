@@ -1,8 +1,5 @@
-name = "vinh-dev"
+name = "site"
 compatibility_date = "2025-04-01"
-
-[placement]
-mode = "smart"
 
 [assets]
 directory = "./dist"
