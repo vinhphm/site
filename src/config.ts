@@ -1,4 +1,4 @@
-import type { Config } from '@types'
+import type { Config } from '@/types'
 
 const EMAIL = import.meta.env.PUBLIC_EMAIL ?? 'vinh@vinh.dev'
 const WORKER_HOST = import.meta.env.PUBLIC_WORKER_HOST ?? 'https://workers.vinh.dev'
@@ -41,7 +41,7 @@ export const config: Config = {
   footer: {
     navLinks: [
       {
-        text: '@vinh.dev',
+        text: '@/vinh.dev',
         href: 'https://bsky.app/profile/vinh.dev',
       },
       {

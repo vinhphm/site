@@ -6,7 +6,7 @@ description: What started as a simple idea to embed Bluesky's posts turned into 
 tag: Web
 duration: 7 min read
 ---
-import OEmbed from '@components/OEmbed.astro'
+import OEmbed from '@/components/OEmbed.astro'
 import RiBlueskyFill from '~icons/ri/bluesky-fill'
 
 <OEmbed url="https://bsky.app/profile/vinh.dev/post/3koanfztpg72m" />
@@ -224,8 +224,8 @@ export default {
 
 ```vue title="src⠀›⠀components⠀›⠀OEmbed.vue"
 <script setup lang="ts">
-import config from '@config'
-import { useDark } from '@vueuse/core'
+import config from '@/config'
+import { useDark } from '@/vueuse/core'
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -366,7 +366,7 @@ Noticed that we need a `injectContent` function to inject the HTML content into 
 Now we can use the `OEmbed` component to embed content from Bluesky and other services with the following code in MDX files:
 
 ```mdx showLineNumbers=false
-import OEmbed from '@components/OEmbed.vue'
+import OEmbed from '@/components/OEmbed.vue'
 
 <OEmbed client:only="vue" url="https://bsky.app/profile/vinh.dev/post/3lalirzsyuc2i" />
 ```

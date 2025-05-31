@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Indicator from '@/components/Indicator.astro'
+import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
+import { formatDate } from '@/lib/utils'
+
+interface Props {
+  post: CollectionEntry<'posts'>
+  showReadingTime?: boolean
+  content?: string
+}
+
+const { post, showReadingTime = false, content } = Astro.props
+const readingTime = showReadingTime && content ? calculateReadingTime(content) : null
+---
+
+<div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-2 flex-wrap">
+  <time
+    datetime={post.data.createdDate.toISOString()}
+    title={`Published on ${formatDate(post.data.createdDate)}`}
+  >
+    {formatDate(post.data.createdDate)}
+  </time>
+  {readingTime && (
+    <span class="text-sm" title={`${readingTime.words} words`}>
+      • {formatReadingTime(readingTime.minutes)}
+    </span>
+  )}
+  {post.data.updatedDate && (
+    <Indicator alwaysShowLabel>
+      <time datetime={post.data.updatedDate.toISOString()}>
+        Updated on {formatDate(post.data.updatedDate)}
+      </time>
+    </Indicator>
+  )}
+</div>

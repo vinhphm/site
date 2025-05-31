@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss'
-import config from '@config'
 import { getCollection } from 'astro:content'
+import config from '@/config'
 
 interface Context {
   site: string

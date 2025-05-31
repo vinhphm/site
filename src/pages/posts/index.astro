@@ -1,10 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-import Indicator from '@components/Indicator.astro'
-import config from '@config'
-import Layout from '@layouts/Layout.astro'
-import { formatDate } from '@lib/utils'
 import { getCollection } from 'astro:content'
+import Indicator from '@/components/Indicator.astro'
+import config from '@/config'
+import Layout from '@/layouts/Layout.astro'
+import { formatDate } from '@/lib/utils'
 
 const collection = await getCollection('posts')
 

@@ -1,8 +1,17 @@
 ---
-import Name from '@components/Name.astro'
-import WebsiteStructuredData from '@components/WebsiteStructuredData.astro'
-import config from '@config'
-import Layout from '@layouts/Layout.astro'
+import Name from '@/components/Name.astro'
+import config from '@/config'
+import Layout from '@/layouts/Layout.astro'
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site)
+
+const structuredData = {
+  '@/context': 'https://schema.org',
+  '@/type': 'WebSite',
+  'name': config.title,
+  'alternateName': ['Vinh Dev', 'VP'],
+  'url': pageUrl,
+}
 ---
 
 <Layout
@@ -10,7 +19,7 @@ import Layout from '@layouts/Layout.astro'
   wrapperClassName="flex flex-col max-w-sm justify-center h-svh"
   contentClassName="space-y-6"
 >
-  <WebsiteStructuredData slot="structured-data" />
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
   <div class="space-y-6">
     <Name />
     <p>

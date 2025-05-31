@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import config from '@config'
 import { useDark } from '@vueuse/core'
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import config from '@/config'
 
 const props = defineProps<{
   url: string

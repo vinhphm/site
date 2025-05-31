@@ -1,9 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-import Indicator from '@components/Indicator.astro'
-import Layout from '@layouts/Layout.astro'
-import { formatDate } from '@lib/utils'
 import { getCollection, render } from 'astro:content'
+import PostMeta from '@/components/PostMeta.astro'
+import Layout from '@/layouts/Layout.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -12,10 +11,25 @@ export async function getStaticPaths() {
     props: post,
   }))
 }
+
 type Props = CollectionEntry<'posts'>
 
 const post = Astro.props
 const { Content } = await render(post)
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  'headline': post.data.title,
+  'description': post.data.description,
+  'image': post.data.image,
+  'author': {
+    '@type': 'Person',
+    'name': 'Vinh',
+  },
+  'datePublished': post.data.createdDate.toISOString(),
+  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+}
 ---
 
 <Layout
@@ -23,18 +37,16 @@ const { Content } = await render(post)
   description={post.data.description}
   image={post.data.image}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
+
   <div class="mb-5">
-    <h1 class="text-xl font-medium mb-5" transition:name={`post-title-${post.id}`}>
+    <h1
+      class="text-xl font-medium mb-5"
+      transition:name={`post-title-${post.id}`}
+    >
       {post.data.title}
     </h1>
-    <div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-2">
-      <span title={`Published on ${formatDate(post.data.createdDate)}`}>{formatDate(post.data.createdDate)}</span>
-      {post.data.updatedDate && (
-        <Indicator alwaysShowLabel>
-          Updated on {formatDate(post.data.updatedDate)}
-        </Indicator>
-      )}
-    </div>
+    <PostMeta post={post} />
   </div>
   <article>
     <Content />

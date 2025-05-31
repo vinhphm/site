@@ -7,11 +7,3 @@ mode = "smart"
 [assets]
 directory = "./dist"
 not_found_handling = "404-page"
-
-[vars]
-BUN_VERSION = "1.2.15"
-NODE_VERSION = "22.16.0"
-
-[env.production.vars]
-BUN_VERSION = "1.2.15"
-NODE_VERSION = "22.16.0"
