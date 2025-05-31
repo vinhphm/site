@@ -1,47 +1,39 @@
 ---
-import type { CollectionEntry } from 'astro:content'
-import { getCollection } from 'astro:content'
 import Indicator from '@/components/Indicator.astro'
 import config from '@/config'
 import Layout from '@/layouts/Layout.astro'
+import { getAllPosts } from '@/lib/client'
 import { formatDate } from '@/lib/utils'
 
-const collection = await getCollection('posts')
+const data = await getAllPosts()
+const posts = data.publication.posts.edges
 
-function getDisplayDate(post: CollectionEntry<'posts'>): Date {
-  return post.data.updatedDate || post.data.createdDate
+function getDisplayDate(publishedAt: string): Date {
+  return new Date(publishedAt)
 }
 
-function getSortDate(post: CollectionEntry<'posts'>): number {
-  const date = post.data.updatedDate || post.data.createdDate
-  return date.valueOf()
+function formatReadTime(minutes: number): string {
+  return `${minutes} min read`
 }
-
-function isUpdated(post: CollectionEntry<'posts'>): boolean {
-  return !!post.data.updatedDate
-}
-
-const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
 ---
 
 <Layout title="Posts" description={config.description}>
   <ul class="flex flex-col gap-1.5">
     {
       posts.map((post) => {
-        const displayDate = getDisplayDate(post)
-        const updated = isUpdated(post)
+        const displayDate = getDisplayDate(post.node.publishedAt)
 
         return (
           <li>
             <span class="group flex gap-3 justify-between items-start">
               <span>
-                <a href={`/posts/${post.id}`} transition:name={`post-title-${post.id}`} class="group-hover:underline">{post.data.title}</a>
-                {updated && post.data.updatedDate && (
+                <a href={`/posts/${post.node.slug}`} transition:name={`post-title-${post.node.slug}`} class="group-hover:underline">{post.node.title}</a>
+                {post.node.subtitle && (
                   <Indicator
-                    title={`Published on ${formatDate(post.data.createdDate)}\nUpdated on ${formatDate(post.data.updatedDate)}`}
+                    title={post.node.subtitle}
                     class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
                   >
-                   Updated
+                   {formatReadTime(post.node.readTimeInMinutes)}
                   </Indicator>
                 )}
               </span>

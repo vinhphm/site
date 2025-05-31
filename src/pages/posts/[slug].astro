@@ -1,0 +1,106 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getAllPosts, getPost } from '@/lib/client'
+import { formatDate } from '@/lib/utils'
+
+export async function getStaticPaths() {
+  const data = await getAllPosts()
+  const allPosts = data.publication.posts.edges
+
+  return allPosts.map(post => ({
+    params: { slug: post.node.slug },
+    props: { slug: post.node.slug },
+  }))
+}
+
+type Props = {
+  slug: string
+}
+
+const { slug } = Astro.params
+const post = await getPost(slug)
+
+if (!post) {
+  return Astro.redirect('/404')
+}
+
+const publishedDate = new Date(post.publishedAt)
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  'headline': post.title,
+  'description': post.subtitle || post.brief,
+  'image': post.coverImage?.url,
+  'author': {
+    '@type': 'Person',
+    'name': post.author.name,
+  },
+  'datePublished': publishedDate.toISOString(),
+}
+---
+
+<Layout
+  title={post.title}
+  description={post.subtitle || post.brief}
+  image={post.coverImage?.url}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
+
+  <div class="mb-5">
+    <h1
+      class="text-xl font-medium mb-5"
+      transition:name={`post-title-${post.slug}`}
+    >
+      {post.title}
+    </h1>
+
+    <div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-2 flex-wrap mb-4">
+      <div class="flex items-center gap-2">
+        {post.author.profilePicture && (
+          <img
+            src={post.author.profilePicture}
+            alt={post.author.name}
+            class="w-6 h-6 rounded-full"
+          />
+        )}
+        <span>{post.author.name}</span>
+      </div>
+      <span>•</span>
+      <time
+        datetime={publishedDate.toISOString()}
+        title={`Published on ${formatDate(publishedDate)}`}
+      >
+        {formatDate(publishedDate)}
+      </time>
+      <span>•</span>
+      <span>{post.readTimeInMinutes} min read</span>
+    </div>
+
+    {post.subtitle && (
+      <p class="text-gray-600 dark:text-zinc-400 mb-4">{post.subtitle}</p>
+    )}
+
+    {post.coverImage?.url && (
+      <img
+        src={post.coverImage.url}
+        alt={post.title}
+        class="w-full rounded-lg mb-6"
+      />
+    )}
+
+    {post.tags && post.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-4">
+        {post.tags.map(tag => (
+          <span class="px-2 py-1 text-xs bg-gray-100 dark:bg-zinc-800 rounded-md">
+            {tag.name}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <article>
+    <Fragment set:html={post.content.html} />
+  </article>
+</Layout>
