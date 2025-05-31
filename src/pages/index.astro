@@ -16,8 +16,8 @@ const structuredData = {
 
 <Layout
   description={config.description}
-  wrapperClassName="flex flex-col max-w-sm justify-center h-svh"
-  contentClassName="space-y-6"
+  containerClass="flex flex-col max-w-sm justify-center h-svh"
+  mainClass="space-y-6"
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
   <div class="space-y-6">

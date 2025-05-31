@@ -41,7 +41,7 @@ export const config: Config = {
   footer: {
     navLinks: [
       {
-        text: '@/vinh.dev',
+        text: '@vinh.dev',
         href: 'https://bsky.app/profile/vinh.dev',
       },
       {

@@ -11,29 +11,33 @@ interface Props {
   title?: string
   description: string
   image?: string
-  wrapperClassName?: string
-  contentClassName?: string
+  containerClass?: string
+  mainClass?: string
 }
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
 const {
   description,
   image,
-  wrapperClassName,
-  contentClassName = 'space-y-6',
-
+  containerClass,
+  mainClass = 'space-y-6',
 } = Astro.props
 
-const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
-    Astro.props.title || '',
-  )}`
-
-const imageToUse = image || defaultImage
-
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 const title = [Astro.props.title, config.title].filter(Boolean).join(' \\ ')
 
-const resolvedImage = new URL(imageToUse, Astro.site).toString()
+// Generate OG image URL only when needed
+function getImageUrl() {
+  if (image)
+return image
+
+  const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
+    Astro.props.title || '',
+  )}`
+  return defaultImage
+}
+
+const imageUrl = getImageUrl()
+const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 ---
 
 <html lang="en">
@@ -48,6 +52,7 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Font Preloading -->
     <Font cssVariable="--font-inter" preload />
     <Font cssVariable="--font-geist-mono" preload />
 
@@ -71,12 +76,9 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
     <meta property="twitter:url" content={Astro.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    {
-      resolvedImage && (
-        <meta property="twitter:image" content={resolvedImage} />
-      )
-    }
+    {resolvedImage && <meta property="twitter:image" content={resolvedImage} />}
 
+    <!-- Structured Data Slot -->
     <slot name="structured-data" />
 
     <ClientRouter />
@@ -84,8 +86,8 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
   <body
     class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950"
   >
-    <div class={cn('p-6 mx-auto', wrapperClassName)}>
-      <main class={cn('mx-auto max-w-[60ch] w-full', contentClassName)}>
+    <div class={cn('p-6 mx-auto', containerClass)}>
+      <main class={cn('mx-auto max-w-[60ch] w-full', mainClass)}>
         <Header />
         <slot />
         <Footer />
@@ -95,30 +97,22 @@ const resolvedImage = new URL(imageToUse, Astro.site).toString()
 </html>
 
 <script is:inline>
-  function preloadTheme() {
+  function initializeTheme() {
     const root = document.documentElement
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    const setting = localStorage.getItem('color-scheme') || 'auto'
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches || false
+    const storedTheme = localStorage.getItem('color-scheme') || 'auto'
 
-    let applyDarkMode
+    const shouldApplyDark = storedTheme === 'dark' ||
+      (storedTheme === 'auto' && prefersDark)
 
-    if (setting === 'dark') {
-      applyDarkMode = true
-    } else if (setting === 'light') {
-      applyDarkMode = false
-    } else {
-      applyDarkMode = prefersDark
-    }
-
-    if (applyDarkMode) {
+    if (shouldApplyDark) {
       root.setAttribute('data-theme', 'dark')
     } else {
       root.removeAttribute('data-theme')
     }
   }
 
-  document.addEventListener('astro:after-swap', () => preloadTheme())
-  preloadTheme()
+  // Initialize theme on page load and navigation
+  document.addEventListener('astro:after-swap', initializeTheme)
+  initializeTheme()
 </script>
