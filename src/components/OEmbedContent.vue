@@ -76,34 +76,26 @@ watch(isDark, () => {
 
 <template>
   <div v-if="oembedData" class="oembed-container">
-    <div
-      v-if="oembedData.type === 'rich'"
-      ref="containerRef"
-      :style="`max-width: ${maxWidth || 800}px;`"
-    />
+    <div v-if="oembedData.type === 'rich'"
+         ref="containerRef"
+         :style="`max-width: ${maxWidth || 800}px;`" />
 
-    <img
-      v-else-if="oembedData.type === 'photo'"
-      :src="oembedData.url"
-      :alt="oembedData.title || ''"
-      :width="oembedData.width"
-      :height="oembedData.height"
-      :style="`max-width: ${maxWidth || 800}px;`"
-    >
+    <img v-else-if="oembedData.type === 'photo'"
+         :src="oembedData.url"
+         :alt="oembedData.title || ''"
+         :width="oembedData.width"
+         :height="oembedData.height"
+         :style="`max-width: ${maxWidth || 800}px;`">
 
-    <div
-      v-else-if="oembedData.type === 'video'"
-      class="video-container"
-      :style="`max-width: ${maxWidth || 800}px;`"
-      v-html="oembedData.html"
-    />
+    <div v-else-if="oembedData.type === 'video'"
+         class="video-container"
+         :style="`max-width: ${maxWidth || 800}px;`"
+         v-html="oembedData.html" />
 
-    <a
-      v-else-if="oembedData.type === 'link'"
-      :href="oembedData.url"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a v-else-if="oembedData.type === 'link'"
+       :href="oembedData.url"
+       target="_blank"
+       rel="noopener noreferrer">
       {{ oembedData.title || url }}
     </a>
   </div>

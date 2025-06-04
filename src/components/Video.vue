@@ -37,12 +37,10 @@ onMounted(() => {
 <template>
   <figure :class="getContainerClass()">
     <div :class="getWrapperClass()">
-      <video
-        v-if="videoSrc"
-        :src="videoSrc"
-        :class="videoClass"
-        autoplay loop muted playsinline
-      />
+      <video v-if="videoSrc"
+             :src="videoSrc"
+             :class="videoClass"
+             autoplay loop muted playsinline />
     </div>
   </figure>
 </template>

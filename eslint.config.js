@@ -24,6 +24,8 @@ export default antfu(
       'ts/no-unnecessary-type-constraint': 'off',
       'vue/no-template-shadow': 'off',
       'vue/no-v-text-v-html-on-component': 'off',
+      'vue/first-attribute-linebreak': 'off',
+      'vue/html-closing-bracket-newline': 'off',
     },
   },
 )
