@@ -95,6 +95,10 @@
     }
   }
 
+  .text-heading {
+    font-size: calc(1.35em + 0.55vw);
+  }
+
   article {
     @apply space-y-6;
 
@@ -108,7 +112,7 @@
       @apply mt-8 mb-3 text-lg font-medium dark:text-white;
     }
     h3 {
-      @apply mt-8 mb-3 font-medium dark:text-white;
+      @apply mt-8 mb-3 font-semibold dark:text-white;
     }
     h4,
     h5,

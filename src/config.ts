@@ -25,16 +25,8 @@ export const config: Config = {
     },
     navLinks: [
       {
-        text: 'home',
-        href: '/',
-      },
-      {
-        text: 'posts',
-        href: '/posts',
-      },
-      {
-        text: 'email',
-        href: `mailto:${EMAIL}`,
+        text: 'Writing',
+        href: '/writing',
       },
     ],
   },
@@ -51,6 +43,10 @@ export const config: Config = {
       {
         text: 'linkedin',
         href: 'https://www.linkedin.com/in/vinhphm/',
+      },
+      {
+        text: 'email',
+        href: `mailto:${EMAIL}`,
       },
     ],
   },

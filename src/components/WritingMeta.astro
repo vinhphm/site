@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Indicator from '@/components/Indicator.astro'
+import { formatDate, isUpdated } from '@/lib/utils'
+
+interface Props {
+  writing: CollectionEntry<'writings'>
+}
+
+const { writing } = Astro.props
+---
+
+<div class="text-gray-500 dark:text-zinc-500 flex items-center gap-2">
+  <time
+    datetime={writing.data.publishedAt.toISOString()}
+    title={`Published on ${formatDate(writing.data.publishedAt)}`}
+  >
+    {formatDate(writing.data.publishedAt)}
+  </time>
+  {isUpdated(writing) && (
+    <Indicator alwaysShowLabel>
+      <time datetime={writing.data.updatedAt!.toISOString()}>
+        Updated on {formatDate(writing.data.updatedAt!)}
+      </time>
+    </Indicator>
+  )}
+</div>

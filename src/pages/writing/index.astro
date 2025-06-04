@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content'
+import Indicator from '@/components/Indicator.astro'
+import config from '@/config'
+import Layout from '@/layouts/Layout.astro'
+import { formatDate, getDisplayDate, isUpdated, sortWritingsByDate } from '@/lib/utils'
+
+const collection = await getCollection('writings')
+const writings = sortWritingsByDate(collection)
+---
+
+<Layout title="Writing" section="Writing" description={config.description}>
+  <ul class="flex flex-col gap-1.5">
+    {
+      writings.map((writing) => {
+        const displayDate = getDisplayDate(writing)
+        const updated = isUpdated(writing)
+
+        return (
+          <li>
+            <span class="group flex gap-3 justify-between items-start">
+              <span>
+                <a href={`/writing/${writing.id}`} transition:name={`writing-id-${writing.id}`} class="group-hover:underline">
+                  {writing.data.title}
+                </a>
+                {updated && writing.data.updatedAt && (
+                  <Indicator
+                    title={`Published on ${formatDate(writing.data.publishedAt)}\nUpdated on ${formatDate(writing.data.updatedAt)}`}
+                    class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
+                  >
+                   Updated
+                  </Indicator>
+                )}
+              </span>
+              <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
+                {formatDate(displayDate)}
+              </span>
+            </span>
+          </li>
+        )
+      })
+    }
+  </ul>
+</Layout>

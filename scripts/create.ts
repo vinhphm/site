@@ -11,14 +11,14 @@ const __dirname = path.dirname(__filename)
 const projectRoot = path.join(__dirname, '..')
 
 const dirMap: DirMap = {
-  post: 'posts',
+  writing: 'writings',
 }
 
 const type = process.argv[2]
 const title = process.argv[3]
 
-if (type !== 'post' || !title) {
-  console.error('Usage: npm run create post "My New Post Title"')
+if (type !== 'writing' || !title) {
+  console.error('Usage: npm run create writing "My New Writing Title"')
   process.exit(1)
 }
 
@@ -35,9 +35,9 @@ const utc7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000))
 const formattedTime = utc7Time.toISOString().replace('Z', '+07:00')
 
 const template = `---
-title: "${title}"
-publishedAt: "${formattedTime}"
-description: "A new post about ${title}"
+title: ${title}
+publishedAt: ${formattedTime}
+description: A new writing about ${title}
 ---
 
 Start writing your content here...
@@ -45,4 +45,4 @@ Start writing your content here...
 
 await fs.promises.mkdir(contentDir, { recursive: true })
 await fs.promises.writeFile(filePath, template)
-console.log(`Post created successfully: ${filePath}`)
+console.log(`Writing created successfully: ${filePath}`)

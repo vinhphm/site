@@ -1,6 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types'
-import LucideAsterisk from '~icons/lucide/asterisk'
+import Asterisk from '~icons/lucide/asterisk'
 
 export interface Props extends HTMLAttributes<'span'> {
   class?: string
@@ -15,12 +15,12 @@ const { class: className = '', alwaysShowLabel = false, ...attrs } = Astro.props
   tabindex="0"
   {...attrs}
 >
-  <LucideAsterisk class="flex-shrink-0" />
+  <Asterisk class="flex-shrink-0" />
   <span class={`ml-[0.1em] text-sm whitespace-nowrap transition-all duration-300 ease-in-out ${
-    alwaysShowLabel
-      ? 'w-auto translate-x-0 opacity-100'
-      : 'w-0 transform translate-x-[-100%] opacity-0 group-hover/badge:w-auto group-hover/badge:translate-x-0 group-hover/badge:opacity-100 group-focus/badge:w-auto group-focus/badge:translate-x-0 group-focus/badge:opacity-100 group-active/badge:w-auto group-active/badge:translate-x-0 group-active/badge:opacity-100'
-  }`}
+                alwaysShowLabel
+                  ? 'w-auto translate-x-0 opacity-100'
+                  : 'w-0 transform translate-x-[-100%] opacity-0 group-hover/badge:w-auto group-hover/badge:translate-x-0 group-hover/badge:opacity-100 group-focus/badge:w-auto group-focus/badge:translate-x-0 group-focus/badge:opacity-100 group-active/badge:w-auto group-active/badge:translate-x-0 group-active/badge:opacity-100'
+              }`}
   >
     <slot />
   </span>

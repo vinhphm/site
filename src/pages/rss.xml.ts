@@ -1,22 +1,24 @@
 import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
 import config from '@/config'
+import { sortWritingsByDate, getDisplayDate } from '@/lib/utils'
 
 interface Context {
   site: string
 }
 
 export async function GET(context: Context) {
-  const posts = await getCollection('posts')
+  const collection = await getCollection('writings')
+  const writings = sortWritingsByDate(collection)
   return rss({
     title: config.title,
     description: config.description,
     site: context.site,
-    items: posts.map(post => ({
-      ...post.data,
-      link: `${context.site}posts/${post.id}`,
-      pubDate: new Date(post.data.updatedAt || post.data.publishedAt),
-      content: post.body,
+    items: writings.map(writing => ({
+      ...writing.data,
+      link: `${context.site}writing/${writing.id}`,
+      pubDate: getDisplayDate(writing),
+      content: writing.body,
     })),
   })
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useDark } from '@vueuse/core'
 import { nextTick } from 'vue'
-import RiCircleFill from '~icons/ri/circle-fill'
+import CircleIcon from '~icons/ri/circle-fill'
 
 const isDark = useDark({
   storageKey: 'color-scheme',
@@ -59,13 +59,11 @@ function toggleDark(event: MouseEvent) {
 </script>
 
 <template>
-  <button
-    type="button"
-    aria-label="Toggle theme"
-    class="text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-100 cursor-pointer"
-    @click="toggleDark"
-  >
+  <button type="button"
+          aria-label="Toggle theme"
+          class="text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-100 cursor-pointer"
+          @click="toggleDark">
     <span class="sr-only">Toggle theme</span>
-    <RiCircleFill />
+    <CircleIcon />
   </button>
 </template>

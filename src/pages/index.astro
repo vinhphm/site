@@ -1,37 +1,48 @@
 ---
-import Name from '@/components/Name.astro'
 import config from '@/config'
 import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import NewIcon from '~icons/fluent/new-16-filled'
+import { getLatestWriting } from '@/lib/utils'
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site)
 
+const writings = await getCollection('writings')
+const latestWriting = getLatestWriting(writings)
+
 const structuredData = {
-  '@/context': 'https://schema.org',
-  '@/type': 'WebSite',
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
   'name': config.title,
   'alternateName': ['Vinh Dev', 'VP'],
   'url': pageUrl,
 }
 ---
 
-<Layout
-  description={config.description}
-  containerClass="flex flex-col max-w-sm justify-center h-svh"
-  mainClass="space-y-6"
->
+<Layout description={config.description}
+        containerClass="flex flex-col max-w-sm justify-center h-svh">
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
   <div class="space-y-6">
-    <Name />
-    <p>
-      I build high-quality, performant, and accessible solutions at PwC, making
-      work easier for others. But the most exciting ideas don't always fit in a
-      9-to-5 box.
-    </p>
-    <p>
-      This is my playground for side projects, experimental code, and insights
-      from my development journey.
-    </p>
-    <p>Beyond code: coffee ☕, tea 🧋, and exploring new places 🚌</p>
+    {latestWriting && (
+      <span class="flex flex-col justify-between items-start">
+          <span class="text-sm text-gray-500 dark:text-zinc-500 mr-2">
+            <NewIcon />
+            Latest
+          </span>
+          <a href={`/writing/${latestWriting.id}`} transition:name={`writing-id-${latestWriting.id}`} class="hover:underline">
+            {latestWriting.data.title}
+          </a>
+      </span>
+    )}
+    <hr />
+    <div>
+      <p>
+        I craft digital solutions at PwC by day, experiment with side projects by night.
+        This space showcases my explorations in code, performance optimizations, and the
+        occasional wild idea.
+      </p>
+      <p>Coffee ☕, tea 🧋, and travel 🚌 fuel the journey.</p>
+    </div>
   </div>
 </Layout>
 
@@ -40,5 +51,8 @@ const structuredData = {
 
   p {
     @apply my-4 text-gray-800 leading-snug dark:text-zinc-300;
+  }
+  hr {
+    @apply mx-auto border-gray-100 dark:border-zinc-900;
   }
 </style>

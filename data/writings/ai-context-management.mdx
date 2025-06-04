@@ -3,10 +3,10 @@ title: AI context management across editors
 publishedAt: 2025-05-30T09:43:02.283+07:00
 description: A practical comparison of how Cursor, Windsurf, VS Code, and Zed handle persistent instructions and team consistency. Covers rule systems, auto-generation features, and solving collaboration pain points with AI coding assistants.
 ---
-import VscodeIconsFileTypeCursorrules from '~icons/vscode-icons/file-type-cursorrules'
-import SimpleIconsWindsurf from '~icons/simple-icons/windsurf'
-import SimpleIconsGithubcopilot from '~icons/simple-icons/githubcopilot'
-import SimpleIconsZedindustries from '~icons/simple-icons/zedindustries'
+import CursorIcon from '~icons/vscode-icons/file-type-cursorrules'
+import WindsurfIcon from '~icons/simple-icons/windsurf'
+import CopilotIcon from '~icons/simple-icons/githubcopilot'
+import ZedIcon from '~icons/simple-icons/zedindustries'
 
 Let's be honest, telling your AI assistant the same thing over and over again gets old fast. "Use TypeScript interfaces, not types." "Follow our component naming convention." "Please don't suggest jQuery in 2025."
 
@@ -16,7 +16,7 @@ This inconsistency becomes a real collaboration pain point. Code reviews get rea
 
 Worry not though, modern AI-powered editors have developed their own way to remember your preferences and maintain consistency across coding sessions. But still, each has their own "definition" of this so let's dive into how four popular editors handle this challenge.
 
-## <VscodeIconsFileTypeCursorrules /> Cursor
+## <CursorIcon /> Cursor
 
 Cursor doesn't mess around. It's got the most comprehensive rule system I've seen, and here's the kicker - it can actually generate rules from your conversations.
 
@@ -44,7 +44,7 @@ Here's where Cursor really shines. Mid-conversation, you can literally say "turn
 
 These apply everywhere, all the time. Perfect for those "I always want..." preferences that follow you across projects.
 
-## <SimpleIconsWindsurf /> Windsurf/Cascade
+## <WindsurfIcon /> Windsurf/Cascade
 
 Windsurf feels like working with an AI that actually pays attention. It uses two clever systems: **Memories** and **Rules**.
 
@@ -76,7 +76,7 @@ Rules are where you get specific about how things should work:
 
 You can set rules globally or per workspace, but there's a catch - 6,000 characters per rule file, 12,000 total. Global rules win if you hit the limit.
 
-## <SimpleIconsGithubcopilot /> VS Code/GitHub Copilot
+## <CopilotIcon /> VS Code/GitHub Copilot
 
 GitHub Copilot keeps things recognizable if you're already living in VS Code. Two main approaches here:
 
@@ -96,7 +96,7 @@ GitHub Copilot keeps things recognizable if you're already living in VS Code. Tw
 
 Still experimental, but these `.prompt.md` files are like having a collection of starter prompts. You can even use variables like `${variableName}` for dynamic content.
 
-## <SimpleIconsZedindustries /> Zed
+## <ZedIcon /> Zed
 
 Zed takes the "why complicate things?" approach, and honestly, it's refreshing.
 

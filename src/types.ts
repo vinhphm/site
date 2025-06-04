@@ -1,8 +1,8 @@
 import type { CollectionEntry } from 'astro:content'
 
-export type PostKey = 'posts'
+export type WritingKey = 'writings'
 
-export type CollectionPosts = CollectionEntry<PostKey>
+export type CollectionWritings = CollectionEntry<WritingKey>
 
 export interface Author {
   name: string

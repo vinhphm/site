@@ -9,6 +9,7 @@ import '@/styles/global.css'
 
 interface Props {
   title?: string
+  section?: string
   description: string
   image?: string
   containerClass?: string
@@ -16,14 +17,15 @@ interface Props {
 }
 
 const {
+  section,
   description,
   image,
   containerClass,
-  mainClass = 'space-y-6',
+  mainClass = 'space-y-8',
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const title = [Astro.props.title, config.title].filter(Boolean).join(' \\ ')
+const title = [Astro.props.title, config.title].filter(Boolean).join(' / ')
 
 // Generate OG image URL only when needed
 function getImageUrl() {
@@ -66,6 +68,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={config.title} />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -81,14 +84,33 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <!-- Structured Data Slot -->
     <slot name="structured-data" />
 
+    <!-- Theme initialization script - must run before body renders -->
+    <script is:inline>
+      function initializeTheme() {
+        const root = document.documentElement
+        const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches || false
+        const storedTheme = localStorage.getItem('color-scheme') || 'auto'
+
+        const shouldApplyDark = storedTheme === 'dark' ||
+          (storedTheme === 'auto' && prefersDark)
+
+        if (shouldApplyDark) {
+          root.setAttribute('data-theme', 'dark')
+        } else {
+          root.removeAttribute('data-theme')
+        }
+      }
+
+      // Initialize theme immediately for initial page load
+      initializeTheme()
+    </script>
+
     <ClientRouter />
   </head>
-  <body
-    class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950"
-  >
+  <body class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950">
     <div class={cn('p-6 mx-auto', containerClass)}>
       <main class={cn('mx-auto max-w-[60ch] w-full', mainClass)}>
-        <Header />
+        <Header section={section} />
         <slot />
         <Footer />
       </main>
@@ -97,22 +119,6 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 </html>
 
 <script is:inline>
-  function initializeTheme() {
-    const root = document.documentElement
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches || false
-    const storedTheme = localStorage.getItem('color-scheme') || 'auto'
-
-    const shouldApplyDark = storedTheme === 'dark' ||
-      (storedTheme === 'auto' && prefersDark)
-
-    if (shouldApplyDark) {
-      root.setAttribute('data-theme', 'dark')
-    } else {
-      root.removeAttribute('data-theme')
-    }
-  }
-
-  // Initialize theme on page load and navigation
+  // Initialize theme on navigation (initial load is handled in head)
   document.addEventListener('astro:after-swap', initializeTheme)
-  initializeTheme()
 </script>
