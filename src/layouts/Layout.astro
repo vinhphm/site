@@ -9,6 +9,7 @@ import '@/styles/global.css'
 
 interface Props {
   title?: string
+  section?: string
   description: string
   image?: string
   containerClass?: string
@@ -16,14 +17,15 @@ interface Props {
 }
 
 const {
+  section,
   description,
   image,
   containerClass,
-  mainClass = 'space-y-6',
+  mainClass = 'space-y-8',
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const title = [Astro.props.title, config.title].filter(Boolean).join(' \\ ')
+const title = [Astro.props.title, config.title].filter(Boolean).join(' / ')
 
 // Generate OG image URL only when needed
 function getImageUrl() {
@@ -87,7 +89,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
   <body class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950">
     <div class={cn('p-6 mx-auto', containerClass)}>
       <main class={cn('mx-auto max-w-[60ch] w-full', mainClass)}>
-        <Header />
+        <Header section={section} />
         <slot />
         <Footer />
       </main>

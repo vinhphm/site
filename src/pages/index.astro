@@ -1,5 +1,4 @@
 ---
-import Name from '@/components/Name.astro'
 import config from '@/config'
 import Layout from '@/layouts/Layout.astro'
 
@@ -14,14 +13,9 @@ const structuredData = {
 }
 ---
 
-<Layout
-  description={config.description}
-  containerClass="flex flex-col max-w-sm justify-center h-svh"
-  mainClass="space-y-6"
->
+<Layout description={config.description}containerClass="flex flex-col max-w-sm justify-center h-svh"mainClass="space-y-8">
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
   <div class="space-y-6">
-    <Name />
     <p>
       I build high-quality, performant, and accessible solutions at PwC, making
       work easier for others. But the most exciting ideas don't always fit in a

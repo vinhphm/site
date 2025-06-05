@@ -32,18 +32,11 @@ const structuredData = {
 }
 ---
 
-<Layout
-  title={post.data.title}
-  description={post.data.description}
-  image={post.data.image}
->
+<Layout title={post.data.title}description={post.data.description}section="Writing"image={post.data.image}>
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
 
-  <div class="mb-5">
-    <h1
-      class="text-xl font-medium mb-5"
-      transition:name={`post-title-${post.id}`}
-    >
+  <div class="mb-8">
+    <h1 class="font-medium mb-2 leading-tight text-heading"transition:name={`post-title-${post.id}`}>
       {post.data.title}
     </h1>
     <PostMeta post={post} />

@@ -5,13 +5,12 @@ import { formatDate } from '@/lib/utils'
 
 interface Props {
   post: CollectionEntry<'posts'>
-  content?: string
 }
 
 const { post } = Astro.props
 ---
 
-<div class="font-medium text-gray-500 dark:text-zinc-500 flex items-center gap-2 flex-wrap">
+<div class="text-gray-500 dark:text-zinc-500 flex items-center gap-2">
   <time
     datetime={post.data.publishedAt.toISOString()}
     title={`Published on ${formatDate(post.data.publishedAt)}`}

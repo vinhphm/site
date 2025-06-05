@@ -95,6 +95,10 @@
     }
   }
 
+  .text-heading {
+    font-size: calc(1.35em + 0.55vw);
+  }
+
   article {
     @apply space-y-6;
 

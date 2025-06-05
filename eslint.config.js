@@ -5,7 +5,6 @@ export default antfu(
     vue: true,
     typescript: true,
     astro: true,
-    formatters: true,
   },
   {
     rules: {
@@ -26,6 +25,8 @@ export default antfu(
       'vue/no-v-text-v-html-on-component': 'off',
       'vue/first-attribute-linebreak': 'off',
       'vue/html-closing-bracket-newline': 'off',
+      'style/jsx-first-prop-new-line': 'off',
+      'style/jsx-indent-props': 'off',
     },
   },
 )

@@ -24,7 +24,7 @@ function isUpdated(post: CollectionEntry<'posts'>): boolean {
 const posts = collection.sort((a, b) => getSortDate(b) - getSortDate(a))
 ---
 
-<Layout title="Posts" description={config.description}>
+<Layout title="Writing"section="Writing"description={config.description}>
   <ul class="flex flex-col gap-1.5">
     {
       posts.map((post) => {
