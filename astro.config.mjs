@@ -23,14 +23,14 @@ export default defineConfig({
   experimental: {
     fonts: [
       {
-        provider: fontProviders.google(),
+        provider: fontProviders.fontsource(),
         name: 'Inter',
         weights: ['400 600'],
         subsets: ['latin', 'vietnamese'],
         cssVariable: '--font-inter',
       },
       {
-        provider: fontProviders.google(),
+        provider: fontProviders.fontsource(),
         name: 'Geist Mono',
         subsets: ['latin'],
         cssVariable: '--font-geist-mono',
