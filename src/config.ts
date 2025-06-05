@@ -26,7 +26,7 @@ export const config: Config = {
     navLinks: [
       {
         text: 'Writing',
-        href: '/posts',
+        href: '/writing',
       },
     ],
   },
