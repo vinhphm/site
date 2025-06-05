@@ -21,7 +21,6 @@ export default defineConfig({
   },
 
   experimental: {
-    csp: true,
     fonts: [
       {
         provider: fontProviders.google(),
