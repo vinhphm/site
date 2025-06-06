@@ -54,6 +54,30 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
     <meta name="generator" content={Astro.generator} />
 
+    <!-- Theme initialization script -->
+    <script is:inline>
+      const darkMediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
+
+      function initializeTheme() {
+        const root = document.documentElement
+        const storedTheme = localStorage.getItem('color-scheme')
+
+        if (storedTheme === 'dark' || (!storedTheme && darkMediaQuery?.matches)) {
+          root.setAttribute('data-theme', 'dark')
+        } else if (storedTheme === 'light' || (!storedTheme && !darkMediaQuery?.matches)) {
+          root.removeAttribute('data-theme')
+        } else if (storedTheme === 'auto') {
+          if (darkMediaQuery?.matches) {
+            root.setAttribute('data-theme', 'dark')
+          } else {
+            root.removeAttribute('data-theme')
+          }
+        }
+      }
+
+      initializeTheme()
+    </script>
+
     <!-- Font Preloading -->
     <Font cssVariable="--font-inter" preload />
     <Font cssVariable="--font-geist-mono" preload />
@@ -84,27 +108,6 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <!-- Structured Data Slot -->
     <slot name="structured-data" />
 
-    <!-- Theme initialization script - must run before body renders -->
-    <script is:inline>
-      function initializeTheme() {
-        const root = document.documentElement
-        const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches || false
-        const storedTheme = localStorage.getItem('color-scheme') || 'auto'
-
-        const shouldApplyDark = storedTheme === 'dark' ||
-          (storedTheme === 'auto' && prefersDark)
-
-        if (shouldApplyDark) {
-          root.setAttribute('data-theme', 'dark')
-        } else {
-          root.removeAttribute('data-theme')
-        }
-      }
-
-      // Initialize theme immediately for initial page load
-      initializeTheme()
-    </script>
-
     <ClientRouter />
   </head>
   <body class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950">
@@ -119,6 +122,5 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 </html>
 
 <script is:inline>
-  // Initialize theme on navigation (initial load is handled in head)
   document.addEventListener('astro:after-swap', initializeTheme)
 </script>
