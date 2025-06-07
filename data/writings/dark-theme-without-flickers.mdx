@@ -1,0 +1,54 @@
+---
+title: Dark theme without the flickers
+publishedAt: 2025-06-07T15:50:09.552+07:00
+description: Fix dark theme flickering in Astro + Tailwind by applying theme styles to the right element.
+lang: en
+---
+
+You're using Astro with Tailwind and following [Tailwind's guide](https://tailwindcss.com/docs/dark-mode#with-system-theme-support) to add themes like dark and light with automatic detection. But sometimes you encounter flickering when the page loads in dark mode. This is called **FOUC**, and it's not pleasant. If you're struggling to fix it, this article might give you an additional solution.
+
+## What is FOUC?
+
+**FOUC** ([Flash of Unstyled Content](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)) is a common theming problem. You'll see the default theme (usually light) apply first, then switch to dark mode, causing the UI to flicker for a moment.
+
+## The fix: Where you apply matters
+
+Most solutions suggest putting the detection script in `<head>`, which makes sense logically. But sometimes that doesn't work, and you're still stuck with flickering. Here's the key insight: it's not just about **detecting** the theme—it's about **where you apply** it.
+
+```javascript showLineNumbers=false
+// Detection script in <head>
+(function() {
+  const theme = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+```
+
+The script detects the theme and applies it by setting the `data-theme` attribute on the root `<html>` element. This means your theme-controlling styles (background, text color, etc.) need to be applied to `<html>`, not other elements like `<body>`.
+
+Many developers habitually put these styles on `<body>`, which causes the flicker because the body loads after the head script runs.
+
+## The solution in practice
+
+```css showLineNumbers=false
+/* ❌ This causes flicker */
+body {
+  @apply bg-white dark:bg-zinc-950 text-gray-900 dark:text-zinc-200;
+}
+
+/* ✅ This prevents flicker */
+html {
+  @apply bg-white dark:bg-zinc-950 text-gray-900 dark:text-zinc-200;
+}
+
+/* Body can inherit or have its own non-theme styles */
+body {
+  @apply font-sans;
+}
+```
+
+## Final thoughts
+
+FOUC in dark themes usually isn't a detection problem—it's an application timing problem. By ensuring your theme styles are applied to the same element your detection script targets (`<html>`), you eliminate the gap between detection and application that causes flickering.
+
+This small change can make the difference between a jarring user experience and a smooth, professional theme transition. Remember: detect early, apply immediately, and target the right element.
