@@ -56,22 +56,13 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 
     <!-- Theme initialization script -->
     <script is:inline>
-      const darkMediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
-
       function initializeTheme() {
-        const root = document.documentElement
-        const storedTheme = localStorage.getItem('color-scheme')
-
-        if (storedTheme === 'dark' || (!storedTheme && darkMediaQuery?.matches)) {
-          root.setAttribute('data-theme', 'dark')
-        } else if (storedTheme === 'light' || (!storedTheme && !darkMediaQuery?.matches)) {
-          root.removeAttribute('data-theme')
-        } else if (storedTheme === 'auto') {
-          if (darkMediaQuery?.matches) {
-            root.setAttribute('data-theme', 'dark')
-          } else {
-            root.removeAttribute('data-theme')
-          }
+        const setting = localStorage.getItem('color-scheme') || 'auto'
+        if (setting === 'dark'
+              || (window.matchMedia?.('(prefers-color-scheme: dark)').matches && setting !== 'light')) {
+          document.documentElement.setAttribute('data-theme', 'dark')
+        } else {
+          document.documentElement.removeAttribute('data-theme')
         }
       }
 
@@ -110,7 +101,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 
     <ClientRouter />
   </head>
-  <body class="text-gray-900 tracking-tight font-sans bg-white antialiased transition-colors dark:text-zinc-200 dark:bg-zinc-950">
+  <body class="tracking-tight font-sans antialiased transition-colors">
     <div class={cn('p-6 mx-auto', containerClass)}>
       <main class={cn('mx-auto max-w-[60ch] w-full', mainClass)}>
         <Header section={section} />

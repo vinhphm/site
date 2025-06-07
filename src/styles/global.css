@@ -58,14 +58,21 @@
 }
 
 @layer base {
-  html[data-theme="dark"] .img-light,
-  html[data-theme="dark"] [img-light] {
-    display: none;
-  }
+  html[data-theme="dark"] {
+    @apply bg-zinc-950 text-zinc-200;
 
-  html:not([data-theme="dark"]) .img-dark,
-  html:not([data-theme="dark"]) [img-dark] {
-    display: none;
+    .img-light,
+    [img-light] {
+      display: none;
+    }
+  }
+  html:not([data-theme="dark"]) {
+    @apply bg-white text-gray-900;
+
+    .img-dark,
+    [img-dark] {
+      display: none;
+    }
   }
 
   *,
