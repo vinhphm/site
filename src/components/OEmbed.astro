@@ -1,7 +1,249 @@
 ---
-import OEmbedContent from '@/components/OEmbedContent.vue'
+interface Props {
+  url: string
+  maxWidth?: number
+}
 
-const { url, maxWidth } = Astro.props
+const { url, maxWidth = 800 } = Astro.props
 ---
 
-<OEmbedContent client:only="vue" url={url} maxWidth={maxWidth} />
+<script>
+  interface OEmbedData {
+    type: string
+    url: string
+    title?: string
+    html?: string
+    width?: number
+    height?: number
+  }
+
+  function getCurrentTheme(): string {
+    return document.documentElement.hasAttribute('data-theme') &&
+           document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+  }
+
+  async function fetchOembedData(url: string, theme: string): Promise<OEmbedData | null> {
+    try {
+      const workerHost = 'https://worker.vinh.dev'
+      const response = await fetch(
+        `${workerHost}/oembed?url=${encodeURIComponent(url)}&theme=${theme}`
+      )
+      return await response.json()
+    } catch (error) {
+      console.error('Failed to fetch oembed data:', error)
+      return null
+    }
+  }
+
+  function injectContent(container: HTMLElement, html: string, isDark: boolean) {
+    container.innerHTML = ''
+    const temp = document.createElement('div')
+    temp.innerHTML = html
+
+    // Add data-bluesky-embed-color-mode attribute to blockquote elements for Bluesky embeds
+    const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
+    blockquotes.forEach((blockquote) => {
+      if (blockquote.classList.contains('bluesky-embed') ||
+        (blockquote.getAttribute('data-bluesky-uri') && blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))) {
+        blockquote.setAttribute('data-bluesky-embed-color-mode', isDark ? 'dark' : 'light')
+      }
+    })
+
+    // Remove existing scripts to avoid duplicates
+    const scripts = Array.from(temp.getElementsByTagName('script'))
+    scripts.forEach((oldScript) => {
+      oldScript.parentNode?.removeChild(oldScript)
+    })
+
+    container.innerHTML = temp.innerHTML
+
+    // Re-inject scripts to make them executable
+    scripts.forEach((oldScript) => {
+      const newScript = document.createElement('script')
+      Array.from(oldScript.attributes).forEach((attr) => {
+        newScript.setAttribute(attr.name, attr.value)
+      })
+      newScript.innerHTML = oldScript.innerHTML
+      container.appendChild(newScript)
+    })
+  }
+
+  function renderOembedContent(container: HTMLElement, data: OEmbedData, maxWidth: number) {
+    const contentDiv = container.querySelector('.oembed-content') as HTMLElement
+    if (!contentDiv) return
+
+    switch (data.type) {
+      case 'rich':
+        if (data.html) {
+          const isDark = getCurrentTheme() === 'dark'
+          injectContent(contentDiv, data.html, isDark)
+        }
+        break
+
+      case 'photo':
+        contentDiv.innerHTML = `
+          <img src="${data.url}"
+               alt="${data.title || ''}"
+               ${data.width ? `width="${data.width}"` : ''}
+               ${data.height ? `height="${data.height}"` : ''}
+               style="max-width: ${maxWidth}px;">
+        `
+        break
+
+      case 'video':
+        contentDiv.innerHTML = `
+          <div class="video-container" style="max-width: ${maxWidth}px;">
+            ${data.html || ''}
+          </div>
+        `
+        break
+
+      case 'link':
+        contentDiv.innerHTML = `
+          <a href="${data.url}" target="_blank" rel="noopener noreferrer">
+            ${data.title || data.url}
+          </a>
+        `
+        break
+
+      default:
+        contentDiv.innerHTML = `
+          <a href="${data.url}" target="_blank" rel="noopener noreferrer">
+            ${data.title || data.url}
+          </a>
+        `
+    }
+  }
+
+  async function loadOembedContent(container: HTMLElement) {
+    const url = container.dataset.url
+    const maxWidth = parseInt(container.dataset.maxWidth || '800')
+
+    if (!url) return
+
+    const loadingDiv = container.querySelector('.oembed-loading') as HTMLElement
+    const contentDiv = container.querySelector('.oembed-content') as HTMLElement
+
+    if (!loadingDiv || !contentDiv) return
+
+    try {
+      const theme = getCurrentTheme()
+      const data = await fetchOembedData(url, theme)
+
+      if (data) {
+        loadingDiv.style.display = 'none'
+        renderOembedContent(container, data, maxWidth)
+      } else {
+        loadingDiv.textContent = 'Failed to load embed'
+      }
+    } catch (error) {
+      console.error('Error loading oembed content:', error)
+      loadingDiv.textContent = 'Failed to load embed'
+    }
+  }
+
+  function initOembedContainers() {
+    const containers = document.querySelectorAll('.oembed-container')
+    containers.forEach((container) => {
+      loadOembedContent(container as HTMLElement)
+    })
+  }
+
+  // Theme change observer
+  function setupThemeObserver() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          // Reload all oembed content when theme changes
+          initOembedContainers()
+        }
+      })
+    })
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    })
+
+    // Store observer for cleanup if needed
+    ;(window as any).__oembedThemeObserver = observer
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initOembedContainers()
+      setupThemeObserver()
+    })
+  } else {
+    initOembedContainers()
+    setupThemeObserver()
+  }
+
+  // Re-initialize on Astro page navigation
+  document.addEventListener('astro:page-load', () => {
+    initOembedContainers()
+    setupThemeObserver()
+  })
+
+  // Cleanup on page unload
+  document.addEventListener('astro:before-swap', () => {
+    const observer = (window as any).__oembedThemeObserver
+    if (observer) {
+      observer.disconnect()
+      delete (window as any).__oembedThemeObserver
+    }
+  })
+</script>
+
+<div class="oembed-container" data-url={url} data-max-width={maxWidth}>
+  <div class="oembed-loading">Loading embed...</div>
+  <div class="oembed-content" style={`max-width: ${maxWidth}px;`}></div>
+</div>
+
+<style>
+.oembed-container {
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.oembed-loading {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.oembed-content {
+  width: 100%;
+}
+
+.oembed-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.oembed-content a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.oembed-content a:hover {
+  text-decoration: none;
+}
+</style>

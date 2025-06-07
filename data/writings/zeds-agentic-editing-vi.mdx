@@ -3,7 +3,7 @@ title: Tận dụng tối đa Agentic Editing của Zed
 publishedAt: 2025-05-25T13:05:10.198+07:00
 description: Agentic Editing của Zed là bước ngoặt cho lập trình hỗ trợ AI. Đây là cách sử dụng hiệu quả tính năng này.
 ---
-import Video from '@/components/Video.vue'
+import Video from '@/components/Video.astro'
 import { Image } from 'astro:assets'
 import review from '@/assets/videos/2025/zed-agentic-editing-review.mp4'
 import agenticEditing from '@/assets/images/2025/zed-agentic-editing.png'
@@ -50,7 +50,7 @@ Không chỉ dừng lại ở các provider online, Zed còn cho phép bạn c�
 
 Điều luôn luôn quan trọng là phải review lại tất cả thay đổi do AI thực hiện. Giao diện review mượt mà của Zed thực sự rất tiện. Nếu bạn từng search trong project bằng Zed, chắc quen với giao diện unified diff có thể edit trực tiếp – riêng mình thì cực kỳ mê. Giờ nó cũng hỗ trợ review các chỉnh sửa do AI tạo ra:
 
-<Video client:idle src={review} extended videoClass="rounded shadow-lg" />
+<Video src={review} extended videoClass="rounded shadow-lg" />
 
 ## Tổng kết
 

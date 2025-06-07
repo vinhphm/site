@@ -1,7 +1,6 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
-import vue from '@astrojs/vue'
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
@@ -86,7 +85,6 @@ export default defineConfig({
     }),
     mdx(),
     sitemap(),
-    vue(),
   ],
 
   markdown: {
@@ -116,6 +114,7 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       Icons({
+        compiler: 'astro',
         scale: 1.2,
         defaultClass: 'inline-block align-text-bottom',
       }),

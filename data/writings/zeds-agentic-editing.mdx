@@ -3,7 +3,7 @@ title: Make the most out of Zed's Agentic Editing
 publishedAt: 2025-05-08T19:05:10.098+07:00
 description: Zed's Agentic Editing is a game-changer for AI-assisted coding. Here's how to effectively use it.
 ---
-import Video from '@/components/Video.vue'
+import Video from '@/components/Video.astro'
 import { Image } from 'astro:assets'
 import review from '@/assets/videos/2025/zed-agentic-editing-review.mp4'
 import agenticEditing from '@/assets/images/2025/zed-agentic-editing.png'
@@ -57,7 +57,7 @@ The options don't end there. Zed also allows you to configure and use models tha
 
 It's always important to review all changes made by AI models. Having a UI that works seamlessly with this review process is something I deeply appreciate. If you've ever done a project search with Zed before, you're likely familiar with Zed's fully editable unified diff experience that I love so much. This same interface now assists us with AI-generated changes reviewing step:
 
-<Video client:idle src={review} extended videoClass="rounded shadow-lg" />
+<Video src={review} extended videoClass="rounded shadow-lg" />
 
 ## Wrapping up
 
