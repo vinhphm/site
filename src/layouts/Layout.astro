@@ -54,6 +54,21 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
     <meta name="generator" content={Astro.generator} />
 
+    <script is:inline>
+      function initializeTheme() {
+        const theme = localStorage.getItem('color-scheme') || 'auto'
+        if (theme === 'dark'
+              || (window.matchMedia?.('(prefers-color-scheme: dark)').matches && theme !== 'light')) {
+          document.documentElement.setAttribute('data-theme', 'dark')
+        } else {
+          document.documentElement.removeAttribute('data-theme')
+        }
+      }
+
+      initializeTheme()
+      document.addEventListener('astro:after-swap', initializeTheme)
+    </script>
+
     <!-- Font Preloading -->
     <Font cssVariable="--font-inter" preload />
     <Font cssVariable="--font-geist-mono" preload />
@@ -96,18 +111,3 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     </div>
   </body>
 </html>
-
-<script>
-  function initializeTheme() {
-    const theme = localStorage.getItem('color-scheme') || 'auto'
-    if (theme === 'dark'
-          || (window.matchMedia?.('(prefers-color-scheme: dark)').matches && theme !== 'light')) {
-      document.documentElement.setAttribute('data-theme', 'dark')
-    } else {
-      document.documentElement.removeAttribute('data-theme')
-    }
-  }
-
-  initializeTheme()
-  document.addEventListener('astro:after-swap', initializeTheme)
-</script>
