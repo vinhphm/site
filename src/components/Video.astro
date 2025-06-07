@@ -1,0 +1,32 @@
+---
+interface Props {
+  src: string
+  extended?: boolean
+  videoClass?: string
+}
+
+const { src, extended = false, videoClass } = Astro.props
+
+const getContainerClass = () => {
+  return `flex flex-col items-center justify-center${
+    extended ? ' extended-py' : ''
+  }`
+}
+
+const getWrapperClass = () => {
+  return `flex justify-center ${
+    extended ? ' extended-wrapper' : ''
+  }`
+}
+---
+
+<figure class={getContainerClass()}>
+  <div class={getWrapperClass()}>
+    <video src={src}
+           class={videoClass}
+           autoplay 
+           loop 
+           muted 
+           playsinline />
+  </div>
+</figure>
