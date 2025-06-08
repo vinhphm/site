@@ -15,20 +15,42 @@ import CircleIcon from '~icons/ri/circle-fill'
     return Promise.resolve()
   }
 
+  function getSystemTheme(): 'dark' | 'light' {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getCurrentStoredTheme(): 'dark' | 'light' | 'auto' {
+    return localStorage.getItem('color-scheme') as 'dark' | 'light' | 'auto' || 'auto'
+  }
+
+  function getNextTheme(current: 'dark' | 'light' | 'auto'): 'dark' | 'light' | 'auto' {
+    const systemTheme = getSystemTheme()
+
+    if (current === 'light') {
+      return systemTheme === 'dark' ? 'auto' : 'dark'
+    } else if (current === 'dark') {
+      return systemTheme === 'light' ? 'auto' : 'light'
+    } else { // current === 'auto'
+      return systemTheme === 'light' ? 'dark' : 'light'
+    }
+  }
+
+  function applyTheme(theme: 'dark' | 'light' | 'auto'): void {
+    const actualTheme = theme === 'auto' ? getSystemTheme() : theme
+    
+    document.documentElement.setAttribute('data-theme', actualTheme)
+  }
+
   function toggleDark(event: MouseEvent): void {
     const startViewTransition = (document as any).startViewTransition
     const isPrefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isAppearanceTransition = typeof startViewTransition === 'function' && !isPrefersReducedMotion
 
     if (!isAppearanceTransition) {
-      const currentTheme = document.documentElement.getAttribute('data-theme')
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+      const currentTheme = getCurrentStoredTheme()
+      const newTheme = getNextTheme(currentTheme)
 
-      if (newTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark')
-      } else {
-        document.documentElement.removeAttribute('data-theme')
-      }
+      applyTheme(newTheme)
       localStorage.setItem('color-scheme', newTheme)
       return
     }
@@ -41,14 +63,10 @@ import CircleIcon from '~icons/ri/circle-fill'
     const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
 
     const transition = document.startViewTransition(async () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme')
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+      const currentTheme = getCurrentStoredTheme()
+      const newTheme = getNextTheme(currentTheme)
 
-      if (newTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark')
-      } else {
-        document.documentElement.removeAttribute('data-theme')
-      }
+      applyTheme(newTheme)
       localStorage.setItem('color-scheme', newTheme)
       await nextTick()
     })
