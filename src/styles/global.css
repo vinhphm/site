@@ -26,35 +26,35 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(21% 0.034 264.665);
-  --primary: oklch(21% 0.034 264.665);
-  --primary-foreground: oklch(98.5% 0.002 247.839);
-  --secondary: oklch(96.7% 0.003 264.542);
-  --secondary-foreground: oklch(21% 0.034 264.665);
-  --muted: oklch(92.8% 0.006 264.531);
-  --muted-foreground: oklch(55.1% 0.027 264.364);
-  --accent: oklch(96.7% 0.003 264.542);
-  --accent-foreground: oklch(21% 0.034 264.665);
+  --background: var(--color-white);
+  --foreground: var(--color-gray-900);
+  --primary: var(--color-gray-900);
+  --primary-foreground: var(--color-gray-50);
+  --secondary: var(--color-gray-100);
+  --secondary-foreground: var(--color-gray-900);
+  --muted: var(--color-gray-200);
+  --muted-foreground: var(--color-gray-500);
+  --accent: var(--color-gray-100);
+  --accent-foreground: var(--color-gray-900);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(92.8% 0.006 264.531);
-  --ring: oklch(70.7% 0.022 261.325);
+  --border: var(--color-gray-200);
+  --ring: var(--color-gray-400);
 }
 
 :root[data-theme="dark"] {
-  --background: oklch(21% 0.006 285.885);
-  --foreground: oklch(92% 0.004 286.32);
-  --primary: oklch(92% 0.004 286.32);
-  --primary-foreground: oklch(21% 0.006 285.885);
-  --secondary: oklch(37% 0.013 285.805);
-  --secondary-foreground: oklch(98.5% 0 0);
-  --muted: oklch(37% 0.013 285.805);
-  --muted-foreground: oklch(70.5% 0.015 286.067);
-  --accent: oklch(37% 0.013 285.805);
-  --accent-foreground: oklch(98.5% 0 0);
+  --background: var(--color-zinc-900);
+  --foreground: var(--color-zinc-200);
+  --primary: var(--color-zinc-200);
+  --primary-foreground: var(--color-zinc-900);
+  --secondary: var(--color-zinc-700);
+  --secondary-foreground: var(--color-zinc-50);
+  --muted: var(--color-zinc-700);
+  --muted-foreground: var(--color-zinc-400);
+  --accent: var(--color-zinc-700);
+  --accent-foreground: var(--color-zinc-50);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(37% 0.013 285.805);
-  --ring: oklch(55.2% 0.016 285.938);
+  --border: var(--color-zinc-700);
+  --ring: var(--color-zinc-500);
 }
 
 @layer base {
