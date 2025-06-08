@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Indicator from '@/components/Indicator.astro'
+import { formatDate, getDisplayDate, isUpdated } from '@/lib/utils'
+
+interface Props {
+  writing: CollectionEntry<'writings'>
+}
+
+const { writing } = Astro.props
+const displayDate = getDisplayDate(writing)
+const updated = isUpdated(writing)
+---
+
+<li>
+  <span class="group flex gap-3 justify-between items-start">
+    <span>
+      <a href={`/writing/${writing.id}`} class="group-hover:underline" transition:name={`writing-id-${writing.id}`}>
+        {writing.data.title}
+      </a>
+      {updated && writing.data.updatedAt && (
+        <Indicator
+          title={`Published on ${formatDate(writing.data.publishedAt)}\nUpdated on ${formatDate(writing.data.updatedAt)}`}
+          class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
+        >
+         Updated
+        </Indicator>
+      )}
+    </span>
+    <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
+      {formatDate(displayDate)}
+    </span>
+  </span>
+</li>
