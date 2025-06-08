@@ -20,7 +20,7 @@ const writings = sortWritingsByDate(collection)
           <li>
             <span class="group flex gap-3 justify-between items-start">
               <span>
-                <a href={`/writing/${writing.id}`} transition:name={`writing-id-${writing.id}`} class="group-hover:underline">
+                <a href={`/writing/${writing.id}`} class="group-hover:underline">
                   {writing.data.title}
                 </a>
                 {updated && writing.data.updatedAt && (
