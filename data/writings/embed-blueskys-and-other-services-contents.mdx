@@ -11,7 +11,7 @@ import BlueskyIcon from '~icons/ri/bluesky-fill'
 
 <OEmbed url="https://bsky.app/profile/vinh.dev/post/3koanfztpg72m" />
 
-Everything started when I decided to be more active on [<BlueskyIcon class="text-bluesky" /> Bluesky](https://bsky.app) and needed a way to integrate it more seamlessly with my website. I wanted to embed my posts directly into my blog posts, and have a share/comment button that would open the post on Bluesky.
+Everything started when I decided to be more active on [<BlueskyIcon /> Bluesky](https://bsky.app) and needed a way to integrate it more seamlessly with my website. I wanted to embed my posts directly into my blog posts, and have a share/comment button that would open the post on Bluesky.
 
 Everthing was supposed to be simple, as the team has very [detailed documentation](https://docs.bsky.app/) at their main site. But because of the setup of this website and the perfectionist in me, it turned out a bit more complicated than I expected.
 
@@ -220,141 +220,157 @@ export default {
 };
 ```
 
-## The Vue component
+## The Astro component
 
-```vue title="src › components › OEmbed.vue"
-<script setup lang="ts">
-import config from '@/config'
-import { useDark } from '@/vueuse/core'
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-
-const props = defineProps<{
+```astro title="src&emsp;›&emsp;components&emsp;›&emsp;OEmbed.astro"
+---
+interface Props {
   url: string
   maxWidth?: number
-}>()
-
-const isDark = useDark({ storageKey: 'color-scheme' })
-const oembedData = ref<any>(null)
-const containerRef = ref<HTMLElement>()
-
-async function fetchOembedData() {
-  try {
-    const response = await fetch(
-      `${config.workerHost}/oembed?url=${encodeURIComponent(props.url)}&theme=${isDark.value ? 'dark' : 'light'}`,
-    )
-    oembedData.value = await response.json()
-    if (oembedData.value?.type === 'rich') {
-      nextTick(() => injectContent(oembedData.value.html))
-    }
-  } catch (error) {
-    console.error('Failed to fetch oembed data:', error)
-  }
 }
 
-function injectContent(html: string) {
-  if (!containerRef.value)
-    return
-  containerRef.value.innerHTML = ''
-  const temp = document.createElement('div')
-  temp.innerHTML = html
+const { url, maxWidth = 800 } = Astro.props
+---
 
-  // Add data-bluesky-embed-color-mode attribute to blockquote elements for Bluesky embeds
-  const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
-  blockquotes.forEach((blockquote) => {
-    if (blockquote.classList.contains('bluesky-embed') ||
-      (blockquote.getAttribute('data-bluesky-uri') && blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))) {
-      blockquote.setAttribute('data-bluesky-embed-color-mode', isDark.value ? 'dark' : 'light')
+<div class="oembed-container" data-url={url} data-max-width={maxWidth}>
+  <div class="oembed-loading">Loading embed...</div>
+  <div class="oembed-content" style={`max-width: ${maxWidth}px;`}></div>
+</div>
+
+<script>
+  function getCurrentTheme(): string {
+    return document.documentElement.hasAttribute('data-theme') &&
+           document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+  }
+
+  async function fetchOembedData(url: string, theme: string) {
+    try {
+      const workerHost = window.__VINH_CONFIG__?.workerHost || 'https://worker.vinh.dev'
+      const response = await fetch(
+        `${workerHost}/oembed?url=${encodeURIComponent(url)}&theme=${theme}`
+      )
+      return await response.json()
+    } catch (error) {
+      console.error('Failed to fetch oembed data:', error)
+      return null
     }
-  })
+  }
 
-  const scripts = Array.from(temp.getElementsByTagName('script'))
-  scripts.forEach((oldScript) => {
-    oldScript.parentNode?.removeChild(oldScript)
-  })
+  function injectContent(container: HTMLElement, html: string, isDark: boolean) {
+    container.innerHTML = ''
+    const temp = document.createElement('div')
+    temp.innerHTML = html
 
-  containerRef.value.innerHTML = temp.innerHTML
-
-  scripts.forEach((oldScript) => {
-    const newScript = document.createElement('script')
-    Array.from(oldScript.attributes).forEach((attr) => {
-      newScript.setAttribute(attr.name, attr.value)
+    // Add data-bluesky-embed-color-mode for Bluesky embeds
+    const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
+    blockquotes.forEach((blockquote) => {
+      if (blockquote.classList.contains('bluesky-embed') ||
+        (blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))) {
+        blockquote.setAttribute('data-bluesky-embed-color-mode', isDark ? 'dark' : 'light')
+      }
     })
-    newScript.innerHTML = oldScript.innerHTML
-    containerRef.value?.appendChild(newScript)
-  })
-}
 
-onMounted(() => {
-  fetchOembedData()
-})
+    // Handle scripts
+    const scripts = Array.from(temp.getElementsByTagName('script'))
+    scripts.forEach((oldScript) => oldScript.parentNode?.removeChild(oldScript))
 
-onUnmounted(() => {
-  if (containerRef.value) {
-    containerRef.value.innerHTML = ''
+    container.innerHTML = temp.innerHTML
+
+    scripts.forEach((oldScript) => {
+      const newScript = document.createElement('script')
+      Array.from(oldScript.attributes).forEach((attr) => {
+        newScript.setAttribute(attr.name, attr.value)
+      })
+      newScript.innerHTML = oldScript.innerHTML
+      container.appendChild(newScript)
+    })
   }
-})
 
-watch(isDark, () => {
-  fetchOembedData()
-})
+  async function loadOembedContent(container: HTMLElement) {
+    const url = container.dataset.url
+    const maxWidth = parseInt(container.dataset.maxWidth || '800')
+
+    if (!url) return
+
+    const theme = getCurrentTheme()
+    const data = await fetchOembedData(url, theme)
+
+    if (data) {
+      const contentDiv = container.querySelector('.oembed-content')
+      const loadingDiv = container.querySelector('.oembed-loading')
+
+      if (loadingDiv) loadingDiv.style.display = 'none'
+
+      if (data.type === 'rich' && data.html) {
+        injectContent(contentDiv, data.html, theme === 'dark')
+      }
+      // Handle other types (photo, video, link)...
+    }
+  }
+
+  // Initialize and handle theme changes
+  function initOembedContainers() {
+    document.querySelectorAll('.oembed-container').forEach(container => {
+      loadOembedContent(container as HTMLElement)
+    })
+  }
+
+  // Setup theme observer
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        initOembedContainers() // Reload on theme change
+      }
+    })
+  })
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  })
+
+  // Initialize
+  initOembedContainers()
+
+  // Handle Astro navigation
+  document.addEventListener('astro:page-load', initOembedContainers)
 </script>
 
-<template>
-  <div v-if="oembedData" class="oembed-container">
-    <div
-      v-if="oembedData.type === 'rich'"
-      ref="containerRef"
-      :style="`max-width: ${maxWidth || 800}px;`"
-    />
-
-    <img
-      v-else-if="oembedData.type === 'photo'"
-      :src="oembedData.url"
-      :alt="oembedData.title || ''"
-      :width="oembedData.width"
-      :height="oembedData.height"
-      :style="`max-width: ${maxWidth || 800}px;`"
-    >
-
-    <div
-      v-else-if="oembedData.type === 'video'"
-      class="video-container"
-      :style="`max-width: ${maxWidth || 800}px;`"
-      v-html="oembedData.html"
-    />
-
-    <a
-      v-else-if="oembedData.type === 'link'"
-      :href="oembedData.url"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {{ oembedData.title || url }}
-    </a>
-  </div>
-</template>
-
-<style scoped>
+<style>
 .oembed-container {
   margin: 1rem 0;
   width: 100%;
 }
+
+.oembed-loading {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.oembed-content {
+  width: 100%;
+}
+
+.oembed-content img {
+  max-width: 100%;
+  height: auto;
+}
+
 .video-container {
   position: relative;
   padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
 }
-.video-container :deep(iframe) {
+
+.video-container iframe {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-}
-img {
-  max-width: 100%;
-  height: auto;
 }
 </style>
 ```
@@ -366,9 +382,9 @@ Noticed that we need a `injectContent` function to inject the HTML content into 
 Now we can use the `OEmbed` component to embed content from Bluesky and other services with the following code in MDX files:
 
 ```mdx showLineNumbers=false
-import OEmbed from '@/components/OEmbed.vue'
+import OEmbed from '@/components/OEmbed.astro'
 
-<OEmbed client:only="vue" url="https://bsky.app/profile/vinh.dev/post/3lalirzsyuc2i" />
+<OEmbed url="https://bsky.app/profile/vinh.dev/post/3lalirzsyuc2i" />
 ```
 
 And we will got this:
@@ -377,4 +393,4 @@ And we will got this:
 
 ## Conclusion
 
-This is just long story of mine to embed Bluesky's posts and other services' contents. You don't have to do exact the same. Just like I said in the beginning, there are simpler ways to do this without all these fancy stuff. So find the one that suits you most and go with it. Have fun at coding and don't forget to follow me on  [<BlueskyIcon class="text-bluesky" /> Bluesky / vinh.dev](https://bsky.app/profile/vinh.dev). Cheers!
+This is just long story of mine to embed Bluesky's posts and other services' contents. You don't have to do exact the same. Just like I said in the beginning, there are simpler ways to do this without all these fancy stuff. So find the one that suits you most and go with it. Have fun at coding and don't forget to follow me on  [<BlueskyIcon /> Bluesky / vinh.dev](https://bsky.app/profile/vinh.dev). Cheers!

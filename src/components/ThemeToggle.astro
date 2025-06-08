@@ -1,0 +1,112 @@
+---
+import CircleIcon from '~icons/ri/circle-fill'
+---
+
+<button type="button"
+        aria-label="Toggle theme"
+        class="text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-100 cursor-pointer"
+        id="toggle-theme">
+  <span class="sr-only">Toggle theme</span>
+  <CircleIcon />
+</button>
+
+<script>
+  function nextTick(): Promise<void> {
+    return Promise.resolve()
+  }
+
+  function getSystemTheme(): 'dark' | 'light' {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  function getCurrentStoredTheme(): 'dark' | 'light' | 'auto' {
+    return localStorage.getItem('color-scheme') as 'dark' | 'light' | 'auto' || 'auto'
+  }
+
+  function getNextTheme(current: 'dark' | 'light' | 'auto'): 'dark' | 'light' | 'auto' {
+    const systemTheme = getSystemTheme()
+
+    if (current === 'light') {
+      return systemTheme === 'dark' ? 'auto' : 'dark'
+    } else if (current === 'dark') {
+      return systemTheme === 'light' ? 'auto' : 'light'
+    } else { // current === 'auto'
+      return systemTheme === 'light' ? 'dark' : 'light'
+    }
+  }
+
+  function applyTheme(theme: 'dark' | 'light' | 'auto'): void {
+    const actualTheme = theme === 'auto' ? getSystemTheme() : theme
+    
+    document.documentElement.setAttribute('data-theme', actualTheme)
+  }
+
+  function toggleDark(event: MouseEvent): void {
+    const startViewTransition = (document as any).startViewTransition
+    const isPrefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isAppearanceTransition = typeof startViewTransition === 'function' && !isPrefersReducedMotion
+
+    if (!isAppearanceTransition) {
+      const currentTheme = getCurrentStoredTheme()
+      const newTheme = getNextTheme(currentTheme)
+
+      applyTheme(newTheme)
+      localStorage.setItem('color-scheme', newTheme)
+      return
+    }
+
+    // Add the theme-transition class to the root element to avoid conflicts
+    document.documentElement.classList.add('theme-transition')
+
+    const x = event.clientX
+    const y = event.clientY
+    const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+
+    const transition = document.startViewTransition(async () => {
+      const currentTheme = getCurrentStoredTheme()
+      const newTheme = getNextTheme(currentTheme)
+
+      applyTheme(newTheme)
+      localStorage.setItem('color-scheme', newTheme)
+      await nextTick()
+    })
+
+    transition.ready.then(() => {
+      const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+
+      document.documentElement.animate(
+        {
+          clipPath: isDark ? [...clipPath].reverse() : clipPath,
+        },
+        {
+          duration: 400,
+          easing: 'ease-out',
+          pseudoElement: isDark
+            ? '::view-transition-old(root)'
+            : '::view-transition-new(root)',
+        },
+      )
+    }).finally(() => {
+      // Remove the class precisely after the transition
+      transition.finished.then(() => {
+        document.documentElement.classList.remove('theme-transition')
+      })
+    })
+  }
+
+  function switchTheme(): void {
+    const button = document.getElementById('toggle-theme')
+    if (button) {
+      button.addEventListener('click', (event) => {
+        toggleDark(event as MouseEvent)
+      })
+    }
+  }
+
+  switchTheme()
+
+  document.addEventListener('astro:after-swap', () => {
+    switchTheme()
+  })
+</script>
