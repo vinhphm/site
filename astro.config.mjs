@@ -65,10 +65,10 @@ export default defineConfig({
         frames: {
           editorActiveTabForeground: 'var(--muted-foreground)',
           editorActiveTabBackground:
-            'color-mix(in oklab, var(--secondary) 25%, transparent)',
+            'transparent',
           editorActiveTabIndicatorBottomColor: 'transparent',
           editorActiveTabIndicatorTopColor: 'transparent',
-          editorTabBarBackground: 'transparent',
+          editorTabBarBackground: 'color-mix(in oklab, var(--secondary) 25%, transparent)',
           editorTabBarBorderBottomColor: 'transparent',
           frameBoxShadowCssValue: 'none',
           terminalBackground:
