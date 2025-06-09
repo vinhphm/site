@@ -3,7 +3,7 @@ import config from '@/config'
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import NewIcon from '~icons/fluent/new-16-filled'
-import { getLatestWriting } from '@/lib/utils'
+import { getLatestWriting } from '@/utils'
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site)
 

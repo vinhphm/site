@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 import { getCollection, render } from 'astro:content'
 import WritingMeta from '@/components/WritingMeta.astro'
 import Layout from '@/layouts/Layout.astro'
-import { createWritingStructuredData } from '@/lib/utils'
+import { createWritingStructuredData } from '@/utils'
 
 export async function getStaticPaths() {
   const writings = await getCollection('writings')

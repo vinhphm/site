@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content'
 import config from '@/config'
 import Layout from '@/layouts/Layout.astro'
 import WritingListItem from '@/components/WritingListItem.astro'
-import { sortWritingsByDate } from '@/lib/utils'
+import { sortWritingsByDate } from '@/utils'
 
 const collection = await getCollection('writings')
 const writings = sortWritingsByDate(collection)

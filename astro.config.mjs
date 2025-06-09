@@ -116,7 +116,7 @@ export default defineConfig({
       Icons({
         compiler: 'astro',
         scale: 1.2,
-        defaultClass: 'inline-block align-text-bottom',
+        defaultStyle: 'display: inline-block; vertical-align: text-bottom;',
       }),
     ],
   },
