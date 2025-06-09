@@ -15,18 +15,17 @@ export function formatDate(date: Date) {
   }).format(date)
 }
 
-// Writing utility functions
 export function getSortDate(writing: CollectionEntry<'writings'>): number {
-  const date = writing.data.updatedAt || writing.data.publishedAt
+  const date = writing.data.updated || writing.data.added
   return date.valueOf()
 }
 
 export function getDisplayDate(writing: CollectionEntry<'writings'>): Date {
-  return writing.data.updatedAt || writing.data.publishedAt
+  return writing.data.updated || writing.data.added
 }
 
 export function isUpdated(writing: CollectionEntry<'writings'>): boolean {
-  return !!writing.data.updatedAt
+  return !!writing.data.updated
 }
 
 export function sortWritingsByDate(writings: CollectionEntry<'writings'>[]): CollectionEntry<'writings'>[] {
@@ -48,7 +47,7 @@ export function createWritingStructuredData(writing: CollectionEntry<'writings'>
       '@type': 'Person',
       'name': 'Vinh',
     },
-    'datePublished': writing.data.publishedAt.toISOString(),
-    ...(isUpdated(writing) && { dateModified: writing.data.updatedAt!.toISOString() }),
+    'datePublished': writing.data.added.toISOString(),
+    ...(isUpdated(writing) && { dateModified: writing.data.updated!.toISOString() }),
   }
 }

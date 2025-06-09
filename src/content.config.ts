@@ -6,8 +6,8 @@ const writings = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    publishedAt: z.coerce.date(),
-    updatedAt: z.coerce.date().optional(),
+    added: z.coerce.date(),
+    updated: z.coerce.date().optional(),
     image: z.string().optional(),
     draft: z.boolean().default(false).optional(),
     lang: z.string().default('en').optional(),

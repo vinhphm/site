@@ -18,9 +18,9 @@ const updated = isUpdated(writing)
       <a href={`/writing/${writing.id}`} class="group-hover:underline" transition:name={`writing-id-${writing.id}`}>
         {writing.data.title}
       </a>
-      {updated && writing.data.updatedAt && (
+      {updated && writing.data.updated && (
         <Indicator
-          title={`Published on ${formatDate(writing.data.publishedAt)}\nUpdated on ${formatDate(writing.data.updatedAt)}`}
+          title={`Published on ${formatDate(writing.data.added)}\nUpdated on ${formatDate(writing.data.updated)}`}
           class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500">
          Updated
         </Indicator>

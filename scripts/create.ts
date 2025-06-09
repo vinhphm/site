@@ -36,7 +36,7 @@ const formattedTime = utc7Time.toISOString().replace('Z', '+07:00')
 
 const template = `---
 title: ${title}
-publishedAt: ${formattedTime}
+added: ${formattedTime}
 description: A new writing about ${title}
 ---
 
