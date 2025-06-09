@@ -1,7 +1,7 @@
 {
   "name": "vinh-dev",
   "type": "module",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "scripts": {
     "prepare": "simple-git-hooks",
     "dev": "astro dev",
