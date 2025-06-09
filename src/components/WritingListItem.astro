@@ -21,8 +21,7 @@ const updated = isUpdated(writing)
       {updated && writing.data.updatedAt && (
         <Indicator
           title={`Published on ${formatDate(writing.data.publishedAt)}\nUpdated on ${formatDate(writing.data.updatedAt)}`}
-          class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
-        >
+          class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500">
          Updated
         </Indicator>
       )}

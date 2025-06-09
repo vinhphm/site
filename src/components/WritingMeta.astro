@@ -11,10 +11,8 @@ const { writing } = Astro.props
 ---
 
 <div class="text-gray-500 dark:text-zinc-500 flex items-center gap-2">
-  <time
-    datetime={writing.data.publishedAt.toISOString()}
-    title={`Published on ${formatDate(writing.data.publishedAt)}`}
-  >
+  <time datetime={writing.data.publishedAt.toISOString()}
+        title={`Published on ${formatDate(writing.data.publishedAt)}`}>
     {formatDate(writing.data.publishedAt)}
   </time>
   {isUpdated(writing) && (
