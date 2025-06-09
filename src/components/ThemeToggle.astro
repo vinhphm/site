@@ -37,8 +37,12 @@ import CircleIcon from '~icons/ri/circle-fill'
 
   function applyTheme(theme: 'dark' | 'light' | 'auto'): void {
     const actualTheme = theme === 'auto' ? getSystemTheme() : theme
-    
     document.documentElement.setAttribute('data-theme', actualTheme)
+    if (theme === 'auto') {
+      setupSystemThemeListener()
+    } else {
+      cleanupSystemThemeListener()
+    }
   }
 
   function toggleDark(event: MouseEvent): void {
@@ -95,6 +99,30 @@ import CircleIcon from '~icons/ri/circle-fill'
     })
   }
 
+  let systemThemeMediaQuery: MediaQueryList | null = null
+
+  function setupSystemThemeListener(): void {
+    if (systemThemeMediaQuery) {
+      return
+    }
+    systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    systemThemeMediaQuery.addEventListener('change', handleSystemThemeChange)
+  }
+
+  function cleanupSystemThemeListener(): void {
+    if (systemThemeMediaQuery) {
+      systemThemeMediaQuery.removeEventListener('change', handleSystemThemeChange)
+      systemThemeMediaQuery = null
+    }
+  }
+
+  function handleSystemThemeChange(): void {
+    const currentTheme = getCurrentStoredTheme()
+    if (currentTheme === 'auto') {
+      applyTheme('auto')
+    }
+  }
+
   function switchTheme(): void {
     const button = document.getElementById('toggle-theme')
     if (button) {
@@ -104,9 +132,17 @@ import CircleIcon from '~icons/ri/circle-fill'
     }
   }
 
+  if (getCurrentStoredTheme() === 'auto') {
+    setupSystemThemeListener()
+  }
   switchTheme()
 
   document.addEventListener('astro:after-swap', () => {
+    if (getCurrentStoredTheme() === 'auto') {
+      setupSystemThemeListener()
+    } else {
+      cleanupSystemThemeListener()
+    }
     switchTheme()
   })
 </script>
