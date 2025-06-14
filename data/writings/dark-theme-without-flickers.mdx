@@ -13,7 +13,7 @@ You're using Astro with Tailwind and following [Tailwind's guide](https://tailwi
 
 ## The fix: Where you apply matters
 
-Most solutions suggest putting the detection script in `<head>`, which makes sense logically. But sometimes that doesn't work, and you're still stuck with flickering. Here's the key insight: it's not just about **detecting** the theme—it's about **where you apply** it.
+Most solutions suggest putting the detection script in `<head>`, which makes sense logically. But sometimes that doesn't work, and you're still stuck with flickering. Here's the key insight: it's not just about **detecting** the theme, it's about **where you apply** it.
 
 ```javascript showLineNumbers=false
 // Detection script in <head>
@@ -49,6 +49,6 @@ body {
 
 ## Final thoughts
 
-FOUC in dark themes usually isn't a detection problem—it's an application timing problem. By ensuring your theme styles are applied to the same element your detection script targets (`<html>`), you eliminate the gap between detection and application that causes flickering.
+FOUC in dark themes usually isn't a detection problem, it's an application timing problem. By ensuring your theme styles are applied to the same element your detection script targets (`<html>`), you eliminate the gap between detection and application that causes flickering.
 
 This small change can make the difference between a jarring user experience and a smooth, professional theme transition. Remember: detect early, apply immediately, and target the right element.
