@@ -12,7 +12,7 @@ import BlueskyIcon from '~icons/ri/bluesky-fill'
 
 <OEmbed url="https://bsky.app/profile/vinh.dev/post/3koanfztpg72m" />
 
-I had a simple goal: embed my [<BlueskyIcon class="text-bluesky" /> Bluesky](https://bsky.app) posts directly into my blog. What could go wrong with such a straightforward request? Well, as it turns out, quite a lot—but in the most educational way possible.
+I had a simple goal: embed my [<BlueskyIcon class="text-bluesky" /> Bluesky](https://bsky.app) posts directly into my blog. What could go wrong with such a straightforward request? Well, as it turns out, quite a lot, but in the most educational way possible.
 
 ## The "simple" plan
 
@@ -35,7 +35,7 @@ Until I realized I wanted theme support.
 
 ## The theme dilemma
 
-Here's where my perfectionist tendencies kicked in. I didn't just want the embed to match my site's theme—I wanted it to *react* to theme changes in real-time. No page refresh, no flicker, just seamless adaptation.
+Here's where my perfectionist tendencies kicked in. I didn't just want the embed to match my site's theme, I wanted it to *react* to theme changes in real-time. No page refresh, no flicker, just seamless adaptation.
 
 But here's the first problem: **Bluesky's oEmbed endpoint doesn't actually support a `theme` parameter**. Unlike some other providers, you can't just pass `&theme=dark` and get a dark-themed embed back.
 
@@ -54,7 +54,7 @@ Then reality hit. Hard.
 Access to fetch at 'https://embed.bsky.app/oembed' from origin 'https://vinh.dev' has been blocked by CORS policy
 ```
 
-Of course. Most oEmbed endpoints don't allow cross-origin requests from browsers—for good security reasons. I could have accepted defeat and stuck with server-side rendering, but where's the fun in that?
+Of course. Most oEmbed endpoints don't allow cross-origin requests from browsers, for good security reasons. I could have accepted defeat and stuck with server-side rendering, but where's the fun in that?
 
 ## Building the bridge
 
@@ -64,9 +64,9 @@ I needed a proxy. Something that could:
 3. Support theme parameters
 4. Be fast and cached
 
-Enter Cloudflare Workers—perfect for this lightweight proxy task.
+Enter Cloudflare Workers, perfect for this lightweight proxy task.
 
-The core insight was realizing this wasn't just about Bluesky anymore. If I was building a proxy, why not make it work with *any* oEmbed provider? Twitter, YouTube, Instagram—the whole ecosystem.
+The core insight was realizing this wasn't just about Bluesky anymore. If I was building a proxy, why not make it work with *any* oEmbed provider? Twitter, YouTube, Instagram, the whole ecosystem.
 
 Here's the heart of the solution:
 
@@ -99,7 +99,7 @@ Back on the client side, I hit another snag. Since Bluesky's oEmbed doesn't supp
 2. Adding `data-bluesky-embed-color-mode="dark"` attributes to the blockquotes
 3. Re-injecting the HTML into the DOM
 
-But here's the catch: oEmbed responses often include JavaScript that needs to execute—like Bluesky's embed enhancement scripts. When you inject HTML with `innerHTML`, those scripts don't run for security reasons.
+But here's the catch: oEmbed responses often include JavaScript that needs to execute, like Bluesky's embed enhancement scripts. When you inject HTML with `innerHTML`, those scripts don't run for security reasons.
 
 The solution required a careful dance:
 
@@ -184,6 +184,6 @@ This "simple" embedding task taught me several valuable lessons:
 
 Looking back, what started as "I want to embed a Bluesky post" became a journey through web standards, browser security, serverless architecture, and reactive UI patterns. Sometimes the best learning happens when simple tasks refuse to stay simple.
 
-The full implementation is available in my [GitHub repo](https://github.com/vinh-dev/site) if you want to dive deeper. But remember—you don't need all this complexity if your use case is simpler. Sometimes the three-line solution really is perfect.
+The full implementation is available in my [GitHub repo](https://github.com/vinh-dev/site) if you want to dive deeper. But remember, you don't need all this complexity if your use case is simpler. Sometimes the three-line solution really is perfect.
 
 Follow me on [<BlueskyIcon class="text-bluesky" /> Bluesky](https://bsky.app/profile/vinh.dev) where this whole adventure began, and feel free to share your own over-engineering stories. We've all been there!
