@@ -2,7 +2,7 @@
 
 ## Tech stack
 
-This website is hosted on [Cloudflare](https://cloudflare.com/), built with [Astro](https://astro.build/) and [UnoCSS](https://unocss.dev/).
+This website is hosted on [Cloudflare](https://cloudflare.com/), built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
 
 ## License
 
