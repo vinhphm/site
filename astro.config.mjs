@@ -19,6 +19,10 @@ export default defineConfig({
     format: 'file',
   },
 
+  image: {
+    responsiveStyles: true,
+  },
+
   experimental: {
     fonts: [
       {
@@ -36,8 +40,8 @@ export default defineConfig({
         fallbacks: ['monospace'],
       },
     ],
-    responsiveImages: true,
     contentIntellisense: true,
+    liveContentCollections: true,
   },
 
   integrations: [
