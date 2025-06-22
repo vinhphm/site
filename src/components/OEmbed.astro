@@ -1,4 +1,6 @@
 ---
+import config from '@/config'
+
 interface Props {
   url: string
   maxWidth?: number
@@ -22,9 +24,8 @@ const { url, maxWidth = 800 } = Astro.props
            document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
   }
 
-  async function fetchOembedData(url: string, theme: string): Promise<OEmbedData | null> {
+  async function fetchOembedData(url: string, theme: string, workerHost: string): Promise<OEmbedData | null> {
     try {
-      const workerHost = 'https://worker.vinh.dev'
       const response = await fetch(
         `${workerHost}/oembed?url=${encodeURIComponent(url)}&theme=${theme}`
       )
@@ -118,8 +119,9 @@ const { url, maxWidth = 800 } = Astro.props
   async function loadOembedContent(container: HTMLElement) {
     const url = container.dataset.url
     const maxWidth = parseInt(container.dataset.maxWidth || '800')
+    const workerHost = container.dataset.workerHost
 
-    if (!url) return
+    if (!url || !workerHost) return
 
     const loadingDiv = container.querySelector('.oembed-loading') as HTMLElement
     const contentDiv = container.querySelector('.oembed-content') as HTMLElement
@@ -128,7 +130,7 @@ const { url, maxWidth = 800 } = Astro.props
 
     try {
       const theme = getCurrentTheme()
-      const data = await fetchOembedData(url, theme)
+      const data = await fetchOembedData(url, theme, workerHost)
 
       if (data) {
         loadingDiv.style.display = 'none'
@@ -196,7 +198,7 @@ const { url, maxWidth = 800 } = Astro.props
   })
 </script>
 
-<div class="oembed-container" data-url={url} data-max-width={maxWidth}>
+<div class="oembed-container" data-url={url} data-max-width={maxWidth} data-worker-host={config.workerHost}>
   <div class="oembed-loading">Loading embed...</div>
   <div class="oembed-content" style={`max-width: ${maxWidth}px;`}></div>
 </div>
