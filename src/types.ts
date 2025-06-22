@@ -38,7 +38,7 @@ export interface Footer {
 export interface Config {
   author: Author
   title: string
-  site: string
+  site?: string
   workerHost: string
   subtitle: string
   description: string
