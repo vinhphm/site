@@ -32,8 +32,8 @@ export const config: Config = {
   footer: {
     navLinks: [
       {
-        text: '@vinhtw',
-        href: 'https://x.com/vinhtw',
+        text: '@vinhdw',
+        href: 'https://x.com/vinhdw',
       },
       {
         text: 'github',

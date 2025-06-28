@@ -10,8 +10,6 @@ duration: 8 min read
 import OEmbed from '@/components/OEmbed.astro'
 import BlueskyIcon from '~icons/ri/bluesky-fill'
 
-<OEmbed url="https://bsky.app/profile/vinh.dev/post/3koanfztpg72m" />
-
 I had a simple goal: embed my [<BlueskyIcon class="text-bluesky" /> Bluesky](https://bsky.app) posts directly into my blog. What could go wrong with such a straightforward request? Well, as it turns out, quite a lot, but in the most educational way possible.
 
 ## The "simple" plan
@@ -165,6 +163,10 @@ Now, embedding any oEmbed-compatible content is as simple as:
 And here's what that produces:
 
 <OEmbed url="https://bsky.app/profile/vinh.dev/post/3koanfztpg72m" />
+
+Twitter/X works too:
+
+<OEmbed url="https://x.com/vinhdw/status/1938632663675609116" />
 
 The embed automatically matches my site's theme, updates in real-time when users toggle between light and dark modes, and works with dozens of services beyond just Bluesky.
 
