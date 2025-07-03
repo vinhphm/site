@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+bun.lockb
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+.astro/
+.output/
+.vercel/
+.netlify/
+
+# Generated files
+*.min.js
+*.min.css
+*.bundle.js
+*.d.ts
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Coverage and test outputs
+coverage/
+.nyc_output/

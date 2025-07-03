@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "antfu.iconify",
-    "dbaeumer.vscode-eslint",
+    "astro-build.astro-vscode",
     "bradlc.vscode-tailwindcss"
   ]
 }

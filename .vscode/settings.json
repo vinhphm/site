@@ -1,40 +1,37 @@
 {
-  // Enable the flat config support
-  "eslint.useFlatConfig": true,
-
   // Disable the default formatter
   "prettier.enable": false,
   "editor.formatOnSave": false,
 
-  // Auto fix
+  // Auto fix with oxlint on save
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
 
-  // Silent the stylistic rules in you IDE, but still auto fix them
-  "eslint.rules.customizations": [
-    { "rule": "@stylistic/*", "severity": "off" },
-    { "rule": "*-indent", "severity": "off" },
-    { "rule": "*-spacing", "severity": "off" },
-    { "rule": "*-spaces", "severity": "off" },
-    { "rule": "*-order", "severity": "off" },
-    { "rule": "*-dangle", "severity": "off" },
-    { "rule": "*-newline", "severity": "off" },
-    { "rule": "*quotes", "severity": "off" },
-    { "rule": "*semi", "severity": "off" }
-  ],
+  // File associations for better syntax highlighting
+  "files.associations": {
+    "*.astro": "astro"
+  },
 
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue",
-    "html",
-    "markdown",
-    "json",
-    "jsonc",
-    "yaml"
-  ]
+  // Language specific settings
+  "[typescript]": {
+    "editor.defaultFormatter": null
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": null
+  },
+  "[astro]": {
+    "editor.defaultFormatter": null
+  },
+  "[json]": {
+    "editor.defaultFormatter": null
+  },
+
+  // Tailwind CSS IntelliSense
+  "tailwindCSS.includeLanguages": {
+    "astro": "html"
+  },
+
+  // Astro language server settings
+  "astro.typescript.allowArbitraryAttributes": true
 }

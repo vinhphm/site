@@ -1,8 +1,18 @@
 {
   "formatter": {
     "code_actions": {
-      "source.fixAll.eslint": true,
       "source.organizeImports": false
+    }
+  },
+  "languages": {
+    "TypeScript": {
+      "formatter": "language_server"
+    },
+    "JavaScript": {
+      "formatter": "language_server"
+    },
+    "Astro": {
+      "formatter": "language_server"
     }
   }
 }
