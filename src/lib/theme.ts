@@ -25,17 +25,29 @@ export function applyTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', actualTheme)
 }
 
-export function setupThemeListener(): () => void {
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+let systemThemeMediaQuery: MediaQueryList | null = null
+let systemThemeHandler: (() => void) | null = null
+
+export function setupSystemThemeListener(): void {
+  if (systemThemeMediaQuery) {
+    return
+  }
+  systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
   
-  const handleChange = () => {
+  systemThemeHandler = () => {
     const currentTheme = getCurrentStoredTheme()
     if (currentTheme === 'auto') {
       applyTheme('auto')
     }
   }
   
-  mediaQuery.addEventListener('change', handleChange)
-  
-  return () => mediaQuery.removeEventListener('change', handleChange)
+  systemThemeMediaQuery.addEventListener('change', systemThemeHandler)
+}
+
+export function cleanupSystemThemeListener(): void {
+  if (systemThemeMediaQuery && systemThemeHandler) {
+    systemThemeMediaQuery.removeEventListener('change', systemThemeHandler)
+    systemThemeMediaQuery = null
+    systemThemeHandler = null
+  }
 }

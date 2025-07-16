@@ -10,38 +10,17 @@ import CircleIcon from '~icons/ri/circle-fill'
 </button>
 
 <script>
+  import { 
+    getSystemTheme, 
+    getCurrentStoredTheme, 
+    getNextTheme, 
+    applyTheme,
+    setupSystemThemeListener,
+    cleanupSystemThemeListener
+  } from '@/lib/theme'
+
   function nextTick(): Promise<void> {
     return Promise.resolve()
-  }
-
-  function getSystemTheme(): 'dark' | 'light' {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  }
-
-  function getCurrentStoredTheme(): 'dark' | 'light' | 'auto' {
-    return localStorage.getItem('color-scheme') as 'dark' | 'light' | 'auto' || 'auto'
-  }
-
-  function getNextTheme(current: 'dark' | 'light' | 'auto'): 'dark' | 'light' | 'auto' {
-    const systemTheme = getSystemTheme()
-
-    if (current === 'light') {
-      return systemTheme === 'dark' ? 'auto' : 'dark'
-    } else if (current === 'dark') {
-      return systemTheme === 'light' ? 'auto' : 'light'
-    } else { // current === 'auto'
-      return systemTheme === 'light' ? 'dark' : 'light'
-    }
-  }
-
-  function applyTheme(theme: 'dark' | 'light' | 'auto'): void {
-    const actualTheme = theme === 'auto' ? getSystemTheme() : theme
-    document.documentElement.setAttribute('data-theme', actualTheme)
-    if (theme === 'auto') {
-      setupSystemThemeListener()
-    } else {
-      cleanupSystemThemeListener()
-    }
   }
 
   function toggleDark(event: MouseEvent): void {
@@ -54,6 +33,11 @@ import CircleIcon from '~icons/ri/circle-fill'
       const newTheme = getNextTheme(currentTheme)
 
       applyTheme(newTheme)
+      if (newTheme === 'auto') {
+        setupSystemThemeListener()
+      } else {
+        cleanupSystemThemeListener()
+      }
       localStorage.setItem('color-scheme', newTheme)
       return
     }
@@ -70,6 +54,11 @@ import CircleIcon from '~icons/ri/circle-fill'
       const newTheme = getNextTheme(currentTheme)
 
       applyTheme(newTheme)
+      if (newTheme === 'auto') {
+        setupSystemThemeListener()
+      } else {
+        cleanupSystemThemeListener()
+      }
       localStorage.setItem('color-scheme', newTheme)
       await nextTick()
     })
@@ -96,30 +85,6 @@ import CircleIcon from '~icons/ri/circle-fill'
         document.documentElement.classList.remove('theme-transition')
       })
     })
-  }
-
-  let systemThemeMediaQuery: MediaQueryList | null = null
-
-  function setupSystemThemeListener(): void {
-    if (systemThemeMediaQuery) {
-      return
-    }
-    systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    systemThemeMediaQuery.addEventListener('change', handleSystemThemeChange)
-  }
-
-  function cleanupSystemThemeListener(): void {
-    if (systemThemeMediaQuery) {
-      systemThemeMediaQuery.removeEventListener('change', handleSystemThemeChange)
-      systemThemeMediaQuery = null
-    }
-  }
-
-  function handleSystemThemeChange(): void {
-    const currentTheme = getCurrentStoredTheme()
-    if (currentTheme === 'auto') {
-      applyTheme('auto')
-    }
   }
 
   function switchTheme(): void {
