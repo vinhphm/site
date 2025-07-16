@@ -22,7 +22,7 @@ if (type !== 'writing' || !title) {
   process.exit(1)
 }
 
-const contentDir = path.join(projectRoot, 'data', dirMap[type])
+const contentDir = path.join(projectRoot, 'data', dirMap[type]!)
 const slug = title
   .toLowerCase()
   .replace(/\s+/g, '-')

@@ -7,7 +7,10 @@
       "@/*": ["src/*"]
     },
     "types": ["unplugin-icons/types/vue"],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true
   },
   "include": [".astro/types.d.ts", "**/*"]
 }
