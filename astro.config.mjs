@@ -19,6 +19,8 @@ export default defineConfig({
     format: 'file',
   },
 
+  compressHTML: true,
+
   image: {
     responsiveStyles: true,
   },
@@ -124,5 +126,16 @@ export default defineConfig({
         defaultStyle: 'display: inline-block; vertical-align: text-bottom;',
       }),
     ],
+    build: {
+      minify: 'terser',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'expressive-code': ['astro-expressive-code'],
+            'icons': ['~icons/ri/circle-fill', '~icons/fluent/new-16-filled'],
+          },
+        },
+      },
+    },
   },
 })

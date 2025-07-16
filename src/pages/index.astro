@@ -1,9 +1,9 @@
 ---
-import config from '@/config'
+import config from '@/constants/config'
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import NewIcon from '~icons/fluent/new-16-filled'
-import { getLatestWriting } from '@/utils'
+import { getLatestWriting } from '@/lib'
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site)
 

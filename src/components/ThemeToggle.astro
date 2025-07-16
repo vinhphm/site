@@ -10,31 +10,31 @@ import CircleIcon from '~icons/ri/circle-fill'
 </button>
 
 <script>
-  function nextTick(): Promise<void> {
+  function nextTick() {
     return Promise.resolve()
   }
 
-  function getSystemTheme(): 'dark' | 'light' {
+  function getSystemTheme() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   }
 
-  function getCurrentStoredTheme(): 'dark' | 'light' | 'auto' {
-    return localStorage.getItem('color-scheme') as 'dark' | 'light' | 'auto' || 'auto'
+  function getCurrentStoredTheme() {
+    return localStorage.getItem('color-scheme') || 'auto'
   }
 
-  function getNextTheme(current: 'dark' | 'light' | 'auto'): 'dark' | 'light' | 'auto' {
+  function getNextTheme(current) {
     const systemTheme = getSystemTheme()
 
     if (current === 'light') {
       return systemTheme === 'dark' ? 'auto' : 'dark'
     } else if (current === 'dark') {
       return systemTheme === 'light' ? 'auto' : 'light'
-    } else { // current === 'auto'
+    } else {
       return systemTheme === 'light' ? 'dark' : 'light'
     }
   }
 
-  function applyTheme(theme: 'dark' | 'light' | 'auto'): void {
+  function applyTheme(theme) {
     const actualTheme = theme === 'auto' ? getSystemTheme() : theme
     document.documentElement.setAttribute('data-theme', actualTheme)
     if (theme === 'auto') {
@@ -44,8 +44,8 @@ import CircleIcon from '~icons/ri/circle-fill'
     }
   }
 
-  function toggleDark(event: MouseEvent): void {
-    const startViewTransition = (document as any).startViewTransition
+  function toggleDark(event) {
+    const startViewTransition = document.startViewTransition
     const isPrefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isAppearanceTransition = typeof startViewTransition === 'function' && !isPrefersReducedMotion
 
@@ -58,7 +58,6 @@ import CircleIcon from '~icons/ri/circle-fill'
       return
     }
 
-    // Add the theme-transition class to the root element to avoid conflicts
     document.documentElement.classList.add('theme-transition')
 
     const x = event.clientX
@@ -91,16 +90,15 @@ import CircleIcon from '~icons/ri/circle-fill'
         },
       )
     }).finally(() => {
-      // Remove the class precisely after the transition
       transition.finished.then(() => {
         document.documentElement.classList.remove('theme-transition')
       })
     })
   }
 
-  let systemThemeMediaQuery: MediaQueryList | null = null
+  let systemThemeMediaQuery = null
 
-  function setupSystemThemeListener(): void {
+  function setupSystemThemeListener() {
     if (systemThemeMediaQuery) {
       return
     }
@@ -108,27 +106,27 @@ import CircleIcon from '~icons/ri/circle-fill'
     systemThemeMediaQuery.addEventListener('change', handleSystemThemeChange)
   }
 
-  function cleanupSystemThemeListener(): void {
+  function cleanupSystemThemeListener() {
     if (systemThemeMediaQuery) {
       systemThemeMediaQuery.removeEventListener('change', handleSystemThemeChange)
       systemThemeMediaQuery = null
     }
   }
 
-  function handleSystemThemeChange(): void {
+  function handleSystemThemeChange() {
     const currentTheme = getCurrentStoredTheme()
     if (currentTheme === 'auto') {
       applyTheme('auto')
     }
   }
 
-  function switchTheme(): void {
+  function switchTheme() {
     const buttons = document.querySelectorAll('.theme-toggle')
     buttons.forEach(button => {
       if (button && !button.hasAttribute('data-theme-listener')) {
         button.setAttribute('data-theme-listener', 'true')
         button.addEventListener('click', (event) => {
-          toggleDark(event as MouseEvent)
+          toggleDark(event)
         })
       }
     })

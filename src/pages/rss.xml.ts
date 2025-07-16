@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
-import config from '@/config'
-import { sortWritingsByDate, getDisplayDate } from '@/utils'
+import config from '@/constants/config'
+import { sortWritingsByDate, getDisplayDate } from '@/lib'
 
 interface Context {
   site: string
