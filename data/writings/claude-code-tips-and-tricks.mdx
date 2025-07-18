@@ -1,0 +1,151 @@
+---
+title: Claude Code tips and tricks
+added: 2025-07-18T19:51:10.689+07:00
+lang: en
+description: Getting started with Claude Code, covering essential setup, workflow tips, and productivity hacks. Learn the key commands, shortcuts, and best practices that make the difference.
+---
+import OEmbed from '@/components/OEmbed.astro'
+
+If you're familiar with all the AI news, you probably have heard about Claude Code before. It's an agentic coding tool developed by Anthropic that operates directly in the terminal, assisting you in refactoring, documenting, and debugging code. It sure had been one of the first of its kind and unlike any other traditional AI-fused IDEs or chat-based coding assistants at the time.
+
+Like many developing tools out there, Claude Code only supported macOS, Linux, and WSL on Windows when it first came out. But that has changed last week, when the new versions finally support Windows "natively" (still need Git for Windows installed for that sweet Git Bash to work, but hey, it's still progress 🚀).
+
+<OEmbed url="https://x.com/vinhdw/status/1943879411696079142" />
+
+So now that everyone is happy, let's dive in for some more details.
+
+## Essential setup and configuration
+
+### Quick installation
+
+It's pretty straightforward and the same no matter what OS you're on:
+
+```shell
+# Install Claude Code
+npm install -g @anthropic-ai/claude-code
+
+# Navigate to your project
+cd your-awesome-project
+
+# Start coding with Claude
+claude
+```
+
+_* If you're behind a corporate proxy, make sure you've set the `NODE_EXTRA_CA_CERTS` to point to your certificate file before running `claude` for Claude Code to run correctly._
+
+### IDE integration
+
+You can also install the Claude Code extension for VS Code, Cursor, or Windsurf. While it's essentially just a launcher, it makes opening Claude Code seamless and allows you to run multiple instances in parallel.
+
+### Skip permission prompts
+
+One thing about Claude Code is the constant permission requests, which can be both good and bad depending on your view. But if you like moving fast, you can bypass all that by using:
+
+```shell
+claude --dangerously-skip-permissions
+```
+
+## Core workflow tips
+
+### Use `/clear` frequently
+
+This is probably the most important tip I can give you. Call `/clear` often—like, really often. AI agents tend to get a bit... unpredictable the longer a conversation goes on, especially when you're jumping between different tasks. So whenever you're starting something new, just clear that chat history and start fresh.
+
+### Master the `CLAUDE.md` file
+
+Here's something cool: Claude automatically looks for a `CLAUDE.md` file when it starts up and pulls it into context. Like giving Claude a cheat sheet about your project. You can document things like:
+
+- Your coding standards and conventions
+- How you handle branches (merge vs. rebase, branch naming, etc.)
+- Environment setup quirks
+- Common patterns you use in the codebase
+- Any weird behaviors or gotchas to watch out for
+
+And here's a pro tip: when Claude messes something up, ask it to update the `CLAUDE.md` file so it doesn't make the same mistake twice.
+
+### See Claude as your very fast intern...
+
+...or the Microsoft sees it, "COPILOT! COPILOT! COPILOT!"
+
+Claude is like having an intern with perfect memory but not much real-world experience. It's incredibly fast and remembers everything you tell it, but you still need to **check its work** and **give clear directions**. Don't expect it to read your mind, you need to spell out what you want.
+
+### Context is everything
+
+The more context you give Claude, the better it performs. If you're thinking about edge cases, mention them. If there's a similar pattern elsewhere in your codebase, point it out. Don't assume Claude knows the implicit stuff that's obvious to you.
+
+## Advanced features worth knowing
+
+### Extended thinking modes
+
+Claude Code has these thinking modes that basically give it more time to think through complex problems. Just use these keywords in your prompts:
+
+- `think` - Basic extended thinking
+- `think hard` - More thinking time
+- `think harder` - Even more thinking time
+- `ultrathink` - Maximum thinking power
+
+Use these when you're asking Claude to plan something complex or work through a tricky problem.
+
+### Sub-agents and parallel tasks
+
+Claude can actually spawn multiple instances of itself to work on different parts of a problem simultaneously. You'll see something like `Task(...)` in the output when this happens. It's pretty neat for complex tasks that benefit from multiple perspectives.
+
+### Working with images and visual feedback
+
+Yes, Claude Code does work with images, don't assume it cannot because of, you know, "TErMInAL". You actually can:
+
+- Take screenshots with <kbd>Shift ⇧</kbd> + <kbd>Command ⌘</kbd> + <kbd>Control ⌃</kbd> + <kbd>4</kbd> on macOS, then paste with <kbd>Control ⌃</kbd> + <kbd>V</kbd> (not <kbd>Command ⌘</kbd> + <kbd>V</kbd>!)
+- Drag images directly into the terminal
+- Show Claude UI mockups and ask it to build the interface
+- Take screenshots of bugs for better debugging context
+
+### Custom slash commands
+
+You can create your own slash commands by putting Markdown files in the `.claude/commands` folder. These show up in the slash commands menu and you can even commit them to git to share with your team. Use `$ARGUMENTS` to pass parameters to your commands.
+
+## Productivity hacks and shortcuts
+
+### Terminal shortcuts you need to know
+
+- **<kbd>Shift ⇧</kbd> + <kbd>Enter</kbd> for new lines**: Run `/terminal-setup` to enable this. Or on Windows cases where this does not show up, type <kbd>\\</kbd> + <kbd>Enter</kbd> for new lines.
+- **Stop Claude**: Use <kbd>Escape</kbd> (not <kbd>Control</kbd> + <kbd>C</kbd>, which exits entirely)
+- **Jump to previous messages**: <kbd>Escape</kbd> twice to see all previous messages
+- **Resume old conversations**: Use `--resume` flag to list prior threads
+
+### Managing costs and context
+
+Claude Code pulls a lot of context automatically, which is great but can get expensive. Keep your `CLAUDE.md` files concise, use `/clear` liberally, and be specific about what context you actually need.
+
+### MCP integrations
+
+MCPs (Model Context Protocol) are where Claude Code really shines. Popular ones include:
+
+- **Context7**: Grabs documentation for any tech stack on demand
+- **Puppeteer**: For automated screenshots and testing
+- **Various project-specific MCPs**: Check the community for your specific needs
+
+Use `--mcp-debug` if you run into configuration issues.
+
+## Common pitfalls to avoid
+
+### Over-engineering
+
+Claude often suggests overly complicated solutions because, well, it's like an intern trying to impress you. Don't be afraid to ask for simpler approaches.
+
+### Context overload
+
+It's easy to let conversations get too long and unfocused. Remember: `/clear` is your friend.
+
+### Fighting the abstraction
+
+Claude Code works differently than traditional IDEs—it abstracts you above the code level to focus on strategy. Don't fight this; embrace it.
+
+## Wrapping up
+
+Claude Code represents an interesting approach to AI-assisted development, moving the interaction from sidebars and autocomplete to a conversational terminal interface. Whether it fits your workflow depends on your preferences and project needs.
+
+The tips above should help you get started if you decide to give it a try. Remember the basics: use `/clear` frequently, provide good context, and treat it like you would any other development tool, which can be useful for some tasks, maybe not for others.
+
+As with any new tool, there's a learning curve. Some developers love the conversational approach, while others prefer more traditional IDE integrations. The choice is yours.
+
+If you do try Claude Code, start small with simple tasks and gradually work up to more complex workflows. And remember, it's still a tool, not a replacement for understanding your code and making thoughtful decisions.
