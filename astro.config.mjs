@@ -66,6 +66,7 @@ export default defineConfig({
       styleOverrides: {
         borderColor: 'var(--border)',
         borderWidth: '1px',
+        borderRadius: '1rem',
         codeFontFamily: 'var(--font-mono)',
         codeBackground:
           'color-mix(in oklab, var(--secondary) 25%, transparent)',

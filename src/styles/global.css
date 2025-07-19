@@ -223,4 +223,8 @@
   :is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-within) .header-anchor {
      @apply opacity-50;
   }
+
+  .expressive-code .copy button {
+    @apply !rounded-lg;
+  }
 }
