@@ -11,9 +11,9 @@
     "new": "esno scripts/create.ts",
     "astro": "astro",
     "release": "bumpp",
-    "lint": "bunx ultracite lint",
-    "lint:fix": "bunx ultracite format",
-    "format": "bunx ultracite format"
+    "lint": "ultracite lint",
+    "lint:fix": "ultracite format",
+    "format": "ultracite format"
   },
   "dependencies": {
     "@astrojs/deno": "^5.0.1",

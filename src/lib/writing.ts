@@ -40,7 +40,7 @@ export function createWritingStructuredData(
     },
     datePublished: writing.data.added.toISOString(),
     ...(isUpdated(writing) && {
-      dateModified: writing.data.updated!.toISOString(),
+      dateModified: writing.data.updated?.toISOString(),
     }),
   }
 }

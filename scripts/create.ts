@@ -18,11 +18,10 @@ const type = process.argv[2]
 const title = process.argv[3]
 
 if (type !== 'writing' || !title) {
-  console.error('Usage: npm run create writing "My New Writing Title"')
   process.exit(1)
 }
 
-const contentDir = path.join(projectRoot, 'data', dirMap[type]!)
+const contentDir = path.join(projectRoot, 'data', dirMap[type] ?? 'writings')
 const slug = title
   .toLowerCase()
   .replace(/\s+/g, '-')
@@ -45,4 +44,3 @@ Start writing your content here...
 
 await fs.promises.mkdir(contentDir, { recursive: true })
 await fs.promises.writeFile(filePath, template)
-console.log(`Writing created successfully: ${filePath}`)

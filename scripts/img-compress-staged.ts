@@ -8,9 +8,9 @@ const stagedFiles = (await git.diff(['--cached', '--name-only']))
   .map((i) => i.trim())
   .filter(Boolean)
 
-const images = stagedFiles.filter((i) => i.match(/\.(png|jpe?g|webp)$/i))
+const IMAGE_REGEX = /\.(png|jpe?g|webp)$/i
+const images = stagedFiles.filter((i) => i.match(IMAGE_REGEX))
 if (images.length > 0) {
-  console.log('Images to compress:\n', images)
   const { confirm } = await prompts({
     type: 'confirm',
     name: 'confirm',
@@ -19,8 +19,9 @@ if (images.length > 0) {
 
   compressImages(images)
 
-  if (!confirm) process.exit(0)
+  if (!confirm) {
+    process.exit(0)
+  }
 } else {
-  console.log('No images to compress')
   process.exit(0)
 }
