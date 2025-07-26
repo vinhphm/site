@@ -12,11 +12,11 @@ const { section } = Astro.props
 
 const navLinks = config.header.navLinks
 const filteredNavLinks = section
-  ? navLinks.filter(link => link.text !== section)
+  ? navLinks.filter((link) => link.text !== section)
   : navLinks
 
 const sectionNavLink = section
-  ? navLinks.find(link => link.text === section)
+  ? navLinks.find((link) => link.text === section)
   : null
 ---
 

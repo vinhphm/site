@@ -1,7 +1,7 @@
-import rss from '@astrojs/rss'
 import { getCollection } from 'astro:content'
+import rss from '@astrojs/rss'
 import config from '@/constants/config'
-import { sortWritingsByDate, getDisplayDate } from '@/lib'
+import { getDisplayDate, sortWritingsByDate } from '@/lib'
 
 interface Context {
   site: string
@@ -14,7 +14,7 @@ export async function GET(context: Context) {
     title: config.title,
     description: config.description,
     site: context.site,
-    items: writings.map(writing => ({
+    items: writings.map((writing) => ({
       ...writing.data,
       link: `${context.site}writing/${writing.id}`,
       pubDate: getDisplayDate(writing),

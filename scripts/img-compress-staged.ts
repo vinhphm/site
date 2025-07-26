@@ -5,10 +5,10 @@ import { compressImages } from './img-compress'
 const git = Git()
 const stagedFiles = (await git.diff(['--cached', '--name-only']))
   .split('\n')
-  .map(i => i.trim())
+  .map((i) => i.trim())
   .filter(Boolean)
 
-const images = stagedFiles.filter(i => i.match(/\.(png|jpe?g|webp)$/i))
+const images = stagedFiles.filter((i) => i.match(/\.(png|jpe?g|webp)$/i))
 if (images.length > 0) {
   console.log('Images to compress:\n', images)
   const { confirm } = await prompts({
@@ -19,10 +19,8 @@ if (images.length > 0) {
 
   compressImages(images)
 
-  if (!confirm)
-    process.exit(0)
-}
-else {
+  if (!confirm) process.exit(0)
+} else {
   console.log('No images to compress')
   process.exit(0)
 }

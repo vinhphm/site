@@ -7,7 +7,7 @@ import { createWritingStructuredData } from '@/lib'
 
 export async function getStaticPaths() {
   const writings = await getCollection('writings')
-  return writings.map(writing => ({
+  return writings.map((writing) => ({
     params: { id: writing.id },
     props: writing,
   }))

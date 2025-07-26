@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content'
+import WritingListItem from '@/components/WritingListItem.astro'
 import config from '@/constants/config'
 import Layout from '@/layouts/Layout.astro'
-import WritingListItem from '@/components/WritingListItem.astro'
 import { sortWritingsByDate } from '@/lib'
 
 const collection = await getCollection('writings')

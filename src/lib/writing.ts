@@ -13,26 +13,34 @@ export function isUpdated(writing: CollectionEntry<'writings'>): boolean {
   return !!writing.data.updated
 }
 
-export function sortWritingsByDate(writings: CollectionEntry<'writings'>[]): CollectionEntry<'writings'>[] {
+export function sortWritingsByDate(
+  writings: CollectionEntry<'writings'>[]
+): CollectionEntry<'writings'>[] {
   return writings.sort((a, b) => getSortDate(b) - getSortDate(a))
 }
 
-export function getLatestWriting(writings: CollectionEntry<'writings'>[]): CollectionEntry<'writings'> | undefined {
+export function getLatestWriting(
+  writings: CollectionEntry<'writings'>[]
+): CollectionEntry<'writings'> | undefined {
   return sortWritingsByDate(writings)[0]
 }
 
-export function createWritingStructuredData(writing: CollectionEntry<'writings'>) {
+export function createWritingStructuredData(
+  writing: CollectionEntry<'writings'>
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    'headline': writing.data.title,
-    'description': writing.data.description,
-    'image': writing.data.image,
-    'author': {
+    headline: writing.data.title,
+    description: writing.data.description,
+    image: writing.data.image,
+    author: {
       '@type': 'Person',
-      'name': 'Vinh',
+      name: 'Vinh',
     },
-    'datePublished': writing.data.added.toISOString(),
-    ...(isUpdated(writing) && { dateModified: writing.data.updated!.toISOString() }),
+    datePublished: writing.data.added.toISOString(),
+    ...(isUpdated(writing) && {
+      dateModified: writing.data.updated!.toISOString(),
+    }),
   }
 }

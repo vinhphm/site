@@ -29,11 +29,10 @@ const title = [Astro.props.title, config.title].filter(Boolean).join(' / ')
 
 // Generate OG image URL only when needed
 function getImageUrl() {
-  if (image)
-return image
+  if (image) return image
 
   const defaultImage = `${config.workerHost}/og?title=${encodeURIComponent(
-    Astro.props.title || '',
+    Astro.props.title || ''
   )}`
   return defaultImage
 }

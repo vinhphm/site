@@ -201,11 +201,17 @@
   .theme-transition::view-transition-new(root) {
     z-index: 9999;
   }
-  .theme-transition:where([data-theme="dark"], [data-theme="dark"] *)::view-transition-old(root),
+  .theme-transition:where(
+      [data-theme="dark"],
+      [data-theme="dark"] *
+    )::view-transition-old(root),
   .theme-transition[data-theme="dark"]::view-transition-old(root) {
     z-index: 9999;
   }
-  .theme-transition:where([data-theme="dark"], [data-theme="dark"] *)::view-transition-new(root),
+  .theme-transition:where(
+      [data-theme="dark"],
+      [data-theme="dark"] *
+    )::view-transition-new(root),
   .theme-transition[data-theme="dark"]::view-transition-new(root) {
     z-index: 1;
   }
@@ -221,7 +227,7 @@
   }
 
   :is(h1, h2, h3, h4, h5, h6):is(:hover, :focus-within) .header-anchor {
-     @apply opacity-50;
+    @apply opacity-50;
   }
 
   .expressive-code .copy button {

@@ -31,7 +31,7 @@ const fileName = `${slug}.mdx`
 const filePath = path.join(contentDir, fileName)
 
 const now = new Date()
-const utc7Time = new Date(now.getTime() + (7 * 60 * 60 * 1000))
+const utc7Time = new Date(now.getTime() + 7 * 60 * 60 * 1000)
 const formattedTime = utc7Time.toISOString().replace('Z', '+07:00')
 
 const template = `---

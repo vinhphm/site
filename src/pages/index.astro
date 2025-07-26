@@ -1,9 +1,9 @@
 ---
+import { getCollection } from 'astro:content'
 import config from '@/constants/config'
 import Layout from '@/layouts/Layout.astro'
-import { getCollection } from 'astro:content'
-import NewIcon from '~icons/fluent/new-16-filled'
 import { getLatestWriting } from '@/lib'
+import NewIcon from '~icons/fluent/new-16-filled'
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site)
 
@@ -13,9 +13,9 @@ const latestWriting = getLatestWriting(writings)
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  'name': config.title,
-  'alternateName': ['Vinh Dev', 'VP'],
-  'url': pageUrl,
+  name: config.title,
+  alternateName: ['Vinh Dev', 'VP'],
+  url: pageUrl,
 }
 ---
 

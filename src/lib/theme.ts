@@ -1,11 +1,13 @@
 export type Theme = 'dark' | 'light' | 'auto'
 
 export function getSystemTheme(): 'dark' | 'light' {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
 }
 
 export function getCurrentStoredTheme(): Theme {
-  return localStorage.getItem('color-scheme') as Theme || 'auto'
+  return (localStorage.getItem('color-scheme') as Theme) || 'auto'
 }
 
 export function getNextTheme(current: Theme): Theme {
@@ -13,11 +15,11 @@ export function getNextTheme(current: Theme): Theme {
 
   if (current === 'light') {
     return systemTheme === 'dark' ? 'auto' : 'dark'
-  } else if (current === 'dark') {
-    return systemTheme === 'light' ? 'auto' : 'light'
-  } else {
-    return systemTheme === 'light' ? 'dark' : 'light'
   }
+  if (current === 'dark') {
+    return systemTheme === 'light' ? 'auto' : 'light'
+  }
+  return systemTheme === 'light' ? 'dark' : 'light'
 }
 
 export function applyTheme(theme: Theme): void {
@@ -33,14 +35,14 @@ export function setupSystemThemeListener(): void {
     return
   }
   systemThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  
+
   systemThemeHandler = () => {
     const currentTheme = getCurrentStoredTheme()
     if (currentTheme === 'auto') {
       applyTheme('auto')
     }
   }
-  
+
   systemThemeMediaQuery.addEventListener('change', systemThemeHandler)
 }
 

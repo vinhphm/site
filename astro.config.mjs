@@ -4,8 +4,8 @@ import sitemap from '@astrojs/sitemap'
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
-import expressiveCode from 'astro-expressive-code'
 import { defineConfig, fontProviders } from 'astro/config'
+import expressiveCode from 'astro-expressive-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import Icons from 'unplugin-icons/vite'
@@ -51,16 +51,17 @@ export default defineConfig({
       themes: ['poimandres', 'snazzy-light'],
       plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
       useDarkModeMediaQuery: false,
-      themeCssSelector: theme => `[data-theme='${theme.name === 'poimandres' ? 'dark' : 'light'}']`,
+      themeCssSelector: (theme) =>
+        `[data-theme='${theme.name === 'poimandres' ? 'dark' : 'light'}']`,
       defaultProps: {
         wrap: true,
         showLineNumbers: false,
         collapseStyle: 'collapsible-auto',
         overridesByLang: {
           'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
-          {
-            showLineNumbers: false,
-          },
+            {
+              showLineNumbers: false,
+            },
         },
       },
       styleOverrides: {
@@ -72,11 +73,11 @@ export default defineConfig({
           'color-mix(in oklab, var(--secondary) 25%, transparent)',
         frames: {
           editorActiveTabForeground: 'var(--muted-foreground)',
-          editorActiveTabBackground:
-            'transparent',
+          editorActiveTabBackground: 'transparent',
           editorActiveTabIndicatorBottomColor: 'transparent',
           editorActiveTabIndicatorTopColor: 'transparent',
-          editorTabBarBackground: 'color-mix(in oklab, var(--secondary) 25%, transparent)',
+          editorTabBarBackground:
+            'color-mix(in oklab, var(--secondary) 25%, transparent)',
           editorTabBarBorderBottomColor: 'transparent',
           frameBoxShadowCssValue: 'none',
           terminalBackground:
@@ -133,7 +134,7 @@ export default defineConfig({
         output: {
           manualChunks: {
             'expressive-code': ['astro-expressive-code'],
-            'icons': ['~icons/ri/circle-fill', '~icons/fluent/new-16-filled'],
+            icons: ['~icons/ri/circle-fill', '~icons/fluent/new-16-filled'],
           },
         },
       },

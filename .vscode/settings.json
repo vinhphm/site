@@ -1,19 +1,14 @@
 {
-  // Disable the default formatter
   "prettier.enable": false,
-  "editor.formatOnSave": false,
-
-  // Auto fix with oxlint on save
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "never"
+    "source.organizeImports": "never",
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
   },
-
-  // File associations for better syntax highlighting
   "files.associations": {
     "*.astro": "astro"
   },
-
-  // Language specific settings
   "[typescript]": {
     "editor.defaultFormatter": null
   },
@@ -26,12 +21,15 @@
   "[json]": {
     "editor.defaultFormatter": null
   },
-
-  // Tailwind CSS IntelliSense
   "tailwindCSS.includeLanguages": {
     "astro": "html"
   },
-
-  // Astro language server settings
-  "astro.typescript.allowArbitraryAttributes": true
+  "astro.typescript.allowArbitraryAttributes": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript][typescript][javascriptreact][typescriptreact][json][jsonc][css][graphql]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnPaste": true,
+  "emmet.showExpandedAbbreviation": "never"
 }
