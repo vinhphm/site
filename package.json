@@ -31,7 +31,7 @@
     "@iconify/json": "^2.2.364",
     "@types/prompts": "^2.4.9",
     "astro": "^5.12.6",
-    "bumpp": "^10.2.1",
+    "bumpp": "^10.2.2",
     "esno": "^4.8.0",
     "husky": "^9.1.7",
     "picocolors": "^1.1.1",
