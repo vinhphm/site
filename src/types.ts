@@ -4,38 +4,38 @@ export type WritingKey = 'writings'
 
 export type CollectionWritings = CollectionEntry<WritingKey>
 
-export interface Author {
+export type Author = {
   name: string
   email: string
   alias: string
 }
 
-export interface NavLink {
+export type NavLink = {
   text: string
   href: string
 }
 
-export interface OEmbedOptions {
+export type OEmbedOptions = {
   maxWidth?: number
   maxHeight?: number
   theme?: 'light' | 'dark'
 }
 
-export interface Image {
+export type Image = {
   src: string
   alt: string
 }
 
-export interface Header {
+export type Header = {
   logo: Image
   navLinks: NavLink[]
 }
 
-export interface Footer {
+export type Footer = {
   navLinks: NavLink[]
 }
 
-export interface Config {
+export type Config = {
   author: Author
   title: string
   site?: string

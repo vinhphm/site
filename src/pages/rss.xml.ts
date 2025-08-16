@@ -3,7 +3,7 @@ import rss from '@astrojs/rss'
 import config from '@/constants/config'
 import { getDisplayDate, sortWritingsByDate } from '@/lib'
 
-interface Context {
+type Context = {
   site: string
 }
 

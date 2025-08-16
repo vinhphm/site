@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-interface DirMap {
+type DirMap = {
   [key: string]: string
 }
 
@@ -29,8 +29,17 @@ const slug = title
 const fileName = `${slug}.mdx`
 const filePath = path.join(contentDir, fileName)
 
+const UTC7_OFFSET_HOURS = 7
+const SECONDS_PER_MINUTE = 60
+const MINUTES_PER_HOUR = 60
+const MILLISECONDS_PER_SECOND = 1000
+const MILLISECONDS_PER_HOUR =
+  SECONDS_PER_MINUTE * MINUTES_PER_HOUR * MILLISECONDS_PER_SECOND
+
 const now = new Date()
-const utc7Time = new Date(now.getTime() + 7 * 60 * 60 * 1000)
+const utc7Time = new Date(
+  now.getTime() + UTC7_OFFSET_HOURS * MILLISECONDS_PER_HOUR
+)
 const formattedTime = utc7Time.toISOString().replace('Z', '+07:00')
 
 const template = `---

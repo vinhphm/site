@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
   "extends": ["ultracite"],
   "javascript": {
     "formatter": {
@@ -27,14 +27,14 @@
       "includes": ["**/*.css"],
       "linter": {
         "rules": {
-          "nursery": {
-            "noUnknownAtRule": "off"
-          },
           "correctness": {
             "noUnknownTypeSelector": "off"
           },
           "style": {
             "noDescendingSpecificity": "off"
+          },
+          "suspicious": {
+            "noUnknownAtRules": "off"
           }
         }
       }

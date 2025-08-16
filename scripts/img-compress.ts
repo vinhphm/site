@@ -2,6 +2,11 @@ import fs from 'node:fs/promises'
 import sharp from 'sharp'
 
 const maxSize = 1440
+const PNG_QUALITY = 100
+const JPEG_QUALITY = 80
+const COMPRESSION_LEVEL = 9
+const MIN_COMPRESSION_THRESHOLD = -0.1
+const BYTES_PER_KB = 1024
 
 async function processImage(file: string) {
   const buffer = await fs.readFile(file)
@@ -23,8 +28,8 @@ async function processImage(file: string) {
   }
 
   image = image[format]({
-    quality: format === 'png' ? 100 : 80,
-    compressionLevel: 9,
+    quality: format === 'png' ? PNG_QUALITY : JPEG_QUALITY,
+    compressionLevel: COMPRESSION_LEVEL,
   })
 
   const outBuffer = await image.withMetadata().toBuffer()
@@ -32,7 +37,7 @@ async function processImage(file: string) {
   const outSize = outBuffer.byteLength
 
   const percent = (outSize - size) / size
-  if (percent <= -0.1) {
+  if (percent <= MIN_COMPRESSION_THRESHOLD) {
     await fs.writeFile(file, outBuffer)
   }
 }
@@ -42,8 +47,8 @@ export async function compressImages(files: string[]) {
 }
 
 function _bytesToHuman(size: number) {
-  const i = Math.floor(Math.log(size) / Math.log(1024))
-  return `${(size / 1024 ** i).toFixed(2)} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`.padStart(
+  const i = Math.floor(Math.log(size) / Math.log(BYTES_PER_KB))
+  return `${(size / BYTES_PER_KB ** i).toFixed(2)} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`.padStart(
     10,
     ' '
   )

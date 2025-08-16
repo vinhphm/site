@@ -10,7 +10,7 @@ export function getDisplayDate(writing: CollectionEntry<'writings'>): Date {
 }
 
 export function isUpdated(writing: CollectionEntry<'writings'>): boolean {
-  return !!writing.data.updated
+  return Boolean(writing.data.updated)
 }
 
 export function sortWritingsByDate(
