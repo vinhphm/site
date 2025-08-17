@@ -64,6 +64,7 @@
       display: none;
     }
   }
+
   html:not([data-theme="dark"]) {
     .img-dark,
     [img-dark] {
@@ -94,6 +95,7 @@
 
   .extended-pt {
     @apply md:pt-5 lg:pt-12;
+
     figcaption {
       @apply mt-4 lg:mt-16;
     }
@@ -109,19 +111,42 @@
     p {
       @apply text-gray-800 leading-snug dark:text-zinc-300;
     }
+
     h1 {
       @apply my-4 text-xl font-medium dark:text-white;
     }
+
     h2 {
       @apply mt-8 mb-3 text-lg font-medium dark:text-white;
     }
+
     h3 {
-      @apply mt-8 mb-3 font-semibold;
+      @apply mt-8 mb-3 font-medium;
     }
+
     h4,
     h5,
     h6 {
-      @apply my-4 mb-3 font-medium;
+      @apply mt-4 mb-3 font-medium;
+    }
+
+    /* Reduce spacing when headers are consecutive */
+    h1 + h2,
+    h2 + h3,
+    h3 + h4,
+    h4 + h5,
+    h5 + h6,
+    h1 + h3,
+    h1 + h4,
+    h1 + h5,
+    h1 + h6,
+    h2 + h4,
+    h2 + h5,
+    h2 + h6,
+    h3 + h5,
+    h3 + h6,
+    h4 + h6 {
+      @apply mt-4;
     }
 
     strong {
@@ -135,30 +160,39 @@
     blockquote {
       @apply ml-[0.075em] border-l-3 border-gray-300 pl-4 text-gray-700 dark:border-zinc-600 dark:text-zinc-300;
     }
+
     a {
       @apply text-blue-500 hover:underline dark:text-blue-400;
     }
+
     table {
       @apply my-4 w-full table-auto border-collapse text-sm;
+
       th {
         @apply border-b border-gray-200 p-4 text-left font-medium dark:border-zinc-700;
       }
+
       td {
         @apply border-b border-gray-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-800;
       }
     }
+
     ol {
       @apply list-decimal space-y-2 pl-5 text-gray-800 dark:text-zinc-300;
     }
+
     ul {
       @apply list-disc space-y-1 pl-5 text-gray-800 dark:text-zinc-300;
     }
+
     li {
       @apply pl-1;
     }
+
     kbd {
       @apply rounded border border-b-2 border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs font-medium text-black dark:border-zinc-700 dark:bg-zinc-800 dark:text-white;
     }
+
     .katex-display {
       @apply overflow-x-auto overflow-y-hidden py-4;
     }
@@ -169,6 +203,7 @@
 
     figure {
       @apply my-4;
+
       figcaption {
         @apply mt-4 text-sm text-gray-500 dark:text-zinc-500;
       }
@@ -195,12 +230,15 @@
     animation: none;
     mix-blend-mode: normal;
   }
+
   .theme-transition::view-transition-old(root) {
     z-index: 1;
   }
+
   .theme-transition::view-transition-new(root) {
     z-index: 9999;
   }
+
   .theme-transition:where(
       [data-theme="dark"],
       [data-theme="dark"] *
@@ -208,6 +246,7 @@
   .theme-transition[data-theme="dark"]::view-transition-old(root) {
     z-index: 9999;
   }
+
   .theme-transition:where(
       [data-theme="dark"],
       [data-theme="dark"] *
@@ -231,6 +270,6 @@
   }
 
   .expressive-code .copy button {
-    @apply !rounded-lg;
+    @apply rounded-lg!;
   }
 }
