@@ -29,7 +29,7 @@
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.0",
     "@biomejs/biome": "2.2.0",
-    "@iconify/json": "^2.2.373",
+    "@iconify/json": "^2.2.375",
     "@types/prompts": "^2.4.9",
     "astro": "^5.13.2",
     "bumpp": "^10.2.3",
@@ -43,7 +43,7 @@
     "tailwindcss": "^4.1.12",
     "terser": "^5.43.1",
     "typescript": "^5.9.2",
-    "ultracite": "5.1.8",
+    "ultracite": "5.2.4",
     "unplugin-icons": "^22.2.0"
   },
   "trustedDependencies": [

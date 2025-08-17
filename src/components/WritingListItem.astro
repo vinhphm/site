@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import Indicator from '@/components/Indicator.astro'
-import { formatDate, getDisplayDate, isUpdated } from '@/lib'
+import { formatDate } from '@/lib/date'
+import { getDisplayDate, isUpdated } from '@/lib/writing'
 
 type Props = {
   writing: CollectionEntry<'writings'>
