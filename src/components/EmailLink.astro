@@ -1,0 +1,55 @@
+---
+import config from '@/constants/config'
+
+export type Props = {
+  text: string
+  className?: string
+}
+
+const { text, className = '' } = Astro.props
+
+// Obfuscate email by splitting it
+const email = config.author.email
+const emailParts = email ? email.split('@') : ['contact', 'example.com']
+---
+
+<span class={`email-obfuscated ${className}`} 
+      data-text={text}
+      data-user={emailParts[0]}
+      data-domain={emailParts[1]}>
+  {text}
+</span>
+
+<script>
+  // Client-side email deobfuscation
+  function deobfuscateEmails() {
+    const emailElements = document.querySelectorAll('.email-obfuscated')
+    
+    emailElements.forEach(element => {
+      const text = element.getAttribute('data-text')
+      const user = element.getAttribute('data-user')
+      const domain = element.getAttribute('data-domain')
+      
+      if (text === 'email' && user && domain) {
+        // Reconstruct email from parts
+        const email = user + '@' + domain
+        
+        // Create mailto link
+        const link = document.createElement('a')
+        link.href = 'mailto:' + email
+        link.textContent = text
+        link.className = element.className.replace('email-obfuscated', '')
+        
+        // Replace the span with the link
+        element.parentNode?.replaceChild(link, element)
+      }
+    })
+  }
+
+  // Run after DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', deobfuscateEmails)
+  } else {
+    deobfuscateEmails()
+  }
+</script>

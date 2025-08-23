@@ -45,7 +45,7 @@ export const config: Config = {
       },
       {
         text: 'email',
-        href: `mailto:${EMAIL}`,
+        href: '#',
       },
     ],
   },
