@@ -45,4 +45,5 @@ export type Config = {
   image: Image
   header: Header
   footer: Footer
+  cipherShift: number
 }

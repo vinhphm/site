@@ -2,6 +2,7 @@ import type { Config } from '@/types'
 
 const EMAIL = import.meta.env.PUBLIC_EMAIL
 const WORKER_HOST = import.meta.env.PUBLIC_WORKER_HOST
+const CIPHER_SHIFT = Number(import.meta.env.PUBLIC_CIPHER_SHIFT)
 
 export const config: Config = {
   author: {
@@ -49,6 +50,7 @@ export const config: Config = {
       },
     ],
   },
+  cipherShift: CIPHER_SHIFT,
 }
 
 export default config

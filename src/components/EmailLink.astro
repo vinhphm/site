@@ -17,7 +17,7 @@ if (emailParts.length !== 2 || !emailParts[0] || !emailParts[1]) {
 }
 
 // Apply simple cipher (ROT13-like) then Base64 encode
-const CIPHER_SHIFT = 3
+const CIPHER_SHIFT = config.cipherShift
 const cipher = (str: string) =>
   str
     .split('')
@@ -37,7 +37,7 @@ const encodedDomain = btoa(cipher(emailParts[1]))
 </span>
 
 
-<script>
+<script define:vars={{ CLIENT_CIPHER_SHIFT: CIPHER_SHIFT }}>
   // Enhanced client-side email deobfuscation
   function deobfuscateEmails() {
     const emailElements = document.querySelectorAll('.email-obfuscated')
@@ -48,10 +48,9 @@ const encodedDomain = btoa(cipher(emailParts[1]))
       const encodedDomain = element.getAttribute('data-d')
 
       if (text === 'email' && encodedUser && encodedDomain) {
-        // Reverse the obfuscation process
-        const CIPHER_SHIFT = 3
-        const decipher = (str: string) => str.split('').map(c =>
-          String.fromCharCode(c.charCodeAt(0) - CIPHER_SHIFT)
+        // Reverse the obfuscation process (server-side value embedded)
+        const decipher = (str) => str.split('').map(c =>
+          String.fromCharCode(c.charCodeAt(0) - CLIENT_CIPHER_SHIFT)
         ).join('')
 
         // Decode Base64 then reverse cipher
