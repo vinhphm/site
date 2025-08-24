@@ -8,38 +8,66 @@ export type Props = {
 
 const { text, className = '' } = Astro.props
 
-// Obfuscate email by splitting it
+// Enhanced obfuscation with Base64 encoding and simple cipher
 const email = config.author.email
-const emailParts = email ? email.split('@') : ['contact', 'example.com']
+const emailParts = email.split('@')
+
+if (emailParts.length !== 2 || !emailParts[0] || !emailParts[1]) {
+  throw new Error('Invalid email format')
+}
+
+// Apply simple cipher (ROT13-like) then Base64 encode
+const CIPHER_SHIFT = 3
+const cipher = (str: string) =>
+  str
+    .split('')
+    .map((c) => String.fromCharCode(c.charCodeAt(0) + CIPHER_SHIFT))
+    .join('')
+
+const encodedUser = btoa(cipher(emailParts[0]))
+const encodedDomain = btoa(cipher(emailParts[1]))
 ---
 
-<span class={`email-obfuscated ${className}`} 
+<!-- Enhanced email obfuscation with encoded data attributes -->
+<span class={`email-obfuscated ${className}`}
       data-text={text}
-      data-user={emailParts[0]}
-      data-domain={emailParts[1]}>
+      data-u={encodedUser}
+      data-d={encodedDomain}>
   {text}
 </span>
 
+
 <script>
-  // Client-side email deobfuscation
+  // Enhanced client-side email deobfuscation
   function deobfuscateEmails() {
     const emailElements = document.querySelectorAll('.email-obfuscated')
-    
+
     emailElements.forEach(element => {
       const text = element.getAttribute('data-text')
-      const user = element.getAttribute('data-user')
-      const domain = element.getAttribute('data-domain')
-      
-      if (text === 'email' && user && domain) {
-        // Reconstruct email from parts
+      const encodedUser = element.getAttribute('data-u')
+      const encodedDomain = element.getAttribute('data-d')
+
+      if (text === 'email' && encodedUser && encodedDomain) {
+        // Reverse the obfuscation process
+        const CIPHER_SHIFT = 3
+        const decipher = (str: string) => str.split('').map(c =>
+          String.fromCharCode(c.charCodeAt(0) - CIPHER_SHIFT)
+        ).join('')
+
+        // Decode Base64 then reverse cipher
+        const user = decipher(atob(encodedUser))
+        const domain = decipher(atob(encodedDomain))
+
+        // Reconstruct email
         const email = user + '@' + domain
-        
-        // Create mailto link
+
+        // Create clickable mailto link
         const link = document.createElement('a')
         link.href = 'mailto:' + email
         link.textContent = text
         link.className = element.className.replace('email-obfuscated', '')
-        
+        link.title = `Send email to ${email}`
+
         // Replace the span with the link
         element.parentNode?.replaceChild(link, element)
       }
