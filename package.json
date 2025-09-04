@@ -11,9 +11,8 @@
     "new": "esno scripts/create.ts",
     "astro": "astro",
     "release": "bumpp",
-    "lint": "ultracite lint",
-    "lint:fix": "ultracite format",
-    "format": "ultracite format",
+    "lint": "ultracite check",
+    "lint:fix": "ultracite fix",
     "prepare": "husky"
   },
   "dependencies": {
@@ -41,9 +40,9 @@
     "rehype-external-links": "^3.0.0",
     "sharp": "^0.34.3",
     "tailwindcss": "^4.1.12",
-    "terser": "^5.43.1",
+    "terser": "^5.44.0",
     "typescript": "^5.9.2",
-    "ultracite": "5.2.17",
+    "ultracite": "5.3.3",
     "unplugin-icons": "^22.2.0"
   },
   "trustedDependencies": [
