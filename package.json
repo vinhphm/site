@@ -42,7 +42,7 @@
     "tailwindcss": "^4.1.13",
     "terser": "^5.44.0",
     "typescript": "^5.9.2",
-    "ultracite": "5.3.4",
+    "ultracite": "5.4.6",
     "unplugin-icons": "^22.3.0"
   },
   "trustedDependencies": [
