@@ -38,7 +38,7 @@
     "prompts": "^2.4.2",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-external-links": "^3.0.0",
-    "sharp": "^0.34.3",
+    "sharp": "^0.34.4",
     "tailwindcss": "^4.1.13",
     "terser": "^5.44.0",
     "typescript": "^5.9.2",
