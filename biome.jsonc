@@ -1,8 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
-  "extends": [
-    "ultracite"
-  ],
+  "extends": ["ultracite"],
   "javascript": {
     "formatter": {
       "semicolons": "asNeeded",
@@ -11,10 +9,7 @@
   },
   "overrides": [
     {
-      "includes": [
-        "**/*.astro",
-        "**/*.vue"
-      ],
+      "includes": ["**/*.astro", "**/*.vue"],
       "linter": {
         "rules": {
           "style": {
@@ -33,9 +28,7 @@
       }
     },
     {
-      "includes": [
-        "**/*.css"
-      ],
+      "includes": ["**/*.css"],
       "linter": {
         "rules": {
           "correctness": {

@@ -7,15 +7,11 @@ type Props = {
 
 const { src, extended = false, videoClass } = Astro.props
 
-const getContainerClass = () => {
-  return `flex flex-col items-center justify-center${
-    extended ? ' extended-py' : ''
-  }`
-}
+const getContainerClass = () =>
+  `flex flex-col items-center justify-center${extended ? ' extended-py' : ''}`
 
-const getWrapperClass = () => {
-  return `flex justify-center ${extended ? ' extended-wrapper' : ''}`
-}
+const getWrapperClass = () =>
+  `flex justify-center ${extended ? ' extended-wrapper' : ''}`
 ---
 
 <figure class={getContainerClass()}>
