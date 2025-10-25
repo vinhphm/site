@@ -21,14 +21,23 @@ const { Content } = await render(writing)
 const structuredData = createWritingStructuredData(writing)
 ---
 
-<Layout title={writing.data.title}
-        description={writing.data.description}
-        section="Writing"
-        image={writing.data.image}>
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
+<Layout
+  title={writing.data.title}
+  description={writing.data.description}
+  section="Writing"
+  image={writing.data.image}
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+    slot="structured-data"
+  />
 
   <div class="mb-8">
-    <h1 class="font-medium mb-2 leading-tight text-heading" transition:name={`writing-id-${writing.id}`}>
+    <h1
+      class="font-medium mb-2 leading-tight text-heading"
+      transition:name={`writing-id-${writing.id}`}
+    >
       {writing.data.title}
     </h1>
     <WritingMeta writing={writing} />

@@ -17,11 +17,14 @@ Most solutions suggest putting the detection script in `<head>`, which makes sen
 
 ```javascript showLineNumbers=false
 // Detection script in <head>
-(function() {
-  const theme = localStorage.getItem('theme') ||
-    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
-})();
+;(function () {
+  const theme =
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light')
+  document.documentElement.setAttribute('data-theme', theme)
+})()
 ```
 
 The script detects the theme and applies it by setting the `data-theme` attribute on the root `<html>` element. This means your theme-controlling styles (background, text color, etc.) need to be applied to `<html>`, not other elements like `<body>`.

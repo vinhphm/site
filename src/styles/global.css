@@ -1,6 +1,6 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
   --font-sans: var(--font-inter);
@@ -41,7 +41,7 @@
   --ring: var(--color-gray-400);
 }
 
-:root[data-theme="dark"] {
+:root[data-theme='dark'] {
   --background: var(--color-zinc-900);
   --foreground: var(--color-zinc-200);
   --primary: var(--color-zinc-200);
@@ -58,14 +58,14 @@
 }
 
 @layer base {
-  html[data-theme="dark"] {
+  html[data-theme='dark'] {
     .img-light,
     [img-light] {
       display: none;
     }
   }
 
-  html:not([data-theme="dark"]) {
+  html:not([data-theme='dark']) {
     .img-dark,
     [img-dark] {
       display: none;
@@ -240,18 +240,18 @@
   }
 
   .theme-transition:where(
-      [data-theme="dark"],
-      [data-theme="dark"] *
+      [data-theme='dark'],
+      [data-theme='dark'] *
     )::view-transition-old(root),
-  .theme-transition[data-theme="dark"]::view-transition-old(root) {
+  .theme-transition[data-theme='dark']::view-transition-old(root) {
     z-index: 9999;
   }
 
   .theme-transition:where(
-      [data-theme="dark"],
-      [data-theme="dark"] *
+      [data-theme='dark'],
+      [data-theme='dark'] *
     )::view-transition-new(root),
-  .theme-transition[data-theme="dark"]::view-transition-new(root) {
+  .theme-transition[data-theme='dark']::view-transition-new(root) {
     z-index: 1;
   }
 

@@ -4,6 +4,7 @@ added: 2025-05-30T09:43:02.283+07:00
 updated: 2025-06-05T18:40:02.833+07:00
 description: A practical comparison of how Cursor, Windsurf, VS Code, and Zed handle persistent instructions and team consistency. Covers rule systems, auto-generation features, and solving collaboration pain points with AI coding assistants.
 ---
+
 import CursorIcon from '~icons/vscode-icons/file-type-cursorrules'
 import WindsurfIcon from '~icons/simple-icons/windsurf'
 import CopilotIcon from '~icons/simple-icons/githubcopilot'
@@ -37,7 +38,7 @@ Think of memories as your AI taking notes while you work:
 
 Rules are where you get specific about how things should work:
 
-*How they activate:*
+_How they activate:_
 
 - **Manual**: Only when you @mention them (for those special cases)
 
@@ -57,7 +58,7 @@ Cursor doesn't mess around. It's got the most comprehensive rule system I've see
 
 Stored right in your `.cursor/rules` folder, these play nicely with git:
 
-*Activation flavors:*
+_Activation flavors:_
 
 - **Always**: Can't escape these (use wisely)
 
@@ -87,7 +88,7 @@ GitHub Copilot keeps things recognizable if you're already living in VS Code. Tw
 
 ### Custom instructions
 
-*File-based options:*
+_File-based options:_
 
 - `.github/copilot-instructions.md`: One file to rule them all (workspace-wide)
 
@@ -95,7 +96,7 @@ GitHub Copilot keeps things recognizable if you're already living in VS Code. Tw
 
 > Both support glob patterns and can reference each other.
 
-*Settings-based:* Configure everything directly in VS Code settings. Less glamorous, but it works.
+_Settings-based:_ Configure everything directly in VS Code settings. Less glamorous, but it works.
 
 ### Prompt files
 
@@ -115,18 +116,18 @@ This is where Zed gets clever. The Rules Library isn't just a settings panel - i
 
 ## Quick comparison
 
-| Feature                       | Windsurf        | Cursor          | VS Code/Copilot | Zed            |
-| :---------------------------- | :-------------- | :-------------- | :-------------- | :------------- |
-| **Auto-Generated Context**    | ✅ Memories      | ✅ Memories (Beta) | ❌               | ❌              |
-| **Rule Generation from Chat** | ❌               | ✅               | ❌               | ❌              |
-| **Workspace-Scoped Rules**    | ✅               | ✅               | ✅               | ✅              |
-| **Global Rules**              | ✅               | ✅               | ✅               | ✅              |
-| **File Pattern Matching**     | ✅ Glob          | ✅ Auto Attached | ✅ applyTo       | ❌              |
-| **Version Control Friendly**  | ✅               | ✅               | ✅               | ✅              |
-| **Credit/Token Cost**         | Free (memories) | Standard        | Standard        | Standard       |
-| **Manual Rule Activation**    | ✅ @mention      | ✅ @ruleName     | ✅ Manual mode   | ✅ @rule        |
-| **Rule Size Limits**          | 12k chars total | None specified  | None specified  | None specified |
-| **Learning Curve**            | Medium          | High            | Medium          | Low            |
+| Feature                       | Windsurf        | Cursor             | VS Code/Copilot | Zed            |
+| :---------------------------- | :-------------- | :----------------- | :-------------- | :------------- |
+| **Auto-Generated Context**    | ✅ Memories     | ✅ Memories (Beta) | ❌              | ❌             |
+| **Rule Generation from Chat** | ❌              | ✅                 | ❌              | ❌             |
+| **Workspace-Scoped Rules**    | ✅              | ✅                 | ✅              | ✅             |
+| **Global Rules**              | ✅              | ✅                 | ✅              | ✅             |
+| **File Pattern Matching**     | ✅ Glob         | ✅ Auto Attached   | ✅ applyTo      | ❌             |
+| **Version Control Friendly**  | ✅              | ✅                 | ✅              | ✅             |
+| **Credit/Token Cost**         | Free (memories) | Standard           | Standard        | Standard       |
+| **Manual Rule Activation**    | ✅ @mention     | ✅ @ruleName       | ✅ Manual mode  | ✅ @rule       |
+| **Rule Size Limits**          | 12k chars total | None specified     | None specified  | None specified |
+| **Learning Curve**            | Medium          | High               | Medium          | Low            |
 
 ## So which one now?
 

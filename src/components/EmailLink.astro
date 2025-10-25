@@ -29,29 +29,34 @@ const encodedDomain = btoa(cipher(emailParts[1]))
 ---
 
 <!-- Enhanced email obfuscation with encoded data attributes -->
-<span class={`email-obfuscated ${className}`}
-      data-text={text}
-      data-u={encodedUser}
-      data-d={encodedDomain}>
+<span
+  class={`email-obfuscated ${className}`}
+  data-text={text}
+  data-u={encodedUser}
+  data-d={encodedDomain}
+>
   {text}
 </span>
-
 
 <script define:vars={{ CLIENT_CIPHER_SHIFT: CIPHER_SHIFT }}>
   // Enhanced client-side email deobfuscation
   function deobfuscateEmails() {
     const emailElements = document.querySelectorAll('.email-obfuscated')
 
-    emailElements.forEach(element => {
+    emailElements.forEach((element) => {
       const text = element.getAttribute('data-text')
       const encodedUser = element.getAttribute('data-u')
       const encodedDomain = element.getAttribute('data-d')
 
       if (text === 'email' && encodedUser && encodedDomain) {
         // Reverse the obfuscation process (server-side value embedded)
-        const decipher = (str) => str.split('').map(c =>
-          String.fromCharCode(c.charCodeAt(0) - CLIENT_CIPHER_SHIFT)
-        ).join('')
+        const decipher = (str) =>
+          str
+            .split('')
+            .map((c) =>
+              String.fromCharCode(c.charCodeAt(0) - CLIENT_CIPHER_SHIFT)
+            )
+            .join('')
 
         // Decode Base64 then reverse cipher
         const user = decipher(atob(encodedUser))

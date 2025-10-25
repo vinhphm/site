@@ -12,15 +12,19 @@ const { writing } = Astro.props
 ---
 
 <div class="text-gray-500 dark:text-zinc-500 flex items-center gap-2">
-  <time datetime={writing.data.added.toISOString()}
-        title={`Published on ${formatDate(writing.data.added)}`}>
+  <time
+    datetime={writing.data.added.toISOString()}
+    title={`Published on ${formatDate(writing.data.added)}`}
+  >
     {formatDate(writing.data.added)}
   </time>
-  {isUpdated(writing) && (
-    <Indicator alwaysShowLabel>
-      <time datetime={writing.data.updated!.toISOString()}>
-        Updated on {formatDate(writing.data.updated!)}
-      </time>
-    </Indicator>
-  )}
+  {
+    isUpdated(writing) && (
+      <Indicator alwaysShowLabel>
+        <time datetime={writing.data.updated!.toISOString()}>
+          Updated on {formatDate(writing.data.updated!)}
+        </time>
+      </Indicator>
+    )
+  }
 </div>

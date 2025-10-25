@@ -5,20 +5,24 @@ import config from '@/constants/config'
 
 <footer class="text-center">
   <div class="tracking-tight flex gap-4 items-center justify-center">
-    {config.footer.navLinks.map(link => (
-      link.text === 'email' ? (
-        <EmailLink 
-          text={link.text}
-          className="text-gray-500 dark:text-zinc-500 hover:text-blue-500 dark:hover:text-blue-400 hover:underline"
-        />
-      ) : (
-        <a href={link.href}
-           target="_blank"
-           rel="noopener noreferrer"
-           class="text-gray-500 dark:text-zinc-500 hover:text-blue-500 dark:hover:text-blue-400 hover:underline">
-          {link.text}
-        </a>
+    {
+      config.footer.navLinks.map((link) =>
+        link.text === 'email' ? (
+          <EmailLink
+            text={link.text}
+            className="text-gray-500 dark:text-zinc-500 hover:text-blue-500 dark:hover:text-blue-400 hover:underline"
+          />
+        ) : (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-500 dark:text-zinc-500 hover:text-blue-500 dark:hover:text-blue-400 hover:underline"
+          >
+            {link.text}
+          </a>
+        )
       )
-    ))}
+    }
   </div>
 </footer>

@@ -5,6 +5,7 @@ updated: 2025-05-08T19:10:20.104+07:00
 lang: en
 description: Configure Zed to suit your workflow
 ---
+
 import { Image } from 'astro:assets'
 import zedMainUI from '@/assets/images/2024/zed-main-ui.png'
 import zedInlineCompletion from '@/assets/images/2024/zed-inline-completion.webp'
@@ -18,9 +19,7 @@ So I talked about switching to Zed in the previous post. I'm obsessed with it th
   <div class="extended-wrapper">
     <Image src={zedMainUI} alt="Zed's main UI" />
   </div>
-  <figcaption class="text-center mt-8">
-    Zed's main UI
-  </figcaption>
+  <figcaption class="text-center mt-8">Zed's main UI</figcaption>
 </figure>
 
 As you can see, Zed's UI is quite simple. It reminds me of [rxi's Lite Editor](https://github.com/rxi/lite) but not as extreme 😅. So it's not hard to get used to. But if you’re used to GUI, you might find Zed a bit overwhelming, and might have some moments wonder where something is at. But don't worry, it's just a matter of time to get used to it.
@@ -67,14 +66,22 @@ The team improves the support on this in a rapid rate so it's hard to keep up in
 ### Inline completion
 
 <figure>
-  <img src={zedInlineCompletion.src} alt="Zed inline completion" class="rounded-lg shadow-lg" />
+  <img
+    src={zedInlineCompletion.src}
+    alt="Zed inline completion"
+    class="rounded-lg shadow-lg"
+  />
 </figure>
 
 ### Assistant
 
 <figure class="extended-py">
   <div class="extended-wrapper">
-    <Image src={zedAssistantPanel} alt="Zed's assistant panel" class="rounded shadow-lg" />
+    <Image
+      src={zedAssistantPanel}
+      alt="Zed's assistant panel"
+      class="rounded shadow-lg"
+    />
   </div>
 </figure>
 

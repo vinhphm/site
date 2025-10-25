@@ -16,18 +16,27 @@ const updated = isUpdated(writing)
 <li>
   <span class="group flex gap-3 justify-between items-start">
     <span>
-      <a href={`/writing/${writing.id}`} class="group-hover:underline" transition:name={`writing-id-${writing.id}`}>
+      <a
+        href={`/writing/${writing.id}`}
+        class="group-hover:underline"
+        transition:name={`writing-id-${writing.id}`}
+      >
         {writing.data.title}
       </a>
-      {updated && writing.data.updated && (
-        <Indicator
-          title={`Published on ${formatDate(writing.data.added)}\nUpdated on ${formatDate(writing.data.updated)}`}
-          class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500">
-         Updated
-        </Indicator>
-      )}
+      {
+        updated && writing.data.updated && (
+          <Indicator
+            title={`Published on ${formatDate(writing.data.added)}\nUpdated on ${formatDate(writing.data.updated)}`}
+            class="ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500"
+          >
+            Updated
+          </Indicator>
+        )
+      }
     </span>
-    <span class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2">
+    <span
+      class="text-gray-500 text-nowrap dark:text-zinc-500 flex items-center gap-2"
+    >
       {formatDate(displayDate)}
     </span>
   </span>

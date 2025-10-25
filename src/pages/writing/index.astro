@@ -11,10 +11,6 @@ const writings = sortWritingsByDate(collection)
 
 <Layout title="Writing" section="Writing" description={config.description}>
   <ul class="flex flex-col gap-1.5">
-    {
-      writings.map((writing) => (
-        <WritingListItem writing={writing} />
-      ))
-    }
+    {writings.map((writing) => <WritingListItem writing={writing} />)}
   </ul>
 </Layout>

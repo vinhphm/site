@@ -6,6 +6,7 @@ description: See how JavaScript's Set and Map might benefit you in your projects
 tag: JavaScript
 duration: 4 min read
 ---
+
 import javascriptSetMap from '@/assets/videos/2024/javascripts-set-and-map.mp4'
 import Video from '@/components/Video.astro'
 
@@ -34,9 +35,7 @@ To start with, instead of **react-table**, I decided to use **Ant Design Table**
 
 ```tsx
 // ...
-const [selectedRowKeys, setSelectedRowKeys] = useState<Set<number>>(
-  new Set(),
-);
+const [selectedRowKeys, setSelectedRowKeys] = useState<Set<number>>(new Set())
 // ...
 ```
 
@@ -48,22 +47,22 @@ Next stuff was to create two maps:
 ```tsx
 // ...
 const { groupMap, idToGroupMap } = useMemo(() => {
-  const groupMap = new Map<number, Set<number>>();
-  const idToGroupMap = new Map<number, number>();
+  const groupMap = new Map<number, Set<number>>()
+  const idToGroupMap = new Map<number, number>()
 
   data.forEach((item) => {
     // Populate groupMap
     if (!groupMap.has(item.groupId)) {
-      groupMap.set(item.groupId, new Set());
+      groupMap.set(item.groupId, new Set())
     }
-    groupMap.get(item.groupId)!.add(item.id);
+    groupMap.get(item.groupId)!.add(item.id)
 
     // Populate idToGroupMap
-    idToGroupMap.set(item.id, item.groupId);
-  });
+    idToGroupMap.set(item.id, item.groupId)
+  })
 
-  return { groupMap, idToGroupMap };
-}, [data]);
+  return { groupMap, idToGroupMap }
+}, [data])
 // ...
 ```
 
@@ -73,34 +72,34 @@ And then, we can implement the `onSelectChange` function to use these maps to ef
 // ...
 const onSelectChange = useCallback(
   (newSelectedRowKeys: number[]) => {
-    const newSelectedSet = new Set(selectedRowKeys);
+    const newSelectedSet = new Set(selectedRowKeys)
     const addedKeys = newSelectedRowKeys.filter(
-      (key) => !selectedRowKeys.has(key),
-    );
+      (key) => !selectedRowKeys.has(key)
+    )
     const removedKeys = Array.from(selectedRowKeys).filter(
-      (key) => !newSelectedRowKeys.includes(key),
-    );
+      (key) => !newSelectedRowKeys.includes(key)
+    )
 
     if (addedKeys.length > 0) {
       // Selection
-      const groupId = idToGroupMap.get(addedKeys[0])!;
-      groupMap.get(groupId)!.forEach((id) => newSelectedSet.add(id));
+      const groupId = idToGroupMap.get(addedKeys[0])!
+      groupMap.get(groupId)!.forEach((id) => newSelectedSet.add(id))
     } else if (removedKeys.length > 0) {
       // Deselection
-      const groupId = idToGroupMap.get(removedKeys[0])!;
-      groupMap.get(groupId)!.forEach((id) => newSelectedSet.delete(id));
+      const groupId = idToGroupMap.get(removedKeys[0])!
+      groupMap.get(groupId)!.forEach((id) => newSelectedSet.delete(id))
     }
 
-    setSelectedRowKeys(newSelectedSet);
+    setSelectedRowKeys(newSelectedSet)
   },
-  [selectedRowKeys, groupMap, idToGroupMap],
-);
+  [selectedRowKeys, groupMap, idToGroupMap]
+)
 
 const rowSelection = {
   selectedRowKeys: Array.from(selectedRowKeys),
   onChange: (selectedRowKeys: Key[]) =>
     onSelectChange(selectedRowKeys as number[]),
-};
+}
 
 return (
   <Table
@@ -112,12 +111,11 @@ return (
     virtual
     scroll={{ y: 700 }}
   />
-);
+)
 // ...
 ```
 
 That's it! And to be fair, the logic behind the selection handling, in fact, is different from the previous one so the increase in performance is not entirely credited to the use of **Set** and **Map** here but they do contribute a lot to it. I'm not sure if it's the best solution, but it sure gives better results for now.
-
 
 <Video src={javascriptSetMap} extended videoClass="rounded-lg shadow-lg" />
 

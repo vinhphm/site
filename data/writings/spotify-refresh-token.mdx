@@ -5,15 +5,18 @@ lang: en
 description: See how you can generate refresh tokens for the Spotify Web API using your browser and Node.js. Learn how to use the Spotify Developer Dashboard, scopes, and code snippets to access Spotify data on your website.
 duration: 3 min read
 ---
+
 import { Image } from 'astro:assets'
 import spotifyCurrentPlaying from '@/assets/images/2023/spotify-current-playing.webp'
 import clientIdSecret from '@/assets/images/2023/client-id-secret.png'
 
 <figure class="pt-5">
-  <img src={spotifyCurrentPlaying.src} alt="Spotify current playing" class="shadow rounded-lg" />
-  <figcaption class="text-center">
-    Spotify current playing
-  </figcaption>
+  <img
+    src={spotifyCurrentPlaying.src}
+    alt="Spotify current playing"
+    class="shadow rounded-lg"
+  />
+  <figcaption class="text-center">Spotify current playing</figcaption>
 </figure>
 
 Do you want to add some cool Spotify features to your website, such as displaying your current playing song, creating a custom music player, or showing off your playlists? If so, you will need to use the Spotify Web API, which lets you access and manipulate Spotify data. However, the Spotify Web API requires authentication and authorization from both you and your users, which means you will need to get an access token and a refresh token for each user. This can be tricky and risky if you don't do it right. In this blog post, I will show you how you can generate refresh tokens for the Spotify Web API using only your browser and a few lines of code. All you need is:
@@ -64,11 +67,13 @@ app.get('/callback', async (request, response) => {
   const code = request.query.code
   await axios
     .post(
-      (url = 'https://accounts.spotify.com/api/token'), (data = new URLSearchParams({
+      (url = 'https://accounts.spotify.com/api/token'),
+      (data = new URLSearchParams({
         grant_type: 'authorization_code',
         redirect_uri: REDIRECT_URI,
         code,
-      })), (config = {
+      })),
+      (config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -79,20 +84,24 @@ app.get('/callback', async (request, response) => {
           username: CLIENT_ID,
           password: CLIENT_SECRET,
         },
-      }))
+      })
+    )
     .then((resp1) => {
       axios
         .post(
-          (url = 'https://accounts.spotify.com/api/token'), (data = new URLSearchParams({
+          (url = 'https://accounts.spotify.com/api/token'),
+          (data = new URLSearchParams({
             grant_type: 'refresh_token',
             refresh_token: resp1.data.refresh_token,
             access_token: resp1.data.access_token,
-          })), (config = {
+          })),
+          (config = {
             auth: {
               username: CLIENT_ID,
               password: CLIENT_SECRET,
             },
-          }))
+          })
+        )
         .then((resp2) => {
           return response.send(JSON.stringify([resp1.data, resp2.data]))
         })

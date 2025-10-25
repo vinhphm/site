@@ -43,7 +43,10 @@ const imageUrl = getImageUrl()
 const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 ---
 
-<html lang="en" class="bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-200">
+<html
+  lang="en"
+  class="bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-200"
+>
   <head>
     <!-- Global Metadata -->
     <meta charset="utf-8" />
@@ -52,15 +55,23 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      href="/rss.xml"
+      title="RSS"
+    />
     <meta name="generator" content={Astro.generator} />
 
     <script is:inline>
       function initializeTheme() {
         const theme = localStorage.getItem('color-scheme') || 'auto'
-        const actualTheme = theme === 'auto'
-          ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-          : theme
+        const actualTheme =
+          theme === 'auto'
+            ? window.matchMedia?.('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+            : theme
 
         document.documentElement.setAttribute('data-theme', actualTheme)
       }

@@ -25,10 +25,15 @@ const { url, maxWidth = 800 } = Astro.props
 
   function getCurrentTheme(): string {
     return document.documentElement.hasAttribute('data-theme') &&
-           document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+      document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark'
+      : 'light'
   }
 
-  async function fetchOembedData(url: string, theme: string): Promise<OEmbedData | null> {
+  async function fetchOembedData(
+    url: string,
+    theme: string
+  ): Promise<OEmbedData | null> {
     try {
       const response = await fetch(
         `${(window as any).__WORKER_HOST__}/oembed?url=${encodeURIComponent(url)}&theme=${theme}`
@@ -40,7 +45,11 @@ const { url, maxWidth = 800 } = Astro.props
     }
   }
 
-  function injectContent(container: HTMLElement, html: string, isDark: boolean) {
+  function injectContent(
+    container: HTMLElement,
+    html: string,
+    isDark: boolean
+  ) {
     container.innerHTML = ''
     const temp = document.createElement('div')
     temp.innerHTML = html
@@ -48,9 +57,15 @@ const { url, maxWidth = 800 } = Astro.props
     // Add data-bluesky-embed-color-mode attribute to blockquote elements for Bluesky embeds
     const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
     blockquotes.forEach((blockquote) => {
-      if (blockquote.classList.contains('bluesky-embed') ||
-        (blockquote.getAttribute('data-bluesky-uri') && blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))) {
-        blockquote.setAttribute('data-bluesky-embed-color-mode', isDark ? 'dark' : 'light')
+      if (
+        blockquote.classList.contains('bluesky-embed') ||
+        (blockquote.getAttribute('data-bluesky-uri') &&
+          blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))
+      ) {
+        blockquote.setAttribute(
+          'data-bluesky-embed-color-mode',
+          isDark ? 'dark' : 'light'
+        )
       }
     })
 
@@ -73,7 +88,11 @@ const { url, maxWidth = 800 } = Astro.props
     })
   }
 
-  function renderOembedContent(container: HTMLElement, data: OEmbedData, maxWidth: number) {
+  function renderOembedContent(
+    container: HTMLElement,
+    data: OEmbedData,
+    maxWidth: number
+  ) {
     const contentDiv = container.querySelector('.oembed-content') as HTMLElement
     if (!contentDiv) return
 
@@ -158,7 +177,10 @@ const { url, maxWidth = 800 } = Astro.props
   function setupThemeObserver() {
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'data-theme'
+        ) {
           // Reload all oembed content when theme changes
           initOembedContainers()
         }
@@ -167,7 +189,7 @@ const { url, maxWidth = 800 } = Astro.props
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme']
+      attributeFilter: ['data-theme'],
     })
 
     // Store observer for cleanup if needed
@@ -207,37 +229,37 @@ const { url, maxWidth = 800 } = Astro.props
 </div>
 
 <style>
-@reference "../styles/global.css";
+  @reference "../styles/global.css";
 
-.oembed-container {
-  @apply my-4 w-full;
-}
+  .oembed-container {
+    @apply my-4 w-full;
+  }
 
-.oembed-loading {
-  @apply p-4 text-center text-muted-foreground italic;
-}
+  .oembed-loading {
+    @apply p-4 text-center text-muted-foreground italic;
+  }
 
-.oembed-content {
-  @apply w-full flex justify-center-safe;
-}
+  .oembed-content {
+    @apply w-full flex justify-center-safe;
+  }
 
-.oembed-content img {
-  @apply max-w-full h-auto;
-}
+  .oembed-content img {
+    @apply max-w-full h-auto;
+  }
 
-.video-container {
-  @apply relative h-0 overflow-hidden pb-[56.25%];
-}
+  .video-container {
+    @apply relative h-0 overflow-hidden pb-[56.25%];
+  }
 
-.video-container iframe {
-  @apply absolute top-0 left-0 w-full h-full;
-}
+  .video-container iframe {
+    @apply absolute top-0 left-0 w-full h-full;
+  }
 
-.oembed-content a {
-  @apply text-blue-500 underline dark:text-blue-400;
-}
+  .oembed-content a {
+    @apply text-blue-500 underline dark:text-blue-400;
+  }
 
-.oembed-content a:hover {
-  @apply no-underline;
-}
+  .oembed-content a:hover {
+    @apply no-underline;
+  }
 </style>

@@ -19,27 +19,39 @@ const structuredData = {
 }
 ---
 
-<Layout description={config.description}
-        containerClass="flex flex-col max-w-sm justify-center h-svh">
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="structured-data" />
+<Layout
+  description={config.description}
+  containerClass="flex flex-col max-w-sm justify-center h-svh"
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(structuredData)}
+    slot="structured-data"
+  />
   <div class="space-y-6">
-    {latestWriting && (
-      <span class="flex flex-col justify-between items-start">
+    {
+      latestWriting && (
+        <span class="flex flex-col justify-between items-start">
           <span class="text-sm text-gray-500 dark:text-zinc-500 mr-2">
             <NewIcon />
             Latest
           </span>
-          <a href={`/writing/${latestWriting.id}`} transition:name={`writing-id-${latestWriting.id}`} class="hover:underline">
+          <a
+            href={`/writing/${latestWriting.id}`}
+            transition:name={`writing-id-${latestWriting.id}`}
+            class="hover:underline"
+          >
             {latestWriting.data.title}
           </a>
-      </span>
-    )}
+        </span>
+      )
+    }
     <hr />
     <div>
       <p>
-        I craft digital solutions at PwC by day, experiment with side projects by night.
-        This space showcases my explorations in code, performance optimizations, and the
-        occasional wild idea.
+        I craft digital solutions at PwC by day, experiment with side projects
+        by night. This space showcases my explorations in code, performance
+        optimizations, and the occasional wild idea.
       </p>
       <p>Coffee ☕, tea 🧋, and travel 🚌 fuel the journey.</p>
     </div>

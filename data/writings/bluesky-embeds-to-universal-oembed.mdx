@@ -7,6 +7,7 @@ description: What started as a simple idea to embed Bluesky posts turned into a 
 tag: Web
 duration: 8 min read
 ---
+
 import OEmbed from '@/components/OEmbed.astro'
 import BlueskyIcon from '~icons/ri/bluesky-fill'
 
@@ -24,6 +25,7 @@ const { url } = Astro.props
 const response = await fetch(`https://embed.bsky.app/oembed?url=${url}`)
 const data = await response.json()
 ---
+
 <div set:html={data.html} />
 ```
 
@@ -33,7 +35,7 @@ Until I realized I wanted theme support.
 
 ## The theme dilemma
 
-Here's where my perfectionist tendencies kicked in. I didn't just want the embed to match my site's theme, I wanted it to *react* to theme changes in real-time. No page refresh, no flicker, just seamless adaptation.
+Here's where my perfectionist tendencies kicked in. I didn't just want the embed to match my site's theme, I wanted it to _react_ to theme changes in real-time. No page refresh, no flicker, just seamless adaptation.
 
 But here's the first problem: **Bluesky's oEmbed endpoint doesn't actually support a `theme` parameter**. Unlike some other providers, you can't just pass `&theme=dark` and get a dark-themed embed back.
 
@@ -57,6 +59,7 @@ Of course. Most oEmbed endpoints don't allow cross-origin requests from browsers
 ## Building the bridge
 
 I needed a proxy. Something that could:
+
 1. Fetch oEmbed data from any provider
 2. Handle CORS properly
 3. Support theme parameters
@@ -64,7 +67,7 @@ I needed a proxy. Something that could:
 
 Enter Cloudflare Workers, perfect for this lightweight proxy task.
 
-The core insight was realizing this wasn't just about Bluesky anymore. If I was building a proxy, why not make it work with *any* oEmbed provider? Twitter, YouTube, Instagram, the whole ecosystem.
+The core insight was realizing this wasn't just about Bluesky anymore. If I was building a proxy, why not make it work with _any_ oEmbed provider? Twitter, YouTube, Instagram, the whole ecosystem.
 
 Here's the heart of the solution:
 
@@ -73,17 +76,17 @@ async function findProvider(url, providers) {
   for (const provider of providers) {
     for (const endpoint of provider.endpoints) {
       for (const scheme of endpoint.schemes || []) {
-        const pattern = new RegExp('^' + scheme.replace(/\*/g, '.*') + '$');
+        const pattern = new RegExp('^' + scheme.replace(/\*/g, '.*') + '$')
         if (pattern.test(url)) {
           return {
             name: provider.provider_name,
-            endpoint: endpoint.url
-          };
+            endpoint: endpoint.url,
+          }
         }
       }
     }
   }
-  return null;
+  return null
 }
 ```
 
@@ -103,33 +106,38 @@ The solution required a careful dance:
 
 ```javascript showLineNumbers=false
 function injectContent(container, html, isDark) {
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
+  const temp = document.createElement('div')
+  temp.innerHTML = html
 
   // Add theme support to Bluesky embeds (since oEmbed doesn't support it)
-  const blockquotes = Array.from(temp.getElementsByTagName('blockquote'));
-  blockquotes.forEach(blockquote => {
-    if (blockquote.classList.contains('bluesky-embed') ||
-        blockquote.getAttribute('data-bluesky-uri')?.includes('bsky')) {
-      blockquote.setAttribute('data-bluesky-embed-color-mode', isDark ? 'dark' : 'light');
+  const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
+  blockquotes.forEach((blockquote) => {
+    if (
+      blockquote.classList.contains('bluesky-embed') ||
+      blockquote.getAttribute('data-bluesky-uri')?.includes('bsky')
+    ) {
+      blockquote.setAttribute(
+        'data-bluesky-embed-color-mode',
+        isDark ? 'dark' : 'light'
+      )
     }
-  });
+  })
 
   // Extract and handle scripts separately so they actually execute
-  const scripts = Array.from(temp.getElementsByTagName('script'));
-  scripts.forEach(oldScript => oldScript.remove());
+  const scripts = Array.from(temp.getElementsByTagName('script'))
+  scripts.forEach((oldScript) => oldScript.remove())
 
-  container.innerHTML = temp.innerHTML;
+  container.innerHTML = temp.innerHTML
 
   // Re-create and append scripts to make them execute
-  scripts.forEach(oldScript => {
-    const newScript = document.createElement('script');
-    Array.from(oldScript.attributes).forEach(attr => {
-      newScript.setAttribute(attr.name, attr.value);
-    });
-    newScript.innerHTML = oldScript.innerHTML;
-    container.appendChild(newScript);
-  });
+  scripts.forEach((oldScript) => {
+    const newScript = document.createElement('script')
+    Array.from(oldScript.attributes).forEach((attr) => {
+      newScript.setAttribute(attr.name, attr.value)
+    })
+    newScript.innerHTML = oldScript.innerHTML
+    container.appendChild(newScript)
+  })
 }
 ```
 
@@ -141,15 +149,15 @@ The final piece was making everything reactive to theme changes. Since I was man
 const observer = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     if (mutation.attributeName === 'data-theme') {
-      reloadAllEmbeds(); // Refresh with new theme
+      reloadAllEmbeds() // Refresh with new theme
     }
-  });
-});
+  })
+})
 
 observer.observe(document.documentElement, {
   attributes: true,
-  attributeFilter: ['data-theme']
-});
+  attributeFilter: ['data-theme'],
+})
 ```
 
 ## The sweet result

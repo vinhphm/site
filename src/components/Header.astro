@@ -22,31 +22,42 @@ const sectionNavLink = section
 
 <header class="flex items-center justify-between" transition:name="header">
   <div class="flex gap-1 items-center">
-    <a href="/" class={cn('text-gray-900 dark:text-zinc-100', !section && 'font-medium')}>
+    <a
+      href="/"
+      class={cn('text-gray-900 dark:text-zinc-100', !section && 'font-medium')}
+    >
       {config.title}
     </a>
-    {section && (
-      <>
-        <span class="text-gray-400 dark:text-zinc-600">/</span>
-        {sectionNavLink
-          ? (
-            <a href={sectionNavLink.href} class="text-gray-500 hover:text-gray-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100">
+    {
+      section && (
+        <>
+          <span class="text-gray-400 dark:text-zinc-600">/</span>
+          {sectionNavLink ? (
+            <a
+              href={sectionNavLink.href}
+              class="text-gray-500 hover:text-gray-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100"
+            >
               {section}
             </a>
-          )
-          : (
+          ) : (
             <span class="text-gray-500 dark:text-zinc-500">{section}</span>
           )}
-      </>
-    )}
+        </>
+      )
+    }
   </div>
 
   <nav class="flex gap-4 items-center">
-    {filteredNavLinks.map(link => (
-      <a class="text-gray-500 hover:text-gray-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100" href={link.href}>
-        {link.text}
-      </a>
-    ))}
+    {
+      filteredNavLinks.map((link) => (
+        <a
+          class="text-gray-500 hover:text-gray-900 hover:underline dark:text-zinc-500 dark:hover:text-zinc-100"
+          href={link.href}
+        >
+          {link.text}
+        </a>
+      ))
+    }
     <ThemeToggle />
   </nav>
 </header>

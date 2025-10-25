@@ -5,6 +5,7 @@ lang: en
 description: So this is my dev setup in 2024. I hope you find it interesting.
 duration: 3 min read
 ---
+
 import { Image } from 'astro:assets'
 import subessenceVSCode from '@/assets/images/2024/subessence-vscode.png'
 import terminal from '@/assets/images/2024/terminal.png'
@@ -57,14 +58,12 @@ Though I use different shells on different machines, I want to have the same exp
   <div class="extended-wrapper">
     <Image src={terminal} alt="iTerm with Starship prompt" />
   </div>
-  <figcaption class="text-center">
-    My terminal setup on macOS
-  </figcaption>
+  <figcaption class="text-center">My terminal setup on macOS</figcaption>
 </figure>
 
 Starship tends to use a default preset that need a nerdfont to work properly. But since I want to stick with the original Geist Mono, I have to customize it a bit. Here's my Starship config:
 
-```toml title=".config&emsp;›&emsp;starship.toml"
+```toml title=".config › starship.toml"
 [battery]
 full_symbol = "• "
 charging_symbol = "⇡ "
