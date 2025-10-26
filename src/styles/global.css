@@ -85,6 +85,19 @@
 }
 
 @layer components {
+  /* Date formatting */
+  .date {
+    letter-spacing: -0.08em;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1, 'zero' 0, 'cv01' 1, 'cv02' 1, 'calt' 1,
+      'ss03' 1, 'ordn' 1;
+    @apply m-0 shrink-0 font-light;
+  }
+
+  .date .month {
+    letter-spacing: -0.02em;
+  }
+
   .extended-wrapper {
     @apply lg:scale-120 md:scale-110;
   }
@@ -153,40 +166,170 @@
       @apply font-medium dark:text-white;
     }
 
+    /* Horizontal rule */
     hr {
-      @apply mx-auto w-14 border border-gray-300 dark:border-zinc-700;
+      height: auto;
+      border: none;
+      background: none;
+      text-align: center;
+      position: relative;
+      @apply my-8;
     }
 
+    hr::before {
+      content: '***';
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      letter-spacing: 0.25em;
+      @apply text-gray-400 dark:text-zinc-600;
+    }
+
+    /* Blockquotes */
     blockquote {
-      @apply ml-[0.075em] border-l-3 border-gray-300 pl-4 text-gray-700 dark:border-zinc-600 dark:text-zinc-300;
+      @apply mb-7 ml-[0.125em] border-l-2 border-gray-200 pl-[1.375em] text-left text-gray-800 dark:border-zinc-700 dark:text-zinc-300;
+    }
+
+    blockquote p {
+      @apply m-0;
+    }
+
+    blockquote cite {
+      @apply mt-2 inline-block;
     }
 
     a {
       @apply text-blue-500 hover:underline dark:text-blue-400;
     }
 
+    /* Tables */
     table {
-      @apply my-4 w-full table-auto border-collapse text-sm;
-
-      th {
-        @apply border-b border-gray-200 p-4 text-left font-medium dark:border-zinc-700;
-      }
-
-      td {
-        @apply border-b border-gray-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-800;
-      }
+      border-collapse: separate;
+      border-spacing: 0;
+      @apply my-7 w-full table-fixed overflow-hidden rounded-lg border border-gray-200 text-sm dark:border-zinc-700;
     }
 
-    ol {
-      @apply list-decimal space-y-2 pl-5 text-gray-800 dark:text-zinc-300;
+    /* Table cells */
+    th,
+    td {
+      border: none;
+      @apply px-4 py-2 text-left border-b border-r border-gray-200 dark:border-zinc-700;
     }
 
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    th {
+      @apply font-medium bg-gray-100 dark:bg-zinc-800;
+    }
+
+    /* Unordered lists */
     ul {
-      @apply list-disc space-y-1 pl-5 text-gray-800 dark:text-zinc-300;
+      @apply mb-7 ml-4 list-none pl-0 leading-7 text-gray-800 dark:text-zinc-300;
     }
 
-    li {
-      @apply pl-1;
+    ul ul {
+      margin-left: 0.625rem;
+      @apply mb-2 mt-2;
+    }
+
+    ul li {
+      @apply relative mb-2 pl-2;
+    }
+
+    ul li:last-child {
+      @apply mb-0;
+    }
+
+    ul li > ul {
+      @apply mb-2 mt-2;
+    }
+
+    ul li::before {
+      content: '•';
+      left: -1.25rem;
+      top: -0.05em;
+      width: 1.5rem;
+      @apply absolute text-center text-gray-400 dark:text-zinc-600;
+    }
+
+    /* Ordered lists */
+    ol {
+      counter-reset: item;
+      @apply mb-7 ml-5 list-outside pl-0 text-gray-800 dark:text-zinc-300;
+    }
+
+    ol li {
+      @apply relative mb-2 block pl-1;
+    }
+
+    ol li:last-child {
+      @apply mb-0;
+    }
+
+    ol li::before {
+      content: counter(item) '.';
+      counter-increment: item;
+      left: -1.15rem;
+      width: 1.5rem;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: 'tnum' 1, 'zero' 0, 'cv01' 1, 'cv02' 1, 'calt' 1,
+        'ss03' 1, 'liga' 1, 'ordn' 1;
+      @apply absolute text-left opacity-75 text-gray-500 dark:text-zinc-400;
+    }
+
+    /* Task lists */
+    ul.contains-task-list {
+      @apply ml-0 list-none whitespace-nowrap;
+    }
+
+    ul.contains-task-list li::before {
+      content: none;
+    }
+
+    ul.contains-task-list li.task-list-item {
+      padding-left: 0.125em;
+      @apply mb-2;
+    }
+
+    ul.contains-task-list li.task-list-item:last-child {
+      @apply mb-0;
+    }
+
+    /* Task list checkboxes */
+    ul.contains-task-list li.task-list-item input[type='checkbox'] {
+      margin-right: 0.5em;
+      top: 0.175em;
+      width: 1em;
+      height: 1em;
+      @apply relative appearance-none rounded bg-transparent border-[1.35px] border-gray-400 dark:border-zinc-600;
+    }
+
+    ul.contains-task-list li.task-list-item input[type='checkbox']:checked {
+      font-family: var(--font-sans);
+      @apply relative opacity-75 border-[1.35px] border-gray-400 bg-gray-100 dark:border-zinc-600 dark:bg-zinc-800;
+    }
+
+    ul.contains-task-list
+      li.task-list-item
+      input[type='checkbox']:checked::after {
+      content: '✓';
+      top: 50%;
+      left: 50%;
+      transform: translate(-45%, -55%);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 650;
+      @apply absolute opacity-55 text-gray-900 dark:text-zinc-200;
+    }
+
+    ul.contains-task-list li.task-list-item input[type='checkbox'] + * {
+      @apply ml-0 inline leading-7 whitespace-nowrap;
     }
 
     kbd {

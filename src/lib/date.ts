@@ -1,7 +1,25 @@
+const MONTHS_EN = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+]
+
 export function formatDate(date: Date) {
-  return Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  }).format(date)
+  const separator = '.'
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  const pad = (num: number) => String(num).padStart(2, '0')
+
+  return `${year}${separator}${pad(month)}${separator}${pad(day)}`
 }

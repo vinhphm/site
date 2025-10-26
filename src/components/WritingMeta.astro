@@ -13,6 +13,7 @@ const { writing } = Astro.props
 
 <div class="text-gray-500 dark:text-zinc-500 flex items-center gap-2">
   <time
+    class="date"
     datetime={writing.data.added.toISOString()}
     title={`Published on ${formatDate(writing.data.added)}`}
   >
