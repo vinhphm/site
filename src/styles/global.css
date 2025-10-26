@@ -89,8 +89,14 @@
   .date {
     letter-spacing: -0.08em;
     font-variant-numeric: tabular-nums;
-    font-feature-settings: 'tnum' 1, 'zero' 0, 'cv01' 1, 'cv02' 1, 'calt' 1,
-      'ss03' 1, 'ordn' 1;
+    font-feature-settings:
+      'tnum' 1,
+      'zero' 0,
+      'cv01' 1,
+      'cv02' 1,
+      'calt' 1,
+      'ss03' 1,
+      'ordn' 1;
     @apply m-0 shrink-0 font-light;
   }
 
@@ -278,8 +284,15 @@
       left: -1.15rem;
       width: 1.5rem;
       font-variant-numeric: tabular-nums;
-      font-feature-settings: 'tnum' 1, 'zero' 0, 'cv01' 1, 'cv02' 1, 'calt' 1,
-        'ss03' 1, 'liga' 1, 'ordn' 1;
+      font-feature-settings:
+        'tnum' 1,
+        'zero' 0,
+        'cv01' 1,
+        'cv02' 1,
+        'calt' 1,
+        'ss03' 1,
+        'liga' 1,
+        'ordn' 1;
       @apply absolute text-left opacity-75 text-gray-500 dark:text-zinc-400;
     }
 

@@ -1,18 +1,3 @@
-const MONTHS_EN = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-]
-
 export function formatDate(date: Date) {
   const separator = '.'
   const year = date.getFullYear()
