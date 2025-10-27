@@ -35,10 +35,10 @@ const updated = isUpdated(writing)
       {
         updated && writing.data.updated ? (
           <span class="relative overflow-hidden block">
-            <span class="inline-block whitespace-nowrap transition-all duration-300 ease-in-out group-has-[.indicator:hover]/item:-translate-y-full">
+            <span class="inline-block whitespace-nowrap transition-all duration-300 ease-in-out group-has-[.indicator:hover]/item:translate-y-full">
               {formatDate(writing.data.added)}
             </span>
-            <span class="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-has-[.indicator:hover]/item:translate-y-0">
+            <span class="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out -translate-y-full group-has-[.indicator:hover]/item:translate-y-0">
               {formatDate(writing.data.updated)}
             </span>
           </span>
