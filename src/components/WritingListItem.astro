@@ -14,18 +14,18 @@ const updated = isUpdated(writing)
 ---
 
 <li>
-  <span class="group flex gap-3 justify-between items-start">
+  <span class="group/item flex gap-3 justify-between items-start">
     <span>
       <a
         href={`/writing/${writing.id}`}
-        class="group-hover:underline"
+        class="group-hover/item:underline"
         transition:name={`writing-id-${writing.id}`}
       >
         {writing.data.title}
       </a>
       {
         updated && writing.data.updated && (
-          <Indicator class="peer/indicator ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500">
+          <Indicator class="indicator ml-1 translate-y-[0.25em] text-gray-500 text-nowrap dark:text-zinc-500">
             Updated
           </Indicator>
         )
@@ -35,10 +35,10 @@ const updated = isUpdated(writing)
       {
         updated && writing.data.updated ? (
           <span class="relative overflow-hidden block">
-            <span class="inline-block whitespace-nowrap transition-all duration-300 ease-in-out peer-hover/indicator:-translate-y-full">
+            <span class="inline-block whitespace-nowrap transition-all duration-300 ease-in-out group-has-[.indicator:hover]/item:-translate-y-full">
               {formatDate(writing.data.added)}
             </span>
-            <span class="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full peer-hover/indicator:translate-y-0">
+            <span class="inline-block absolute left-0 top-0 transition-all duration-300 ease-in-out translate-y-full group-has-[.indicator:hover]/item:translate-y-0">
               {formatDate(writing.data.updated)}
             </span>
           </span>
