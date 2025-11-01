@@ -28,7 +28,7 @@
     "@astrojs/mdx": "^4.3.8",
     "@astrojs/rss": "^4.0.13",
     "@astrojs/sitemap": "^3.6.0",
-    "@iconify/json": "^2.2.400",
+    "@iconify/json": "^2.2.402",
     "@types/prompts": "^2.4.9",
     "astro": "^5.15.1",
     "bumpp": "^10.3.1",
