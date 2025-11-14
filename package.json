@@ -20,35 +20,37 @@
     "@astrojs/deno": "^5.0.1",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.3",
-    "@tailwindcss/vite": "^4.1.16",
+    "@tailwindcss/vite": "^4.1.17",
     "astro-expressive-code": "^0.41.3",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^4.3.9",
+    "@astrojs/mdx": "^4.3.10",
     "@astrojs/rss": "^4.0.13",
     "@astrojs/sitemap": "^3.6.0",
-    "@iconify/json": "^2.2.402",
+    "@iconify/json": "^2.2.407",
     "@types/prompts": "^2.4.9",
-    "astro": "^5.15.3",
+    "astro": "^5.15.7",
     "bumpp": "^10.3.1",
     "esno": "^4.8.0",
     "husky": "^9.1.7",
-    "oxlint": "^1.25.0",
+    "oxlint": "^1.28.0",
     "picocolors": "^1.1.1",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prompts": "^2.4.2",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-external-links": "^3.0.0",
-    "sharp": "^0.34.4",
-    "tailwindcss": "^4.1.16",
-    "terser": "^5.44.0",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^4.1.17",
+    "terser": "^5.44.1",
     "typescript": "^5.9.3",
     "unplugin-icons": "^22.5.0"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
+    "esbuild",
+    "sharp",
     "unrs-resolver"
   ]
 }
