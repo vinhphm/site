@@ -121,7 +121,16 @@ export default defineConfig({
 
   vite: {
     plugins: [
-      tailwindcss(),
+      tailwindcss({
+        lightningcss: {
+          targets: {
+            chrome: 49,
+            safari: 10,
+            firefox: 54,
+            edge: 18,
+          },
+        },
+      }),
       Icons({
         compiler: 'astro',
         scale: 1.2,
