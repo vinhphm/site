@@ -19,24 +19,29 @@ So now that everyone is happy, let's dive in for some more details.
 
 ### Quick installation
 
-It's pretty straightforward and the same no matter what OS you're on:
+Claude Code now offers multiple installation methods. The recommended approach uses the official install scripts:
 
 ```shell frame="none"
-# Install Claude Code
+# macOS/Linux
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Homebrew (macOS)
+brew install --cask claude-code
+
+# Windows
+irm https://claude.ai/install.ps1 | iex
+
+# NPM (requires Node.js 18+)
 npm install -g @anthropic-ai/claude-code
-
-# Navigate to your project
-cd your-awesome-project
-
-# Start coding with Claude
-claude
 ```
+
+After installation, navigate to your project and run `claude` to start.
 
 _\* If you're behind a corporate proxy, make sure you've set the `NODE_EXTRA_CA_CERTS` to point to your certificate file before running `claude` for Claude Code to run correctly._
 
 ### IDE integration
 
-You can also install the Claude Code extension for VS Code, Cursor, or Windsurf. While it's essentially just a launcher, it makes opening Claude Code seamless and allows you to run multiple instances in parallel.
+You can install the Claude Code extension for VS Code, Cursor, or Windsurf. While it's essentially just a launcher, it makes opening Claude Code seamless and allows you to run multiple instances in parallel. The VS Code extension also respects editor font settings and includes configuration options for permission modes and .gitignore handling.
 
 ### Skip permission prompts
 
@@ -52,7 +57,7 @@ claude --dangerously-skip-permissions
 
 This is probably the most important tip I can give you. Call `/clear` often, like, really often. AI agents tend to get a bit... unpredictable the longer a conversation goes on, especially when you're jumping between different tasks. So whenever you're starting something new, just clear that chat history and start fresh.
 
-### Master the CLAUDE.md file
+### Master the CLAUDE.md file and Claude Skills
 
 Here's something cool: Claude automatically looks for a **CLAUDE.md** file when it starts up and pulls it into context. Like giving Claude a cheat sheet about your project. You can document things like:
 
@@ -63,6 +68,8 @@ Here's something cool: Claude automatically looks for a **CLAUDE.md** file when 
 - Any weird behaviors or gotchas to watch out for
 
 And here's a pro tip: when Claude messes something up, ask it to update the `CLAUDE.md` file so it doesn't make the same mistake twice.
+
+Claude also supports **Claude Skills** - reusable knowledge and capabilities that can be shared across projects and teams.
 
 ### See Claude as your very fast intern...
 
@@ -89,7 +96,13 @@ Use these when you're asking Claude to plan something complex or work through a 
 
 ### Sub-agents and parallel tasks
 
-Claude can actually spawn multiple instances of itself to work on different parts of a problem simultaneously. You'll see something like `Task(...)` in the output when this happens. It's pretty neat for complex tasks that benefit from multiple perspectives.
+Claude can spawn multiple instances of itself to work on different parts of a problem simultaneously. Notable sub-agents include:
+
+- **Plan mode**: For strategic planning (enabled with `/plan`)
+- **Explore**: Efficiently searches through your codebase (powered by Haiku)
+- **Dynamic model selection**: Claude can choose different models for different sub-agents
+
+You'll see something like `Task(...)` in the output when sub-agents are working.
 
 ### Working with images and visual feedback
 
@@ -100,9 +113,16 @@ Yes, Claude Code does work with images, don't assume it cannot because of, you k
 - Show Claude UI mockups and ask it to build the interface
 - Take screenshots of bugs for better debugging context
 
-### Custom slash commands
+### Plugin system
 
-You can create your own slash commands by putting Markdown files in the `.claude/commands` folder. These show up in the slash commands menu and you can even commit them to git to share with your team. Use `$ARGUMENTS` to pass parameters to your commands.
+Claude Code now has a comprehensive plugin system that extends functionality with custom commands, agents, hooks, and MCP servers. You can:
+
+- Install plugins from marketplaces: `/plugin install`
+- Create custom slash commands in `.claude/commands/` folder
+- Share plugins with your team via git
+- Validate plugins with `/plugin validate`
+
+Use `$ARGUMENTS` in your custom commands to pass parameters.
 
 ## Productivity hacks and shortcuts
 
@@ -111,21 +131,23 @@ You can create your own slash commands by putting Markdown files in the `.claude
 - **<kbd>Shift ⇧</kbd> + <kbd>Enter</kbd> for new lines**: Run `/terminal-setup` to enable this. Or on Windows cases where this does not show up, type <kbd>\\</kbd> + <kbd>Enter</kbd> for new lines.
 - **Stop Claude**: Use <kbd>Esc</kbd> (not <kbd>Ctrl</kbd> + <kbd>C</kbd>, which exits entirely)
 - **Jump to previous messages**: <kbd>Esc</kbd> twice to see all previous messages
-- **Resume old conversations**: Use `--resume` flag to list prior threads
+- **Resume old conversations**: Use `--resume` flag to list prior threads, with branch filtering and search
+- **Edit in your editor**: Press <kbd>Ctrl</kbd> + <kbd>G</kbd> to edit your prompt in your system's configured text editor
+- **Tab completion**: Use tab completion for shell commands in bash mode
 
 ### Managing costs and context
 
 Claude Code pulls a lot of context automatically, which is great but can get expensive. Keep your `CLAUDE.md` files concise, use `/clear` liberally, and be specific about what context you actually need.
 
-### MCP integrations
+### MCP integrations and plugins
 
-MCPs (Model Context Protocol) are where Claude Code really shines. Popular ones include:
+MCPs (Model Context Protocol) integrate seamlessly through the plugin system. You can enable/disable MCP servers by @mentioning them or through `/mcp`. Popular integrations include:
 
 - **Context7**: Grabs documentation for any tech stack on demand
 - **Puppeteer**: For automated screenshots and testing
-- **Various project-specific MCPs**: Check the community for your specific needs
+- **Various project-specific MCPs**: Check plugin marketplaces for your specific needs
 
-Use `--mcp-debug` if you run into configuration issues.
+Use `--mcp-debug` if you run into configuration issues, or `/doctor` for comprehensive diagnostics.
 
 ## Common pitfalls to avoid
 
