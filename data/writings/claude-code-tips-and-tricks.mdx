@@ -66,6 +66,12 @@ For mutual TLS authentication, configure your client certificates through enviro
 **Alternative configuration:**
 All environment variables shown above can also be configured in your `settings.json` file instead of using environment variables. This provides a more permanent configuration option that doesn't require setting environment variables each time.
 
+The settings file is located at:
+- **macOS/Linux**: `~/.claude/settings.json`
+- **Windows**: `%USERPROFILE%\.claude\settings.json`
+
+For a complete list of available settings, check the [official settings documentation](https://code.claude.com/docs/en/settings#available-settings).
+
 **Note:** For advanced authentication methods (NTLM, Kerberos), consider using an LLM Gateway service that supports your authentication method.
 
 ### IDE integration
