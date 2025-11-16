@@ -1,6 +1,7 @@
 ---
 title: Claude Code tips and tricks
 added: 2025-07-18T19:51:10.689+07:00
+updated: 2025-11-16T10:53:11.234+07:00
 lang: en
 description: Getting started with Claude Code, covering essential setup, workflow tips, and productivity hacks. Learn the key commands, shortcuts, and best practices that make the difference.
 ---
@@ -9,7 +10,7 @@ import OEmbed from '@/components/OEmbed.astro'
 
 If you're familiar with all the AI news, you probably have heard about Claude Code before. It's an agentic coding tool developed by Anthropic that operates directly in the terminal, assisting you in refactoring, documenting, and debugging code. It sure had been one of the first of its kind and unlike any other traditional AI-fused IDEs or chat-based coding assistants at the time.
 
-Like many developing tools out there, Claude Code only supported macOS, Linux, and WSL on Windows when it first came out. But that has changed last week, when the new versions finally support Windows "natively" (still need Git for Windows installed for that sweet Git Bash to work, but hey, it's still progress 🚀).
+Like many developing tools out there, Claude Code only supported macOS, Linux, and WSL on Windows when it first came out. But that has changed since then, as the newer versions now support Windows "natively" (still need Git for Windows installed for that sweet Git Bash to work, but hey, it's still progress 🚀).
 
 <OEmbed url="https://x.com/vinhdw/status/1943879411696079142" />
 
@@ -19,24 +20,55 @@ So now that everyone is happy, let's dive in for some more details.
 
 ### Quick installation
 
-It's pretty straightforward and the same no matter what OS you're on:
+Getting Claude Code installed is easier than ever. You've got a few options depending on your preference:
 
 ```shell frame="none"
-# Install Claude Code
+# macOS/Linux
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Homebrew (macOS)
+brew install --cask claude-code
+
+# Windows
+irm https://claude.ai/install.ps1 | iex
+
+# NPM (requires Node.js 18+)
 npm install -g @anthropic-ai/claude-code
-
-# Navigate to your project
-cd your-awesome-project
-
-# Start coding with Claude
-claude
 ```
 
-_\* If you're behind a corporate proxy, make sure you've set the `NODE_EXTRA_CA_CERTS` to point to your certificate file before running `claude` for Claude Code to run correctly._
+After installation, navigate to your project and run `claude` to start.
+
+### Working behind corporate firewalls
+
+If you're stuck behind a corporate firewall (we've all been there), Claude Code has you covered with proxy and certificate support:
+
+```shell frame="none"
+# Basic proxy setup
+export HTTP_PROXY=http://proxy.example.com:8080
+export HTTPS_PROXY=https://proxy.example.com:8080
+
+# If your proxy needs authentication
+export HTTP_PROXY=http://username:password@proxy.example.com:8080
+
+# Skip the proxy for specific domains
+export NO_PROXY="localhost,192.168.1.1,example.com,.example.com"
+
+# Custom CA certificates (for those lovely self-signed certs)
+export NODE_EXTRA_CA_CERTS=/path/to/ca-certificates.crt
+```
+
+**Pro tip:** Don't want to set these environment variables every time? Throw them in your `settings.json` file instead:
+
+- **macOS/Linux**: `~/.claude/settings.json`
+- **Windows**: `%USERPROFILE%\.claude\settings.json`
+
+Check out the [official settings documentation](https://code.claude.com/docs/en/settings#available-settings) for the complete list of what you can configure.
+
+If you're dealing with mTLS or more complex auth like NTLM or Kerberos, you might want to look into using an LLM Gateway service that handles that stuff for you.
 
 ### IDE integration
 
-You can also install the Claude Code extension for VS Code, Cursor, or Windsurf. While it's essentially just a launcher, it makes opening Claude Code seamless and allows you to run multiple instances in parallel.
+You can grab the Claude Code extension for VS Code, Cursor, or Windsurf. It's basically a fancy launcher, but it makes opening Claude Code super smooth and lets you run multiple instances at once. The VS Code extension even respects your font settings and has some nice config options for permissions and .gitignore stuff.
 
 ### Skip permission prompts
 
@@ -52,7 +84,7 @@ claude --dangerously-skip-permissions
 
 This is probably the most important tip I can give you. Call `/clear` often, like, really often. AI agents tend to get a bit... unpredictable the longer a conversation goes on, especially when you're jumping between different tasks. So whenever you're starting something new, just clear that chat history and start fresh.
 
-### Master the CLAUDE.md file
+### Master the CLAUDE.md file and Claude Skills
 
 Here's something cool: Claude automatically looks for a **CLAUDE.md** file when it starts up and pulls it into context. Like giving Claude a cheat sheet about your project. You can document things like:
 
@@ -63,6 +95,8 @@ Here's something cool: Claude automatically looks for a **CLAUDE.md** file when 
 - Any weird behaviors or gotchas to watch out for
 
 And here's a pro tip: when Claude messes something up, ask it to update the `CLAUDE.md` file so it doesn't make the same mistake twice.
+
+Claude also supports **Claude Skills**, which are basically reusable knowledge and capabilities you can share across projects and teams.
 
 ### See Claude as your very fast intern...
 
@@ -89,7 +123,13 @@ Use these when you're asking Claude to plan something complex or work through a 
 
 ### Sub-agents and parallel tasks
 
-Claude can actually spawn multiple instances of itself to work on different parts of a problem simultaneously. You'll see something like `Task(...)` in the output when this happens. It's pretty neat for complex tasks that benefit from multiple perspectives.
+Claude can actually spin up multiple versions of itself to tackle different parts of a problem at the same time. Some cool sub-agents you'll run into:
+
+- **Plan mode**: Claude automatically switches to this when you ask for complex multi-step tasks. It'll think through the strategy before diving into execution
+- **Explore**: This one's great—it'll zip through your codebase quickly (runs on Haiku)
+- **Dynamic model selection**: Claude's smart enough to pick different models for different tasks
+
+When you see `Task(...)` pop up in the output, that's the sub-agents doing their thing.
 
 ### Working with images and visual feedback
 
@@ -100,9 +140,16 @@ Yes, Claude Code does work with images, don't assume it cannot because of, you k
 - Show Claude UI mockups and ask it to build the interface
 - Take screenshots of bugs for better debugging context
 
-### Custom slash commands
+### Plugin system
 
-You can create your own slash commands by putting Markdown files in the `.claude/commands` folder. These show up in the slash commands menu and you can even commit them to git to share with your team. Use `$ARGUMENTS` to pass parameters to your commands.
+Claude Code's plugin system is pretty slick now. You can extend it with custom commands, agents, hooks, and MCP servers:
+
+- Grab plugins from marketplaces with `/plugin install`
+- Drop custom slash commands in the `.claude/commands/` folder
+- Share your plugins with the team through git
+- Make sure everything works with `/plugin validate`
+
+And yeah, use `$ARGUMENTS` in your custom commands when you need to pass stuff in.
 
 ## Productivity hacks and shortcuts
 
@@ -111,21 +158,23 @@ You can create your own slash commands by putting Markdown files in the `.claude
 - **<kbd>Shift ⇧</kbd> + <kbd>Enter</kbd> for new lines**: Run `/terminal-setup` to enable this. Or on Windows cases where this does not show up, type <kbd>\\</kbd> + <kbd>Enter</kbd> for new lines.
 - **Stop Claude**: Use <kbd>Esc</kbd> (not <kbd>Ctrl</kbd> + <kbd>C</kbd>, which exits entirely)
 - **Jump to previous messages**: <kbd>Esc</kbd> twice to see all previous messages
-- **Resume old conversations**: Use `--resume` flag to list prior threads
+- **Resume old conversations**: Use `--resume` flag to list prior threads (now with branch filtering and search!)
+- **Edit in your editor**: Hit <kbd>Ctrl</kbd> + <kbd>G</kbd> to pop your prompt into your favorite text editor
+- **Tab completion**: Tab works in bash mode for shell commands, just like you'd expect
 
 ### Managing costs and context
 
 Claude Code pulls a lot of context automatically, which is great but can get expensive. Keep your `CLAUDE.md` files concise, use `/clear` liberally, and be specific about what context you actually need.
 
-### MCP integrations
+### MCP integrations and plugins
 
-MCPs (Model Context Protocol) are where Claude Code really shines. Popular ones include:
+MCPs (Model Context Protocol) work really well with the plugin system now. Just @mention them or use `/mcp` to toggle them on/off. Some popular ones:
 
-- **Context7**: Grabs documentation for any tech stack on demand
-- **Puppeteer**: For automated screenshots and testing
-- **Various project-specific MCPs**: Check the community for your specific needs
+- **Context7**: Pulls up documentation for whatever tech stack you're using
+- **Puppeteer**: Great for automated screenshots and testing
+- **Project-specific MCPs**: Browse the plugin marketplaces to find what you need
 
-Use `--mcp-debug` if you run into configuration issues.
+If things aren't working, try `--mcp-debug` for troubleshooting, or run `/doctor` for a full health check.
 
 ## Common pitfalls to avoid
 
