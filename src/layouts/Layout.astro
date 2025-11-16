@@ -14,6 +14,8 @@ type Props = {
   image?: string | undefined
   containerClass?: string
   mainClass?: string
+  datePublished?: string
+  dateModified?: string
 }
 
 const {
@@ -22,6 +24,8 @@ const {
   image,
   containerClass,
   mainClass = 'space-y-8',
+  datePublished,
+  dateModified,
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -93,12 +97,22 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <meta name="description" content={description} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={datePublished ? 'article' : 'website'} />
     <meta property="og:site_name" content={config.title} />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {resolvedImage && <meta property="og:image" content={resolvedImage} />}
+    {
+      datePublished && (
+        <meta property="article:published_time" content={datePublished} />
+      )
+    }
+    {
+      dateModified && (
+        <meta property="article:modified_time" content={dateModified} />
+      )
+    }
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
