@@ -37,42 +37,33 @@ npm install -g @anthropic-ai/claude-code
 
 After installation, navigate to your project and run `claude` to start.
 
-### Enterprise network configuration
+### Working behind corporate firewalls
 
-If you're working in an enterprise environment with network restrictions, Claude Code supports various configurations:
+If you're stuck behind a corporate firewall (we've all been there), Claude Code has you covered with proxy and certificate support:
 
-**Proxy servers:**
 ```shell frame="none"
-# Set proxy environment variables
+# Basic proxy setup
 export HTTP_PROXY=http://proxy.example.com:8080
 export HTTPS_PROXY=https://proxy.example.com:8080
 
-# With authentication
+# If your proxy needs authentication
 export HTTP_PROXY=http://username:password@proxy.example.com:8080
 
-# Bypass proxy for specific domains
+# Skip the proxy for specific domains
 export NO_PROXY="localhost,192.168.1.1,example.com,.example.com"
-```
 
-**Custom Certificate Authorities:**
-```shell frame="none"
-# Point to your CA certificate bundle
+# Custom CA certificates (for those lovely self-signed certs)
 export NODE_EXTRA_CA_CERTS=/path/to/ca-certificates.crt
 ```
 
-**mTLS authentication:**
-For mutual TLS authentication, configure your client certificates through environment variables or configuration files as needed.
+**Pro tip:** Don't want to set these environment variables every time? Throw them in your `settings.json` file instead:
 
-**Alternative configuration:**
-All environment variables shown above can also be configured in your `settings.json` file instead of using environment variables. This provides a more permanent configuration option that doesn't require setting environment variables each time.
-
-The settings file is located at:
 - **macOS/Linux**: `~/.claude/settings.json`
 - **Windows**: `%USERPROFILE%\.claude\settings.json`
 
-For a complete list of available settings, check the [official settings documentation](https://code.claude.com/docs/en/settings#available-settings).
+Check out the [official settings documentation](https://code.claude.com/docs/en/settings#available-settings) for the complete list of what you can configure.
 
-**Note:** For advanced authentication methods (NTLM, Kerberos), consider using an LLM Gateway service that supports your authentication method.
+If you're dealing with mTLS or more complex auth like NTLM or Kerberos, you might want to look into using an LLM Gateway service that handles that stuff for you.
 
 ### IDE integration
 
