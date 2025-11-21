@@ -28,11 +28,23 @@ export default defineConfig({
   experimental: {
     fonts: [
       {
-        provider: fontProviders.fontsource(),
+        provider: "local",
         name: 'Inter',
-        weights: ['100 900'],
-        subsets: ['latin', 'vietnamese'],
         cssVariable: '--font-inter',
+        variants: [
+          {
+            weight: "100 900",
+            style: "normal",
+            src: ["./src/assets/fonts/InterVariable.woff2"],
+            featureSettings: "'cv05' 1, 'ss07' 1, 'ss08' 1",
+          },
+          {
+            weight: "100 900",
+            style: "italic",
+            src: ["./src/assets/fonts/InterVariable-Italic.woff2"],
+            featureSettings: "'cv05' 1, 'ss07' 1, 'ss08' 1",
+          }
+        ]
       },
       {
         provider: fontProviders.fontsource(),
