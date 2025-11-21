@@ -44,6 +44,7 @@ export default defineConfig({
     ],
     contentIntellisense: true,
     liveContentCollections: true,
+    svgo: true,
   },
 
   integrations: [
