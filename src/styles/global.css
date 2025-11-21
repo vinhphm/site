@@ -72,6 +72,13 @@
     }
   }
 
+  * {
+    font-feature-settings: 'ss02', 'ss03', 'ss07', 'ss08';
+    font-synthesis-small-caps: none;
+    font-synthesis-style: none;
+    font-synthesis-weight: none;
+  }
+
   *,
   *::before,
   *::after {
@@ -95,7 +102,10 @@
       'cv01' 1,
       'cv02' 1,
       'calt' 1,
+      'ss02' 1,
       'ss03' 1,
+      'ss07' 1,
+      'ss08' 1,
       'ordn' 1;
     @apply m-0 shrink-0 font-light;
   }
@@ -290,7 +300,10 @@
         'cv01' 1,
         'cv02' 1,
         'calt' 1,
+        'ss02' 1,
         'ss03' 1,
+        'ss07' 1,
+        'ss08' 1,
         'liga' 1,
         'ordn' 1;
       @apply absolute text-left opacity-75 text-gray-500 dark:text-zinc-400;
