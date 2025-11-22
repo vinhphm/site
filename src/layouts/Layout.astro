@@ -126,7 +126,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 
     <ClientRouter />
   </head>
-  <body class="font-sans tracking-tight antialiased transition-colors">
+  <body class="font-sans antialiased transition-colors">
     <div class={cn('p-6 mx-auto', containerClass)}>
       <main class={cn('mx-auto max-w-[60ch] w-full', mainClass)}>
         <Header section={section} />

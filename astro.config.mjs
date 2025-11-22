@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap'
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig, fontProviders } from 'astro/config'
+import { defineConfig } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
@@ -47,11 +47,21 @@ export default defineConfig({
         ],
       },
       {
-        provider: fontProviders.fontsource(),
+        provider: 'local',
         name: 'Geist Mono',
-        subsets: ['latin'],
         cssVariable: '--font-geist-mono',
-        fallbacks: ['monospace'],
+        variants: [
+          {
+            weight: '100 900',
+            style: 'normal',
+            src: ['./src/assets/fonts/GeistMono.woff2'],
+          },
+          {
+            weight: '100 900',
+            style: 'italic',
+            src: ['./src/assets/fonts/GeistMono-Italic.woff2'],
+          },
+        ],
       },
     ],
     contentIntellisense: true,
