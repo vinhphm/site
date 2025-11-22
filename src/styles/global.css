@@ -134,7 +134,7 @@
     @apply space-y-6;
 
     p {
-      @apply  leading-snug tracking-(--cozy) text-gray-800 dark:text-zinc-300;
+      @apply leading-snug tracking-(--cozy) text-gray-800 dark:text-zinc-300;
     }
 
     h1 {

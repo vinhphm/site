@@ -27,7 +27,9 @@ const structuredData = createWritingStructuredData(writing)
   section="Writing"
   image={writing.data.image}
   datePublished={writing.data.added.toISOString()}
-  {...(writing.data.updated && { dateModified: writing.data.updated.toISOString() })}
+  {...writing.data.updated && {
+    dateModified: writing.data.updated.toISOString(),
+  }}
 >
   <script
     type="application/ld+json"
