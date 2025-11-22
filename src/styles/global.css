@@ -5,6 +5,9 @@
 @theme {
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+
+  --cozy: -0.0125em;
+
   --color-bluesky: rgb(10, 122, 255);
 
   --color-background: var(--background);
@@ -131,7 +134,7 @@
     @apply space-y-6;
 
     p {
-      @apply text-gray-800 leading-snug dark:text-zinc-300;
+      @apply  leading-snug tracking-(--cozy) text-gray-800 dark:text-zinc-300;
     }
 
     h1 {

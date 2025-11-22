@@ -27,7 +27,7 @@ const structuredData = createWritingStructuredData(writing)
   section="Writing"
   image={writing.data.image}
   datePublished={writing.data.added.toISOString()}
-  dateModified={writing.data.updated?.toISOString()}
+  {...(writing.data.updated && { dateModified: writing.data.updated.toISOString() })}
 >
   <script
     type="application/ld+json"
@@ -37,7 +37,7 @@ const structuredData = createWritingStructuredData(writing)
 
   <div class="mb-8">
     <h1
-      class="font-medium mb-2 leading-tight text-heading"
+      class="font-medium mb-2 tracking-tight leading-tight text-heading"
       transition:name={`writing-id-${writing.id}`}
     >
       {writing.data.title}
