@@ -1,0 +1,120 @@
+---
+title: Git worktrees and AI-assisted development
+added: 2025-11-25T20:08:10.203+07:00
+lang: en
+description: Git worktrees have been around forever, but AI agents are finally making them useful. Here's why Claude Code loves them and how they make your life easier.
+duration: 6 min read
+---
+
+If you've been using Claude Code desktop lately, you might've noticed it does something a bit odd, instead of working directly in your repo, it creates this thing called a "worktree." At first glance, it feels like unnecessary complexity. But trust me, there's a really good reason for it, and once you get it, you'll wonder how you ever lived without it.
+
+## So what's a git worktree anyway?
+
+Okay, let's break this down. A git worktree lets you have multiple working directories attached to the same repository. Think of it like this: normally when you switch branches, you're swapping out all the files in your one working directory. With worktrees, you can have _multiple_ directories, each on a different branch, all connected to the same git repo.
+
+Here's what that looks like in practice:
+
+```bash
+# Your main repository
+~/projects/my-app (main branch)
+
+# Create a worktree for a feature branch
+git worktree add ../my-app-feature feature-branch
+
+# Now you've got two directories:
+~/projects/my-app (main branch)
+~/projects/my-app-feature (feature-branch)
+```
+
+Both directories share the same git history, commits, and branches. But each can be on a different branch independently. Pretty neat, right?
+
+## Why should you care? (Hint: AI agents ✨)
+
+Here's where it gets interesting. When you're working with an AI coding assistant like Claude Code, you're basically collaborating with another developer. And like any collaboration, things work way better when you're not stepping on each other's toes.
+
+### The old way kinda sucks
+
+Imagine you're in the middle of reviewing some changes Claude made. Then you realize you need to check something on main, or you want to start a totally different task. With a traditional setup, you'd have to:
+
+1. Stash or commit Claude's half-finished changes
+2. Switch branches
+3. Do your thing
+4. Switch back
+5. Restore everything
+
+This is already annoying with human collaborators. With an AI agent that might be touching dozens of files across your codebase? Yeah, that's a recipe for lost context and merge conflict nightmares.
+
+### Worktrees to the rescue
+
+With worktrees, Claude Code gets its own isolated sandbox. You can:
+
+- Review and test Claude's changes without messing up your main workspace
+- Keep working on other stuff in your main directory
+- Switch branches whenever you want while Claude does its thing
+- Experiment freely without worrying about losing work
+
+When Claude creates a worktree, it's like giving it its own desk in the office. You both share the same codebase, but you're not fighting over the same keyboard.
+
+## How Claude Code handles this
+
+Claude Code desktop defaults to worktrees for every new task. When you start a new conversation or branch, it automatically:
+
+1. Creates a new worktree in `~/.claude-worktrees/`
+2. Names it based on the branch name
+3. Checks out the right branch
+4. Works entirely in that isolated space
+
+You'll end up with something like this:
+
+```
+~/.claude-worktrees/
+  ├── my-repo/
+  │   ├── feature-authentication/
+  │   ├── bugfix-login-form/
+  │   └── refactor-api-client/
+```
+
+Each worktree is a complete working directory for that specific task. When you're done, merge the changes and clean up, or just keep it around for later.
+
+## Why this is actually perfect for AI workflows
+
+The benefits go beyond just avoiding conflicts:
+
+**Parallel work**: You can run multiple Claude Code sessions at the same time, each in their own worktree, each on different branches. Need to review a bug fix while exploring a new feature? No problem.
+
+**Safety net**: If Claude goes off the rails and makes changes you hate, just nuke the worktree and start over. Your main repo stays pristine.
+
+**Context stays put**: Each worktree keeps its own state—file modifications, uncommitted changes, all of it. Everything's isolated and preserved per task.
+
+**Cleaner diffs**: When reviewing Claude's work, you can easily compare against main without any mixed-in changes from other stuff you were doing.
+
+## A few commands to know
+
+You don't really _need_ to manage this yourself, Claude Code handles most of it. But it's handy to know these:
+
+```bash
+# List all worktrees
+git worktree list
+
+# Remove a worktree when you're done
+git worktree remove path/to/worktree
+
+# Clean up if the directory was already deleted
+git worktree prune
+```
+
+Claude Code usually handles cleanup, but sometimes you'll want to manually tidy up old worktrees.
+
+## The bigger picture
+
+Here's the thing: git worktrees have been around since 2015, but they never really caught on because the benefits for solo devs were... meh. With AI agents entering the picture, that changes completely.
+
+We're heading toward a world where you're rarely the only one touching the codebase, even as a solo developer. AI assistants, automated refactoring tools, code generation systems,... they all need their own space to work. Worktrees give them that space elegantly, using a feature that's been battle-tested for years.
+
+Claude Code defaulting to worktrees isn't just a technical decision, it's a recognition that how we write code is fundamentally changing. The sooner we adapt our tools and workflows to this reality, the more productive we'll be.
+
+## Wrapping up
+
+Git worktrees might feel like overkill if you're used to traditional development. But once you experience the freedom of having Claude work in isolation while you keep doing your own thing uninterrupted? Hard to go back.
+
+It's one of those features that, once you understand _why_ it exists, just makes perfect sense.
