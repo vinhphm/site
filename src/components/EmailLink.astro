@@ -30,7 +30,7 @@ const encodedDomain = btoa(cipher(emailParts[1]))
 
 <!-- Enhanced email obfuscation with encoded data attributes -->
 <span
-  class={`email-obfuscated ${className}`}
+  class={`email-obfuscated cursor-pointer ${className}`}
   data-text={text}
   data-u={encodedUser}
   data-d={encodedDomain}
