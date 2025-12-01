@@ -34,7 +34,7 @@
     "bumpp": "^10.3.1",
     "esno": "^4.8.0",
     "husky": "^9.1.7",
-    "oxlint": "^1.29.0",
+    "oxlint": "^1.30.0",
     "picocolors": "^1.1.1",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
