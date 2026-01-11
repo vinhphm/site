@@ -29,6 +29,7 @@
     "@astrojs/rss": "4.0.15-alpha.0",
     "@astrojs/sitemap": "3.6.1-alpha.1",
     "@iconify/json": "^2.2.426",
+    "@prettier/plugin-oxc": "^0.1.3",
     "@types/prompts": "^2.4.9",
     "astro": "6.0.0-alpha.5",
     "bumpp": "^10.3.2",
