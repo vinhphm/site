@@ -1,2 +1,4 @@
-npx oxlint --fix . && npx prettier --write .
+npx oxlint --fix .
+npx oxfmt --no-error-on-unmatched-pattern .
+npx prettier --write "**/*.astro"
 git add -u

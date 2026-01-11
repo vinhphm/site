@@ -58,7 +58,7 @@ I want to archive the same style as my Spotify widget on my old site.
   <img
     src={spotifyCurrentPlaying.src}
     alt="Spotify current playing"
-    class="shadow rounded-lg"
+    class="rounded-lg shadow"
   />
   <figcaption class="text-center">Spotify current playing</figcaption>
 </figure>
@@ -74,9 +74,9 @@ defineProps<{
 
 <template>
   <div class="flex h-3 w-4 items-center gap-0.75" :class="[wrapperClass]">
-    <span class="h-3 w-0.75 animate-shrink rounded-sm bg-spotify-green" />
-    <span class="h-1.5 w-0.75 animate-expand rounded-sm bg-spotify-green" />
-    <span class="h-3 w-0.75 animate-shrink rounded-sm bg-spotify-green" />
+    <span class="animate-shrink bg-spotify-green h-3 w-0.75 rounded-sm" />
+    <span class="animate-expand bg-spotify-green h-1.5 w-0.75 rounded-sm" />
+    <span class="animate-shrink bg-spotify-green h-3 w-0.75 rounded-sm" />
   </div>
 </template>
 ```
@@ -130,7 +130,7 @@ const { data } = useSWRV('<your-worker-route>', fetcher)
 
 <template>
   <a
-    class="group flex items-center font-medium !border-none"
+    class="group flex items-center !border-none font-medium"
     target="_blank"
     rel="noopener"
     :href="
@@ -140,7 +140,7 @@ const { data } = useSWRV('<your-worker-route>', fetcher)
     "
   >
     <svg
-      class="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-spotify-logo-green"
+      class="group-hover:fill-spotify-logo-green h-6 w-6 flex-none fill-zinc-500 transition"
       viewBox="0 0 168 168"
     >
       <path
@@ -155,13 +155,13 @@ const { data } = useSWRV('<your-worker-route>', fetcher)
       />
       <p
         v-if="data?.songUrl"
-        class="max-w-max truncate text-sm text-zinc-800 group-hover:text-spotify-green dark:text-zinc-200 dark:group-hover:text-spotify-green"
+        class="group-hover:text-spotify-green dark:group-hover:text-spotify-green max-w-max truncate text-sm text-zinc-800 dark:text-zinc-200"
       >
         {{ data.title }}
       </p>
       <p
         v-else
-        class="text-sm text-zinc-700 group-hover:text-spotify-green dark:text-zinc-300 dark:group-hover:text-spotify-green"
+        class="group-hover:text-spotify-green dark:group-hover:text-spotify-green text-sm text-zinc-700 dark:text-zinc-300"
       >
         Not playing
       </p>

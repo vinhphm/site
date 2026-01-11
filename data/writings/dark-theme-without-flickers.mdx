@@ -36,12 +36,12 @@ Many developers habitually put these styles on `<body>`, which causes the flicke
 ```css showLineNumbers=false
 /* ❌ This causes flicker */
 body {
-  @apply bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-200;
+  @apply bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-200;
 }
 
 /* ✅ This prevents flicker */
 html {
-  @apply bg-white dark:bg-zinc-900 text-gray-900 dark:text-zinc-200;
+  @apply bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-200;
 }
 
 /* Body can inherit or have its own non-theme styles */

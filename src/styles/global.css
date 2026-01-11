@@ -111,7 +111,7 @@
   }
 
   .extended-wrapper {
-    @apply lg:scale-120 md:scale-110;
+    @apply md:scale-110 lg:scale-120;
   }
 
   .extended-py {
@@ -138,21 +138,21 @@
     }
 
     h1 {
-      @apply my-4 text-xl tracking-tight font-medium dark:text-white;
+      @apply my-4 text-xl font-medium tracking-tight dark:text-white;
     }
 
     h2 {
-      @apply mt-8 mb-3 text-lg tracking-tight font-medium dark:text-white;
+      @apply mt-8 mb-3 text-lg font-medium tracking-tight dark:text-white;
     }
 
     h3 {
-      @apply mt-8 mb-3 tracking-tight font-medium;
+      @apply mt-8 mb-3 font-medium tracking-tight;
     }
 
     h4,
     h5,
     h6 {
-      @apply mt-4 mb-3 tracking-tight font-medium;
+      @apply mt-4 mb-3 font-medium tracking-tight;
     }
 
     /* Reduce spacing when headers are consecutive */
@@ -224,7 +224,7 @@
     th,
     td {
       border: none;
-      @apply px-4 py-2 text-left border-b border-r border-gray-200 dark:border-zinc-700;
+      @apply border-r border-b border-gray-200 px-4 py-2 text-left dark:border-zinc-700;
     }
 
     th:last-child,
@@ -237,7 +237,7 @@
     }
 
     th {
-      @apply font-medium bg-gray-100 dark:bg-zinc-800;
+      @apply bg-gray-100 font-medium dark:bg-zinc-800;
     }
 
     /* Unordered lists */
@@ -247,7 +247,7 @@
 
     ul ul {
       margin-left: 0.625rem;
-      @apply mb-2 mt-2;
+      @apply mt-2 mb-2;
     }
 
     ul li {
@@ -259,7 +259,7 @@
     }
 
     ul li > ul {
-      @apply mb-2 mt-2;
+      @apply mt-2 mb-2;
     }
 
     ul li::before {
@@ -301,7 +301,7 @@
         'calt' 1,
         'liga' 1,
         'ordn' 1;
-      @apply absolute text-left opacity-75 text-gray-500 dark:text-zinc-400;
+      @apply absolute text-left text-gray-500 opacity-75 dark:text-zinc-400;
     }
 
     /* Task lists */
@@ -328,12 +328,12 @@
       top: 0.175em;
       width: 1em;
       height: 1em;
-      @apply relative appearance-none rounded bg-transparent border-[1.35px] border-gray-400 dark:border-zinc-600;
+      @apply relative appearance-none rounded border-[1.35px] border-gray-400 bg-transparent dark:border-zinc-600;
     }
 
     ul.contains-task-list li.task-list-item input[type='checkbox']:checked {
       font-family: var(--font-sans);
-      @apply relative opacity-75 border-[1.35px] border-gray-400 bg-gray-100 dark:border-zinc-600 dark:bg-zinc-800;
+      @apply relative border-[1.35px] border-gray-400 bg-gray-100 opacity-75 dark:border-zinc-600 dark:bg-zinc-800;
     }
 
     ul.contains-task-list
@@ -346,7 +346,7 @@
       font-family: var(--font-sans);
       font-size: 10px;
       font-weight: 650;
-      @apply absolute opacity-55 text-gray-900 dark:text-zinc-200;
+      @apply absolute text-gray-900 opacity-55 dark:text-zinc-200;
     }
 
     ul.contains-task-list li.task-list-item input[type='checkbox'] + * {
@@ -421,7 +421,7 @@
 
   /* Header anchor links */
   a.header-anchor {
-    @apply float-left -ml-[1.2em] mt-0.5 border-0 pr-2 text-sm opacity-0 no-underline;
+    @apply float-left mt-0.5 -ml-[1.2em] border-0 pr-2 text-sm no-underline opacity-0;
   }
 
   a.header-anchor:hover,
