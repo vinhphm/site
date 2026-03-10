@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap'
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'astro/config'
+import { defineConfig, fontProviders } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
@@ -21,16 +21,13 @@ export default defineConfig({
 
   compressHTML: true,
 
-  image: {
-    responsiveStyles: true,
-  },
-
-  experimental: {
-    fonts: [
-      {
-        provider: 'local',
-        name: 'Inter',
-        cssVariable: '--font-inter',
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: 'Inter',
+      cssVariable: '--font-inter',
+      subsets: ['latin', 'vietnamese'],
+      options: {
         variants: [
           {
             weight: '100 900',
@@ -46,10 +43,13 @@ export default defineConfig({
           },
         ],
       },
-      {
-        provider: 'local',
-        name: 'Geist Mono',
-        cssVariable: '--font-geist-mono',
+    },
+    {
+      provider: fontProviders.local(),
+      name: 'Geist Mono',
+      cssVariable: '--font-geist-mono',
+      subsets: ['latin', 'vietnamese'],
+      options: {
         variants: [
           {
             weight: '100 900',
@@ -63,7 +63,14 @@ export default defineConfig({
           },
         ],
       },
-    ],
+    },
+  ],
+
+  image: {
+    responsiveStyles: true,
+  },
+
+  experimental: {
     contentIntellisense: true,
     svgo: true,
   },
