@@ -73,6 +73,10 @@ export default defineConfig({
   experimental: {
     contentIntellisense: true,
     svgo: true,
+    queuedRendering: {
+      enabled: true,
+    },
+    rustCompiler: true,
   },
 
   integrations: [
