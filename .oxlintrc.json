@@ -14,8 +14,7 @@
     {
       "files": ["**/*.astro"],
       "rules": {
-        "no-unused-vars": "off",
-        "import/no-unused-modules": "off"
+        "no-unused-vars": "off"
       }
     },
     {
