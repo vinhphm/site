@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap'
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig, fontProviders } from 'astro/config'
+import { defineConfig, fontProviders, svgoOptimizer } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
@@ -72,9 +72,10 @@ export default defineConfig({
 
   experimental: {
     contentIntellisense: true,
-    svgo: true,
+    svgOptimizer: svgoOptimizer(),
     queuedRendering: {
       enabled: true,
+      contentCache: true,
     },
     rustCompiler: true,
   },
