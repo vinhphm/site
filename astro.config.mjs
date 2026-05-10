@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap'
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig, fontProviders, svgoOptimizer } from 'astro/config'
+import { defineConfig, fontProviders } from 'astro/config'
 import expressiveCode from 'astro-expressive-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
@@ -68,16 +68,6 @@ export default defineConfig({
 
   image: {
     responsiveStyles: true,
-  },
-
-  experimental: {
-    contentIntellisense: true,
-    svgOptimizer: svgoOptimizer(),
-    queuedRendering: {
-      enabled: true,
-      contentCache: true,
-    },
-    rustCompiler: true,
   },
 
   integrations: [
@@ -166,9 +156,13 @@ export default defineConfig({
       minify: 'terser',
       rollupOptions: {
         output: {
-          manualChunks: {
-            'expressive-code': ['astro-expressive-code'],
-            icons: ['~icons/ri/circle-fill', '~icons/fluent/new-16-filled'],
+          manualChunks: (id) => {
+            if (id.includes('astro-expressive-code')) return 'expressive-code'
+            if (
+              id.includes('~icons/ri/circle-fill') ||
+              id.includes('~icons/fluent/new-16-filled')
+            )
+              return 'icons'
           },
         },
       },
