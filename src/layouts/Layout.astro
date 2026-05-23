@@ -63,21 +63,25 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
 
     <script is:inline>
       ;(function () {
-        const stored = localStorage.getItem('color-scheme')
-        const theme =
-          stored ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark'
-            : 'light')
-        document.documentElement.classList.toggle('dark', theme === 'dark')
-        document.addEventListener('astro:after-swap', function () {
-          const t =
-            localStorage.getItem('color-scheme') ||
-            (window.matchMedia('(prefers-color-scheme: dark)').matches
-              ? 'dark'
-              : 'light')
-          document.documentElement.classList.toggle('dark', t === 'dark')
-        })
+        function applyThemeClass() {
+          const stored = localStorage.getItem('color-scheme')
+          const isDark = stored
+            ? stored === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+          document.documentElement.classList.toggle('dark', isDark)
+        }
+
+        applyThemeClass()
+
+        window
+          .matchMedia('(prefers-color-scheme: dark)')
+          .addEventListener('change', function () {
+            if (!localStorage.getItem('color-scheme')) {
+              applyThemeClass()
+            }
+          })
+
+        document.addEventListener('astro:after-swap', applyThemeClass)
       })()
     </script>
 
