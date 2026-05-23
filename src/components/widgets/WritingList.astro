@@ -9,42 +9,31 @@ type Props = {
 const { writings } = Astro.props
 ---
 
-<ul>
+<ul class="p-0 m-0 list-none flex flex-col">
   {writings.map((writing) => <WritingListItem writing={writing} />)}
 </ul>
-<div class="placeholder"></div>
+<div class="h-12"></div>
 
 <style>
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
+  @reference "../../styles/global.css";
 
   @media (hover: hover) and (pointer: fine) {
     ul:hover :global(a) {
-      opacity: 0.4;
+      @apply opacity-40;
     }
 
     ul:hover :global(li:hover a) {
-      opacity: 1;
+      @apply opacity-100;
     }
 
     ul:hover :global(li:hover .divider) {
+      @apply opacity-75;
       background-color: var(--text-tertiary);
-      opacity: 0.75;
     }
 
     ul:hover :global(li:hover .post-date) {
+      @apply opacity-100;
       color: var(--text-secondary);
-      opacity: 1;
     }
-  }
-
-  .placeholder {
-    height: 3rem;
   }
 </style>

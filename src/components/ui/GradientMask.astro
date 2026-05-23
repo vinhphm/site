@@ -2,9 +2,16 @@
 
 ---
 
-<div class="gradient-mask" aria-hidden="true">
-  <div class="gradient-mask__blur"></div>
-  <div class="gradient-mask__background"></div>
+<div
+  class="gradient-mask fixed top-0 left-0 w-full h-8 md:h-16 z-[99] pointer-events-none opacity-0 transition-opacity duration-200 ease-out"
+  aria-hidden="true"
+>
+  <div class="gradient-mask__blur absolute inset-0"></div>
+  <div
+    class="gradient-mask__background absolute inset-0 transition-colors duration-200 ease-out"
+    style="background-color: var(--bg);"
+  >
+  </div>
 </div>
 
 <script>
@@ -81,21 +88,10 @@
       rgba(0, 0, 0, 0.002) 98.2%,
       transparent 100%
     );
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2rem;
-    z-index: 99;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease-out;
   }
 
   .gradient-mask__blur,
   .gradient-mask__background {
-    position: absolute;
-    inset: 0;
     mask-image: var(--gradient-mask-image);
     -webkit-mask-image: var(--gradient-mask-image);
   }
@@ -103,16 +99,5 @@
   .gradient-mask__blur {
     backdrop-filter: blur(1.5px);
     -webkit-backdrop-filter: blur(1.5px);
-  }
-
-  .gradient-mask__background {
-    background-color: var(--bg);
-    transition: background-color 0.2s ease-out;
-  }
-
-  @media (min-width: 768px) {
-    .gradient-mask {
-      height: 4rem;
-    }
   }
 </style>
