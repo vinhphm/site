@@ -1,0 +1,80 @@
+---
+import EmailLink from '@/components/ui/EmailLink.astro'
+import config from '@/constants/config'
+
+const today = new Date()
+---
+
+<footer>
+  <div class="footer-top">
+    <div class="copyright">
+      <span class="date">&copy; {today.getFullYear()}</span>
+      {config.author.name}
+    </div>
+    <div class="social-links">
+      {
+        config.footer.navLinks.map((link) =>
+          link.text === 'email' ? (
+            <EmailLink text={link.text} className="footer-link" />
+          ) : (
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              {link.text}
+            </a>
+          )
+        )
+      }
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    font-size: 0.8125rem;
+    font-weight: 350;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    opacity: 0.75;
+    margin-top: 4rem;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .copyright,
+  .social-links {
+    white-space: nowrap;
+  }
+
+  .copyright .date {
+    opacity: 1;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  footer a,
+  footer :global(.footer-link) {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease-out;
+  }
+
+  footer a:hover,
+  footer :global(.footer-link:hover) {
+    color: var(--text-primary);
+    opacity: 1;
+  }
+</style>

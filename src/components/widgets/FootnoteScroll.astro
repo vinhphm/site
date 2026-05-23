@@ -1,0 +1,41 @@
+---
+
+---
+
+<script>
+  function bindFootnoteEvents() {
+    const footnoteLinks = document.querySelectorAll<HTMLElement>(
+      '[data-footnote-ref], [data-footnote-backref]'
+    )
+
+    footnoteLinks.forEach((link) => {
+      if (link.dataset.footnoteBound) return
+      link.dataset.footnoteBound = 'true'
+
+      link.addEventListener('click', (e) => {
+        e.preventDefault()
+        const href = link.getAttribute('href')
+        if (!href) return
+
+        const target = document.querySelector(href)
+        if (!target) return
+
+        const offset = 128
+        const targetPosition =
+          target.getBoundingClientRect().top + window.scrollY - offset
+        window.scrollTo({ top: targetPosition })
+
+        const highlightTarget =
+          target.closest('cite') || target.closest('sup') || target
+        highlightTarget.classList.add('footnote-highlight')
+        highlightTarget.addEventListener(
+          'animationend',
+          () => highlightTarget.classList.remove('footnote-highlight'),
+          { once: true }
+        )
+      })
+    })
+  }
+
+  document.addEventListener('astro:page-load', bindFootnoteEvents)
+</script>

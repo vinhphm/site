@@ -5,7 +5,8 @@ import CircleIcon from '~icons/ri/circle-fill'
 <button
   type="button"
   aria-label="Toggle theme"
-  class="text-gray-500 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-100 cursor-pointer theme-toggle"
+  class="cursor-pointer theme-toggle"
+  style="color: var(--text-secondary); background: none; border: none; padding: 0; transition: color 0.2s ease-out;"
 >
   <span class="sr-only">Toggle theme</span>
   <CircleIcon />
@@ -19,7 +20,7 @@ import CircleIcon from '~icons/ri/circle-fill'
     applyTheme,
     setupSystemThemeListener,
     cleanupSystemThemeListener,
-  } from '@/lib/theme'
+  } from '@/utils/theme'
 
   function nextTick(): Promise<void> {
     return Promise.resolve()
@@ -36,18 +37,13 @@ import CircleIcon from '~icons/ri/circle-fill'
     if (!isAppearanceTransition) {
       const currentTheme = getCurrentStoredTheme()
       const newTheme = getNextTheme(currentTheme)
-
       applyTheme(newTheme)
-      if (newTheme === 'auto') {
-        setupSystemThemeListener()
-      } else {
-        cleanupSystemThemeListener()
-      }
+      if (newTheme === 'auto') setupSystemThemeListener()
+      else cleanupSystemThemeListener()
       localStorage.setItem('color-scheme', newTheme)
       return
     }
 
-    // Add the theme-transition class to the root element to avoid conflicts
     document.documentElement.classList.add('theme-transition')
 
     const x = event.clientX
@@ -60,13 +56,9 @@ import CircleIcon from '~icons/ri/circle-fill'
     const transition = document.startViewTransition(async () => {
       const currentTheme = getCurrentStoredTheme()
       const newTheme = getNextTheme(currentTheme)
-
       applyTheme(newTheme)
-      if (newTheme === 'auto') {
-        setupSystemThemeListener()
-      } else {
-        cleanupSystemThemeListener()
-      }
+      if (newTheme === 'auto') setupSystemThemeListener()
+      else cleanupSystemThemeListener()
       localStorage.setItem('color-scheme', newTheme)
       await nextTick()
     })
@@ -79,11 +71,8 @@ import CircleIcon from '~icons/ri/circle-fill'
         ]
         const isDark =
           document.documentElement.getAttribute('data-theme') === 'dark'
-
         document.documentElement.animate(
-          {
-            clipPath: isDark ? [...clipPath].reverse() : clipPath,
-          },
+          { clipPath: isDark ? [...clipPath].reverse() : clipPath },
           {
             duration: 400,
             easing: 'ease-out',
@@ -94,7 +83,6 @@ import CircleIcon from '~icons/ri/circle-fill'
         )
       })
       .finally(() => {
-        // Remove the class precisely after the transition
         transition.finished.then(() => {
           document.documentElement.classList.remove('theme-transition')
         })
@@ -113,17 +101,12 @@ import CircleIcon from '~icons/ri/circle-fill'
     })
   }
 
-  if (getCurrentStoredTheme() === 'auto') {
-    setupSystemThemeListener()
-  }
+  if (getCurrentStoredTheme() === 'auto') setupSystemThemeListener()
   switchTheme()
 
   document.addEventListener('astro:after-swap', () => {
-    if (getCurrentStoredTheme() === 'auto') {
-      setupSystemThemeListener()
-    } else {
-      cleanupSystemThemeListener()
-    }
+    if (getCurrentStoredTheme() === 'auto') setupSystemThemeListener()
+    else cleanupSystemThemeListener()
     switchTheme()
   })
 </script>

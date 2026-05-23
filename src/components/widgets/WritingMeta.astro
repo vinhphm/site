@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { formatDate } from '@/utils/date'
+
+type Props = {
+  writing: CollectionEntry<'writings'>
+  readingTime?: string
+}
+
+const { writing, readingTime } = Astro.props
+---
+
+<div class="meta date">
+  <time datetime={writing.data.added.toISOString()}>
+    {formatDate(writing.data.added)}
+  </time>
+  {
+    readingTime && (
+      <span class="reading-time">
+        <span class="separator">·</span>
+        {readingTime}
+      </span>
+    )
+  }
+</div>
+
+<style>
+  .meta {
+    color: var(--text-secondary);
+  }
+</style>
