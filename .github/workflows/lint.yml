@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    name: Run ultracite lint
+    name: Run lint
     runs-on: ubuntu-latest
 
     steps:
