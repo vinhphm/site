@@ -4,6 +4,7 @@ import { ClientRouter } from 'astro:transitions'
 import Footer from '@/components/layout/Footer.astro'
 import GradientMask from '@/components/ui/GradientMask.astro'
 import Header from '@/components/layout/Header.astro'
+import ThemeInit from '@/components/ui/ThemeInit.astro'
 import config from '@/constants/config'
 import '@/styles/global.css'
 
@@ -45,45 +46,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     />
     <meta name="generator" content={Astro.generator} />
 
-    <style is:inline>
-      :root {
-        --bg: #ffffff;
-      }
-      html.dark {
-        --bg: #1c1c1c;
-      }
-      html {
-        background-color: var(--bg);
-        color-scheme: light;
-      }
-      html.dark {
-        color-scheme: dark;
-      }
-    </style>
-
-    <script is:inline>
-      ;(function () {
-        function applyThemeClass() {
-          const stored = localStorage.getItem('color-scheme')
-          const isDark = stored
-            ? stored === 'dark'
-            : window.matchMedia('(prefers-color-scheme: dark)').matches
-          document.documentElement.classList.toggle('dark', isDark)
-        }
-
-        applyThemeClass()
-
-        window
-          .matchMedia('(prefers-color-scheme: dark)')
-          .addEventListener('change', function () {
-            if (!localStorage.getItem('color-scheme')) {
-              applyThemeClass()
-            }
-          })
-
-        document.addEventListener('astro:after-swap', applyThemeClass)
-      })()
-    </script>
+    <ThemeInit />
 
     <Font cssVariable="--font-inter" preload />
     <Font cssVariable="--font-geist-mono" preload />

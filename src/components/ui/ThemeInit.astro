@@ -1,0 +1,39 @@
+<style is:inline>
+  :root {
+    --bg: #ffffff;
+  }
+  html.dark {
+    --bg: #1c1c1c;
+  }
+  html {
+    background-color: var(--bg);
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+</style>
+
+<script is:inline>
+  ;(function () {
+    function applyThemeClass() {
+      const stored = localStorage.getItem('color-scheme')
+      const isDark = stored
+        ? stored === 'dark'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+      document.documentElement.classList.toggle('dark', isDark)
+    }
+
+    applyThemeClass()
+
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', function () {
+        if (!localStorage.getItem('color-scheme')) {
+          applyThemeClass()
+        }
+      })
+
+    document.addEventListener('astro:after-swap', applyThemeClass)
+  })()
+</script>
