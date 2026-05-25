@@ -11,6 +11,8 @@ import TableOfContents from '@/components/ui/TableOfContents.astro'
 import FootnoteScroll from '@/components/widgets/FootnoteScroll.astro'
 import WritingMeta from '@/components/widgets/WritingMeta.astro'
 import ThemeInit from '@/components/ui/ThemeInit.astro'
+import LinkCard from '@/components/ui/LinkCard.astro'
+import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
 import config from '@/constants/config'
 import '@/styles/global.css'
 import type { CollectionEntry } from 'astro:content'
@@ -18,7 +20,7 @@ import type { CollectionEntry } from 'astro:content'
 type Props = {
   writing: CollectionEntry<'writings'>
   toc?: { level: number; text: string; id: string }[]
-  readingTime?: string
+  readingTime?: string | undefined
 }
 
 const { writing, toc = [], readingTime } = Astro.props
@@ -92,29 +94,32 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <ClientRouter />
   </head>
   <body data-centered="true">
-    <div class="post-container">
-      <main>
-        <div class="prose">
-          <GradientMask />
-          <BackButton />
-          {hasToc && <TableOfContents toc={toc} />}
-          <div class="title">
-            <h1 transition:name={`writing-id-${writing.id}`}>
-              {writing.data.title}
-            </h1>
-            <WritingMeta writing={writing} readingTime={readingTime} />
+    <TransitionWrapper>
+      <div class="post-container">
+        <main>
+          <div class="prose">
+            <GradientMask />
+            <BackButton />
+            {hasToc && <TableOfContents toc={toc} />}
+            <div class="title">
+              <h1 transition:name={`writing-id-${writing.id}`}>
+                {writing.data.title}
+              </h1>
+              <WritingMeta writing={writing} readingTime={readingTime} />
+            </div>
+            <article class="content">
+              <LinkCard />
+              <slot />
+            </article>
           </div>
-          <article class="content">
-            <slot />
-          </article>
-        </div>
-      </main>
-      <ImageOptimizer />
-      <ImageViewer />
-      <FootnoteScroll />
-      <CopyCode />
-      <Footer />
-    </div>
+        </main>
+        <ImageOptimizer />
+        <ImageViewer />
+        <FootnoteScroll />
+        <CopyCode />
+        <Footer />
+      </div>
+    </TransitionWrapper>
   </body>
 </html>
 

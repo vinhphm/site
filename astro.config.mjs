@@ -10,6 +10,8 @@ import rehypeExternalLinks from 'rehype-external-links'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import Icons from 'unplugin-icons/vite'
 import remarkContentFeatures from './src/plugins/remark-content-features.mjs'
+import remarkDirective from 'remark-directive'
+import remarkLinkCard from './src/plugins/remark-link-card.mjs'
 import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
 import remarkTOC from './src/plugins/remark-toc.mjs'
 
@@ -75,7 +77,7 @@ export default defineConfig({
       options: {
         variants: [
           {
-            weight: '400',
+            weight: '100 900',
             style: 'italic',
             src: ['./src/assets/fonts/Besley-Italic.woff2'],
           },
@@ -95,7 +97,13 @@ export default defineConfig({
       theme: 'css-variables',
       wrap: false,
     },
-    remarkPlugins: [remarkContentFeatures, remarkReadingTime, remarkTOC],
+    remarkPlugins: [
+      remarkContentFeatures,
+      remarkReadingTime,
+      remarkTOC,
+      remarkDirective,
+      remarkLinkCard,
+    ],
     rehypePlugins: [
       [rehypeExternalLinks, { target: '_blank', rel: 'noopener' }],
       rehypeHeadingIds,
