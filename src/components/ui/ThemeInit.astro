@@ -18,9 +18,10 @@
   ;(function () {
     function applyThemeClass() {
       const stored = localStorage.getItem('color-scheme')
-      const isDark = stored
-        ? stored === 'dark'
-        : window.matchMedia('(prefers-color-scheme: dark)').matches
+      const isDark =
+        stored === 'dark' ||
+        (stored !== 'light' &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
       document.documentElement.classList.toggle('dark', isDark)
     }
 
@@ -29,7 +30,8 @@
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', function () {
-        if (!localStorage.getItem('color-scheme')) {
+        const stored = localStorage.getItem('color-scheme')
+        if (!stored || stored === 'auto') {
           applyThemeClass()
         }
       })
