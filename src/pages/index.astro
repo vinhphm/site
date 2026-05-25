@@ -1,14 +1,15 @@
 ---
 import { getCollection } from 'astro:content'
+import About from '@/components/widgets/About.astro'
+import WritingList from '@/components/widgets/WritingList.astro'
 import config from '@/constants/config'
 import Layout from '@/layouts/Layout.astro'
-import { getLatestWriting } from '@/lib/writing'
-import NewIcon from '~icons/fluent/new-16-filled'
+import { sortWritingsByDate } from '@/utils/writing'
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site)
 
 const writings = await getCollection('writings')
-const latestWriting = getLatestWriting(writings)
+const sortedWritings = sortWritingsByDate(writings)
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -19,52 +20,14 @@ const structuredData = {
 }
 ---
 
-<Layout
-  description={config.description}
-  containerClass="flex flex-col max-w-sm justify-center h-svh"
->
+<Layout description={config.description}>
   <script
     type="application/ld+json"
     set:html={JSON.stringify(structuredData)}
     slot="structured-data"
   />
-  <div class="space-y-6">
-    {
-      latestWriting && (
-        <span class="flex flex-col justify-between items-start">
-          <span class="text-sm text-gray-500 dark:text-zinc-500 mr-2">
-            <NewIcon />
-            Latest
-          </span>
-          <a
-            href={`/writing/${latestWriting.id}`}
-            transition:name={`writing-id-${latestWriting.id}`}
-            class="hover:underline"
-          >
-            {latestWriting.data.title}
-          </a>
-        </span>
-      )
-    }
-    <hr />
-    <div>
-      <p>
-        I craft digital solutions at PwC by day, experiment with side projects
-        by night. This space showcases my explorations in code, performance
-        optimizations, and the occasional wild idea.
-      </p>
-      <p>Coffee ☕, tea 🧋, and travel 🚌 fuel the journey.</p>
-    </div>
-  </div>
+  <About />
+  <main>
+    <WritingList writings={sortedWritings} />
+  </main>
 </Layout>
-
-<style scoped>
-  @reference "../styles/global.css";
-
-  p {
-    @apply my-4 text-gray-800 dark:text-zinc-300;
-  }
-  hr {
-    @apply mx-auto border-gray-100 dark:border-zinc-800;
-  }
-</style>

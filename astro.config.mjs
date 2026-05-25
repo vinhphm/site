@@ -1,14 +1,17 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
-import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections'
-import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
-import expressiveCode from 'astro-expressive-code'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
+import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import rehypeExternalLinks from 'rehype-external-links'
+import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import Icons from 'unplugin-icons/vite'
+import remarkContentFeatures from './src/plugins/remark-content-features.mjs'
+import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
+import remarkTOC from './src/plugins/remark-toc.mjs'
 
 export default defineConfig({
   site: 'https://vinh.dev',
@@ -64,82 +67,48 @@ export default defineConfig({
         ],
       },
     },
+    {
+      provider: fontProviders.local(),
+      name: 'Besley',
+      cssVariable: '--font-besley',
+      subsets: ['latin'],
+      options: {
+        variants: [
+          {
+            weight: '400',
+            style: 'italic',
+            src: ['./src/assets/fonts/Besley-Italic.woff2'],
+          },
+        ],
+      },
+    },
   ],
 
   image: {
     responsiveStyles: true,
   },
 
-  integrations: [
-    expressiveCode({
-      themes: ['poimandres', 'snazzy-light'],
-      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
-      useDarkModeMediaQuery: false,
-      themeCssSelector: (theme) =>
-        `[data-theme='${theme.name === 'poimandres' ? 'dark' : 'light'}']`,
-      defaultProps: {
-        wrap: true,
-        showLineNumbers: false,
-        collapseStyle: 'collapsible-auto',
-        overridesByLang: {
-          'ansi,bat,bash,batch,cmd,console,powershell,ps,ps1,psd1,psm1,sh,shell,shellscript,shellsession,text,zsh':
-            {
-              showLineNumbers: false,
-            },
-        },
-      },
-      styleOverrides: {
-        borderColor: 'var(--border)',
-        borderWidth: '1px',
-        borderRadius: '1rem',
-        codeFontFamily: 'var(--font-mono)',
-        codeBackground:
-          'color-mix(in oklab, var(--secondary) 25%, transparent)',
-        frames: {
-          editorActiveTabForeground: 'var(--muted-foreground)',
-          editorActiveTabBackground: 'transparent',
-          editorActiveTabIndicatorBottomColor: 'transparent',
-          editorActiveTabIndicatorTopColor: 'transparent',
-          editorTabBarBackground:
-            'color-mix(in oklab, var(--secondary) 25%, transparent)',
-          editorTabBarBorderBottomColor: 'transparent',
-          frameBoxShadowCssValue: 'none',
-          terminalBackground:
-            'color-mix(in oklab, var(--secondary) 25%, transparent)',
-          terminalTitlebarBackground: 'transparent',
-          terminalTitlebarBorderBottomColor: 'transparent',
-          terminalTitlebarForeground: 'var(--muted-foreground)',
-        },
-        lineNumbers: {
-          foreground: 'var(--muted-foreground)',
-        },
-        uiFontFamily: 'var(--font-sans)',
-      },
-    }),
-    mdx(),
-    sitemap(),
-  ],
+  integrations: [mdx(), sitemap()],
 
   markdown: {
-    syntaxHighlight: false,
+    shikiConfig: {
+      theme: 'css-variables',
+      wrap: false,
+    },
+    remarkPlugins: [remarkContentFeatures, remarkReadingTime, remarkTOC],
     rehypePlugins: [
       [rehypeExternalLinks, { target: '_blank', rel: 'noopener' }],
       rehypeHeadingIds,
       [
         rehypeAutolinkHeadings,
         {
-          properties: {
-            className: 'header-anchor',
-            ariaHidden: true,
-          },
-          content: [
-            {
-              type: 'text',
-              value: '#',
-            },
-          ],
+          properties: { className: 'header-anchor', ariaHidden: true },
+          content: [{ type: 'text', value: '#' }],
         },
       ],
+      rehypeCleanup,
+      rehypeImageProcessor,
+      rehypeCopyCode,
     ],
   },
 
@@ -157,12 +126,7 @@ export default defineConfig({
       rollupOptions: {
         output: {
           manualChunks: (id) => {
-            if (id.includes('astro-expressive-code')) return 'expressive-code'
-            if (
-              id.includes('~icons/ri/circle-fill') ||
-              id.includes('~icons/fluent/new-16-filled')
-            )
-              return 'icons'
+            if (id.includes('~icons/')) return 'icons'
           },
         },
       },

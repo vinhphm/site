@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { formatDate } from '@/utils/date'
+import { getDisplayDate } from '@/utils/writing'
+
+type Props = {
+  writing: CollectionEntry<'writings'>
+}
+
+const { writing } = Astro.props
+const displayDate = getDisplayDate(writing)
+---
+
+<li class="list-none m-0 p-0">
+  <a
+    href={`/writing/${writing.id}`}
+    transition:name={`writing-id-${writing.id}`}
+    class="block no-underline transition-opacity duration-150 ease-out"
+    style="color: var(--text-primary);"
+  >
+    <div class="h-11 flex justify-between items-center gap-3">
+      <p
+        class="m-0 shrink min-w-0 whitespace-nowrap overflow-hidden text-ellipsis"
+      >
+        {writing.data.title}
+      </p>
+      <div
+        class="divider flex-auto min-w-12 mx-1"
+        style="height: 0.5px; background-color: var(--border);"
+      >
+      </div>
+      <p class="date m-0 shrink-0 whitespace-nowrap">
+        {formatDate(displayDate)}
+      </p>
+    </div>
+  </a>
+</li>

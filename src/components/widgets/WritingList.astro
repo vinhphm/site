@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import WritingListItem from '@/components/widgets/WritingListItem.astro'
+
+type Props = {
+  writings: CollectionEntry<'writings'>[]
+}
+
+const { writings } = Astro.props
+---
+
+<ul class="p-0 m-0 list-none flex flex-col">
+  {writings.map((writing) => <WritingListItem writing={writing} />)}
+</ul>
+<div class="h-12"></div>
+
+<style>
+  @reference "../../styles/global.css";
+
+  @media (hover: hover) and (pointer: fine) {
+    ul:hover :global(a) {
+      @apply opacity-40;
+    }
+
+    ul:hover :global(li:hover a) {
+      @apply opacity-100;
+    }
+
+    ul:hover :global(li:hover .divider) {
+      @apply opacity-75;
+      background-color: var(--text-tertiary);
+    }
+
+    ul:hover :global(li:hover .post-date) {
+      @apply opacity-100;
+      color: var(--text-secondary);
+    }
+  }
+</style>

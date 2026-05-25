@@ -1,0 +1,131 @@
+---
+import { Font } from 'astro:assets'
+import { ClientRouter } from 'astro:transitions'
+import BackButton from '@/components/ui/BackButton.astro'
+import CopyCode from '@/components/ui/CopyCode.astro'
+import Footer from '@/components/layout/Footer.astro'
+import GradientMask from '@/components/ui/GradientMask.astro'
+import ImageOptimizer from '@/components/ui/ImageOptimizer.astro'
+import ImageViewer from '@/components/ui/ImageViewer.astro'
+import TableOfContents from '@/components/ui/TableOfContents.astro'
+import FootnoteScroll from '@/components/widgets/FootnoteScroll.astro'
+import WritingMeta from '@/components/widgets/WritingMeta.astro'
+import ThemeInit from '@/components/ui/ThemeInit.astro'
+import config from '@/constants/config'
+import '@/styles/global.css'
+import type { CollectionEntry } from 'astro:content'
+
+type Props = {
+  writing: CollectionEntry<'writings'>
+  toc?: { level: number; text: string; id: string }[]
+  readingTime?: string
+}
+
+const { writing, toc = [], readingTime } = Astro.props
+const hasToc = toc.length > 0
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const title = [writing.data.title, config.title].filter(Boolean).join(' / ')
+
+function getImageUrl() {
+  if (writing.data.image) return writing.data.image
+  return `${config.workerHost}/og?title=${encodeURIComponent(writing.data.title)}`
+}
+const imageUrl = getImageUrl()
+const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      href="/rss.xml"
+      title="RSS"
+    />
+    <meta name="generator" content={Astro.generator} />
+
+    <ThemeInit />
+
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-geist-mono" preload />
+    <Font cssVariable="--font-besley" preload />
+
+    <link rel="canonical" href={canonicalURL} />
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={writing.data.description} />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content={config.title} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={writing.data.description} />
+    {resolvedImage && <meta property="og:image" content={resolvedImage} />}
+    <meta
+      property="article:published_time"
+      content={writing.data.added.toISOString()}
+    />
+    {
+      writing.data.updated && (
+        <meta
+          property="article:modified_time"
+          content={writing.data.updated.toISOString()}
+        />
+      )
+    }
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={writing.data.description} />
+    {resolvedImage && <meta property="twitter:image" content={resolvedImage} />}
+
+    <slot name="structured-data" />
+
+    <ClientRouter />
+  </head>
+  <body data-centered="true">
+    <div class="post-container">
+      <main>
+        <div class="prose">
+          <GradientMask />
+          <BackButton />
+          {hasToc && <TableOfContents toc={toc} />}
+          <div class="title">
+            <h1 transition:name={`writing-id-${writing.id}`}>
+              {writing.data.title}
+            </h1>
+            <WritingMeta writing={writing} readingTime={readingTime} />
+          </div>
+          <article class="content">
+            <slot />
+          </article>
+        </div>
+      </main>
+      <ImageOptimizer />
+      <ImageViewer />
+      <FootnoteScroll />
+      <CopyCode />
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style>
+  .post-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .post-container main {
+    flex: 1;
+  }
+</style>
