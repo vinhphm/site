@@ -210,49 +210,7 @@ html:not([data-theme='dark']) [img-dark] {
   display: none;
 }
 
-/* Page navigation transition (view-transition API) */
-@supports (view-transition-name: none) {
-  @media not (prefers-reduced-motion: reduce) {
-    ::view-transition-old(root) {
-      animation: page-fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    ::view-transition-new(root) {
-      opacity: 0;
-      animation: page-fade-in 0.4s ease 0.2s forwards;
-      will-change: filter, opacity, transform;
-    }
-  }
-}
-
-@keyframes page-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes page-fade-in {
-  0% {
-    opacity: 0;
-    filter: blur(8px);
-    transform: translateZ(0);
-  }
-  30% {
-    opacity: 0.5;
-    filter: blur(4px);
-    transform: translateZ(0);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateZ(0);
-  }
-}
-
-/* Theme toggle transition (view-transition API) — overrides page animation */
+/* Theme toggle transition (view-transition API) */
 .theme-transition::view-transition-old(root),
 .theme-transition::view-transition-new(root) {
   animation: none;
