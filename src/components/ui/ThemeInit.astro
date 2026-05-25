@@ -2,40 +2,44 @@
   :root {
     --bg: #ffffff;
   }
-  html.dark {
+  [data-theme='dark'] {
     --bg: #1c1c1c;
   }
   html {
     background-color: var(--bg);
     color-scheme: light;
   }
-  html.dark {
+  [data-theme='dark'] {
     color-scheme: dark;
   }
 </style>
 
 <script is:inline>
   ;(function () {
-    function applyThemeClass() {
+    function applyThemeAttr() {
       const stored = localStorage.getItem('color-scheme')
       const isDark =
         stored === 'dark' ||
         (stored !== 'light' &&
           window.matchMedia('(prefers-color-scheme: dark)').matches)
-      document.documentElement.classList.toggle('dark', isDark)
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark')
+      } else {
+        document.documentElement.removeAttribute('data-theme')
+      }
     }
 
-    applyThemeClass()
+    applyThemeAttr()
 
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', function () {
         const stored = localStorage.getItem('color-scheme')
         if (!stored || stored === 'auto') {
-          applyThemeClass()
+          applyThemeAttr()
         }
       })
 
-    document.addEventListener('astro:after-swap', applyThemeClass)
+    document.addEventListener('astro:after-swap', applyThemeAttr)
   })()
 </script>

@@ -24,7 +24,11 @@ export function getNextTheme(current: Theme): Theme {
 
 export function applyTheme(theme: Theme): void {
   const actualTheme = theme === 'auto' ? getSystemTheme() : theme
-  document.documentElement.classList.toggle('dark', actualTheme === 'dark')
+  if (actualTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark')
+  } else {
+    document.documentElement.removeAttribute('data-theme')
+  }
 }
 
 let systemThemeMediaQuery: MediaQueryList | null = null

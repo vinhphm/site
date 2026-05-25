@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import './writing.css';
 
-@custom-variant dark (&:where(html.dark, html.dark *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
   --font-sans: var(--font-inter);
@@ -47,7 +47,7 @@
   --astro-code-token-link: rgba(0, 0, 0, 0.55);
 }
 
-html.dark {
+[data-theme='dark'] {
   --bg: #1c1c1c;
   --text-primary: rgba(255, 255, 255, 0.9);
   --text-secondary: rgba(255, 255, 255, 0.4);
@@ -200,13 +200,13 @@ a.header-anchor:focus {
 }
 
 /* Image theme visibility */
-html.dark .img-light,
-html.dark [img-light] {
+[data-theme='dark'] .img-light,
+[data-theme='dark'] [img-light] {
   display: none;
 }
 
-html:not(.dark) .img-dark,
-html:not(.dark) [img-dark] {
+html:not([data-theme='dark']) .img-dark,
+html:not([data-theme='dark']) [img-dark] {
   display: none;
 }
 
@@ -225,10 +225,10 @@ html:not(.dark) [img-dark] {
   z-index: 9999;
 }
 
-html.dark.theme-transition::view-transition-old(root) {
+html[data-theme='dark'].theme-transition::view-transition-old(root) {
   z-index: 9999;
 }
 
-html.dark.theme-transition::view-transition-new(root) {
+html[data-theme='dark'].theme-transition::view-transition-new(root) {
   z-index: 1;
 }
