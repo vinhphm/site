@@ -337,7 +337,11 @@ const { url, maxWidth = 800 } = Astro.props
   }
 
   .oembed-content {
-    @apply w-full flex justify-center-safe overflow-x-hidden;
+    @apply w-full flex justify-center-safe;
+  }
+
+  .oembed-content blockquote {
+    @apply max-w-full box-border;
   }
 
   .oembed-content img {
