@@ -43,22 +43,25 @@
       copyResetTimers.set(button, resetTimer)
     }
 
-    document.querySelectorAll('.copy-button').forEach((button) => {
-      if (button.dataset.copyInit) return
-      button.dataset.copyInit = '1'
+    document.querySelectorAll('pre').forEach((pre) => {
+      if (pre.dataset.copyInit) return
+      pre.dataset.copyInit = '1'
 
-      let preElement = button.closest('.copy-code-block')
-      if (!preElement) {
-        const parent = button.parentElement
-        if (parent) preElement = parent.querySelector('.copy-code-block')
-      }
-      if (!preElement) return
-
-      const codeElement = preElement.querySelector('code')
+      const codeElement = pre.querySelector('code')
       if (!codeElement) return
 
-      if (!button.querySelector('svg')) button.innerHTML = copyIcon
+      const button = document.createElement('button')
+      button.className = 'copy-button'
+      button.type = 'button'
+      button.setAttribute('aria-label', 'Copy code to clipboard')
+      button.innerHTML = copyIcon
       setCopyState(button, 'idle')
+
+      const wrapper = document.createElement('div')
+      wrapper.className = 'copy-code-wrapper'
+      pre.parentNode.insertBefore(wrapper, pre)
+      wrapper.appendChild(button)
+      wrapper.appendChild(pre)
 
       button.addEventListener('click', async () => {
         try {

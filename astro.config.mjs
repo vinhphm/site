@@ -1,19 +1,14 @@
-import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+import { satteri } from '@astrojs/markdown-satteri'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
-import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
-import rehypeExternalLinks from 'rehype-external-links'
-import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
+import { satteriExternalLinks } from './src/plugins/satteri-external-links.mjs'
+import { createSatteriHeadingsPlugin } from './src/plugins/satteri-headings.mjs'
+import { satteriLinkCard } from './src/plugins/satteri-link-card.mjs'
+import { createSatteriCleanupPlugin } from './src/plugins/satteri-cleanup.mjs'
+import { createSatteriImageProcessorPlugin } from './src/plugins/satteri-image-processor.mjs'
 import Icons from 'unplugin-icons/vite'
-import remarkContentFeatures from './src/plugins/remark-content-features.mjs'
-import remarkDirective from 'remark-directive'
-import remarkLinkCard from './src/plugins/remark-link-card.mjs'
-import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
-import remarkTOC from './src/plugins/remark-toc.mjs'
 
 export default defineConfig({
   site: 'https://vinh.dev',
@@ -97,27 +92,16 @@ export default defineConfig({
       theme: 'css-variables',
       wrap: false,
     },
-    remarkPlugins: [
-      remarkContentFeatures,
-      remarkReadingTime,
-      remarkTOC,
-      remarkDirective,
-      remarkLinkCard,
-    ],
-    rehypePlugins: [
-      [rehypeExternalLinks, { target: '_blank', rel: 'noopener' }],
-      rehypeHeadingIds,
-      [
-        rehypeAutolinkHeadings,
-        {
-          properties: { className: 'header-anchor', ariaHidden: true },
-          content: [{ type: 'text', value: '#' }],
-        },
+    processor: satteri({
+      features: { directive: true },
+      mdastPlugins: [satteriLinkCard],
+      hastPlugins: [
+        satteriExternalLinks,
+        createSatteriHeadingsPlugin,
+        createSatteriCleanupPlugin,
+        createSatteriImageProcessorPlugin,
       ],
-      rehypeCleanup,
-      rehypeImageProcessor,
-      rehypeCopyCode,
-    ],
+    }),
   },
 
   vite: {
