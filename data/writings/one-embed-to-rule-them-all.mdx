@@ -10,6 +10,7 @@ duration: 8 min read
 
 import OEmbed from '@/components/ui/OEmbed.astro'
 import BlueskyIcon from '~icons/ri/bluesky-fill'
+import ThreadsIcon from '~icons/ri/threads-fill'
 
 I had a simple goal: embed my [<BlueskyIcon class="text-bluesky" /> Bluesky](https://bsky.app) posts directly into my blog. What could go wrong with such a straightforward request? Well, as it turns out, quite a lot, but in the most educational way possible.
 
@@ -175,6 +176,10 @@ And here's what that produces:
 Twitter/X works too:
 
 <OEmbed url="https://x.com/vinhdw/status/1938632663675609116" />
+
+[<ThreadsIcon />Threads](https://www.threads.com) as well:
+
+<OEmbed url="https://www.threads.com/@vinhdw/post/DTfMoIOkl2x" />
 
 The embed automatically matches my site's theme, updates in real-time when users toggle between light and dark modes, and works with dozens of services beyond just Bluesky.
 

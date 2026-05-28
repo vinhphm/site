@@ -49,6 +49,10 @@ const { url, maxWidth = 800 } = Astro.props
     return /^https?:\/\/(www\.)?(twitter\.com|x\.com)\//.test(url)
   }
 
+  function isThreadsUrl(url: string): boolean {
+    return /^https?:\/\/(www\.)?threads\.(com|net)\//.test(url)
+  }
+
   function loadTwitterWidgets() {
     if (
       document.querySelector('script[src*="platform.twitter.com/widgets.js"]')
@@ -93,6 +97,40 @@ const { url, maxWidth = 800 } = Astro.props
     })
     contentDiv.innerHTML = temp.innerHTML
     loadTwitterWidgets()
+  }
+
+  function loadThreadsEmbeds() {
+    if (document.querySelector('script[src*="threads.com/embed.js"]')) {
+      const instgrm = (window as any).instgrm
+      if (instgrm?.Embeds?.process) {
+        instgrm.Embeds.process()
+      }
+      return
+    }
+
+    const loadScript = () => {
+      const script = document.createElement('script')
+      script.src = 'https://www.threads.com/embed.js'
+      script.async = true
+      document.head.appendChild(script)
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadScript, { timeout: 2000 })
+    } else {
+      setTimeout(loadScript, 100)
+    }
+  }
+
+  function injectThreadsEmbed(contentDiv: HTMLElement, html: string) {
+    const temp = document.createElement('div')
+    temp.innerHTML = html
+    // Strip the <script> tags — embed.js is loaded separately via document.head
+    Array.from(temp.getElementsByTagName('script')).forEach((s) =>
+      s.parentNode?.removeChild(s)
+    )
+    contentDiv.innerHTML = temp.innerHTML
+    loadThreadsEmbeds()
   }
 
   function injectContent(
@@ -153,6 +191,8 @@ const { url, maxWidth = 800 } = Astro.props
         if (data.html) {
           if (isTwitterUrl(url)) {
             injectTwitterEmbed(contentDiv, data.html)
+          } else if (isThreadsUrl(url)) {
+            injectThreadsEmbed(contentDiv, data.html)
           } else {
             const isDark = getCurrentTheme() === 'dark'
             injectContent(contentDiv, data.html, isDark)
