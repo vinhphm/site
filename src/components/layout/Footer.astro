@@ -1,52 +1,39 @@
 ---
-import EmailLink from '@/components/ui/EmailLink.astro'
+import ThemeToggle from '@/components/ui/ThemeToggle.astro'
 import config from '@/constants/config'
 
 const today = new Date()
 ---
 
-<footer
-  class="text-[length:var(--font-size-s)] font-light leading-[1.75] mt-16 opacity-75"
-  style="color: var(--text-secondary);"
->
-  <div class="flex justify-between items-center flex-row flex-nowrap w-full">
-    <div class="whitespace-nowrap">
-      <span class="date opacity-100">&copy; {today.getFullYear()}</span>
+<footer class="footer">
+  <div class="footer-content">
+    <div class="copyright">
+      <span class="date">&copy; {today.getFullYear()}</span>
       {config.author.name}
     </div>
-    <div class="flex gap-4 whitespace-nowrap">
-      {
-        config.footer.navLinks.map((link) =>
-          link.text === 'email' ? (
-            <EmailLink text={link.text} className="footer-link" />
-          ) : (
-            <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-            >
-              {link.text}
-            </a>
-          )
-        )
-      }
-    </div>
+    <!-- <div class="theme-toggle">
+      <ThemeToggle />
+    </div> -->
   </div>
 </footer>
 
 <style>
   @reference "../../styles/global.css";
 
-  footer a,
-  footer :global(.footer-link) {
-    @apply no-underline transition-colors duration-200 ease-out;
-    color: var(--text-secondary);
+  .footer {
+    @apply text-(length:--font-size-s) font-light leading-[1.75] mt-16 opacity-75 text-(--text-secondary);
   }
 
-  footer a:hover,
-  footer :global(.footer-link:hover) {
+  .footer-content {
+    @apply flex justify-between items-center flex-row flex-nowrap w-full;
+  }
+
+  .copyright,
+  .theme-toggle {
+    @apply whitespace-nowrap;
+  }
+
+  .copyright .date {
     @apply opacity-100;
-    color: var(--text-primary);
   }
 </style>

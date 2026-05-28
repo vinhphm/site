@@ -5,8 +5,7 @@ import CircleIcon from '~icons/ri/circle-fill'
 <button
   type="button"
   aria-label="Toggle theme"
-  class="cursor-pointer theme-toggle"
-  style="color: var(--text-secondary); background: none; border: none; padding: 0; transition: color 0.2s ease-out;"
+  class="cursor-pointer theme-toggle text-(--text-secondary) bg-transparent border-none p-0 transition-colors duration-200 ease-out"
 >
   <span class="sr-only">Toggle theme</span>
   <CircleIcon />
@@ -26,7 +25,11 @@ import CircleIcon from '~icons/ri/circle-fill'
     return Promise.resolve()
   }
 
+  let isThemeTransitioning = false
+
   function toggleDark(event: MouseEvent): void {
+    if (isThemeTransitioning) return
+
     const startViewTransition = (document as any).startViewTransition
     const isPrefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
@@ -53,6 +56,7 @@ import CircleIcon from '~icons/ri/circle-fill'
       Math.max(y, innerHeight - y)
     )
 
+    isThemeTransitioning = true
     const transition = document.startViewTransition(async () => {
       const currentTheme = getCurrentStoredTheme()
       const newTheme = getNextTheme(currentTheme)
@@ -82,10 +86,14 @@ import CircleIcon from '~icons/ri/circle-fill'
           }
         )
       })
+      .catch(() => {})
       .finally(() => {
-        transition.finished.then(() => {
-          document.documentElement.classList.remove('theme-transition')
-        })
+        transition.finished
+          .catch(() => {})
+          .then(() => {
+            document.documentElement.classList.remove('theme-transition')
+            isThemeTransitioning = false
+          })
       })
   }
 
@@ -101,10 +109,7 @@ import CircleIcon from '~icons/ri/circle-fill'
     })
   }
 
-  if (getCurrentStoredTheme() === 'auto') setupSystemThemeListener()
-  switchTheme()
-
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener('astro:page-load', () => {
     if (getCurrentStoredTheme() === 'auto') setupSystemThemeListener()
     else cleanupSystemThemeListener()
     switchTheme()

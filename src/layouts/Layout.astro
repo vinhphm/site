@@ -1,98 +1,26 @@
 ---
-import { Font } from 'astro:assets'
-import { ClientRouter } from 'astro:transitions'
 import Footer from '@/components/layout/Footer.astro'
 import GradientMask from '@/components/ui/GradientMask.astro'
 import Header from '@/components/layout/Header.astro'
-import ThemeInit from '@/components/ui/ThemeInit.astro'
-import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
-import config from '@/constants/config'
-import '@/styles/global.css'
+import BaseLayout from '@/layouts/BaseLayout.astro'
 
 type Props = {
   title?: string
   description: string
   image?: string | undefined
-  datePublished?: string
-  dateModified?: string
 }
 
-const { description, image, datePublished, dateModified } = Astro.props
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const title = [Astro.props.title, config.title].filter(Boolean).join(' / ')
-
-function getImageUrl() {
-  if (image) return image
-  return `${config.workerHost}/og?title=${encodeURIComponent(Astro.props.title || '')}`
-}
-
-const imageUrl = getImageUrl()
-const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
+const { title, description, image } = Astro.props
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" sizes="48x48" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      href="/rss.xml"
-      title="RSS"
-    />
-    <meta name="generator" content={Astro.generator} />
-
-    <ThemeInit />
-
-    <Font cssVariable="--font-inter" preload />
-    <Font cssVariable="--font-geist-mono" />
-    <Font cssVariable="--font-besley" />
-
-    <link rel="canonical" href={canonicalURL} />
-    <title>{title}</title>
-    <meta name="title" content={title} />
-    <meta name="description" content={description} />
-
-    <meta property="og:type" content={datePublished ? 'article' : 'website'} />
-    <meta property="og:site_name" content={config.title} />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    {resolvedImage && <meta property="og:image" content={resolvedImage} />}
-    {
-      datePublished && (
-        <meta property="article:published_time" content={datePublished} />
-      )
-    }
-    {
-      dateModified && (
-        <meta property="article:modified_time" content={dateModified} />
-      )
-    }
-
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    {resolvedImage && <meta property="twitter:image" content={resolvedImage} />}
-
-    <slot name="structured-data" />
-
-    <ClientRouter />
-  </head>
-  <body data-centered="true">
-    <TransitionWrapper>
-      <GradientMask />
-      <Header />
-      <main>
-        <slot />
-      </main>
-      <Footer />
-    </TransitionWrapper>
-  </body>
-</html>
+<BaseLayout {title} {description} {image} type="page">
+  <slot name="structured-data" slot="structured-data" />
+  <div class="flex flex-col flex-1">
+    <GradientMask />
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

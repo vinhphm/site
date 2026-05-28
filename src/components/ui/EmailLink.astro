@@ -4,9 +4,10 @@ import config from '@/constants/config'
 export type Props = {
   text: string
   className?: string
+  suffix?: string
 }
 
-const { text, className = '' } = Astro.props
+const { text, className = '', suffix = '' } = Astro.props
 
 // Enhanced obfuscation with Base64 encoding and simple cipher
 const email = config.author.email
@@ -30,13 +31,12 @@ const encodedDomain = btoa(cipher(emailParts[1]))
 
 <!-- Enhanced email obfuscation with encoded data attributes -->
 <span
-  class={`email-obfuscated cursor-pointer ${className}`}
+  class={`email-obfuscated cursor-pointer underline decoration-(--text-tertiary) hover:decoration-(--text-primary) transition-[text-decoration-color] duration-200 ease-out ${className}`}
   data-text={text}
   data-u={encodedUser}
   data-d={encodedDomain}
+  data-suffix={suffix}>{text}{suffix}</span
 >
-  {text}
-</span>
 
 <script define:vars={{ CLIENT_CIPHER_SHIFT: CIPHER_SHIFT }}>
   // Enhanced client-side email deobfuscation
@@ -49,7 +49,6 @@ const encodedDomain = btoa(cipher(emailParts[1]))
       const encodedDomain = element.getAttribute('data-d')
 
       if (text === 'email' && encodedUser && encodedDomain) {
-        // Reverse the obfuscation process (server-side value embedded)
         const decipher = (str) =>
           str
             .split('')
@@ -58,30 +57,33 @@ const encodedDomain = btoa(cipher(emailParts[1]))
             )
             .join('')
 
-        // Decode Base64 then reverse cipher
         const user = decipher(atob(encodedUser))
         const domain = decipher(atob(encodedDomain))
-
-        // Reconstruct email
         const email = user + '@' + domain
 
-        // Create clickable mailto link
         const link = document.createElement('a')
         link.href = 'mailto:' + email
         link.textContent = text
         link.className = element.className.replace('email-obfuscated', '')
         link.title = `Send email to ${email}`
 
-        // Replace the span with the link
-        element.parentNode?.replaceChild(link, element)
+        const suffix = element.getAttribute('data-suffix') || ''
+        if (suffix) {
+          const fragment = document.createDocumentFragment()
+          fragment.appendChild(link)
+          fragment.appendChild(document.createTextNode(suffix))
+          element.parentNode?.replaceChild(fragment, element)
+        } else {
+          element.parentNode?.replaceChild(link, element)
+        }
       }
     })
   }
 
-  // Run after DOM is loaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', deobfuscateEmails)
   } else {
     deobfuscateEmails()
   }
+  document.addEventListener('astro:page-load', deobfuscateEmails)
 </script>

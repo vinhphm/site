@@ -1,5 +1,6 @@
 ---
-
+import EmailLink from '@/components/ui/EmailLink.astro'
+import config from '@/constants/config'
 ---
 
 <div class="about prose">
@@ -12,12 +13,55 @@
     My goal is to turn complex problems into <em>simple, well-crafted</em> software.
     Fueled by coffee, tea, and a deep love of travel.
   </p>
+  <p>
+    {
+      (() => {
+        const links = config.footer.navLinks
+        return (
+          <>
+            Find me on{' '}
+            {links.map((link, i) => {
+              const isLast = i === links.length - 1
+              const isSecondLast = i === links.length - 2
+              const suffix = isSecondLast ? ' or ' : ', '
+              if (isLast) {
+                return link.text === 'email' ? (
+                  <EmailLink text={link.text} suffix="." />
+                ) : (
+                  <>
+                    <a href={link.href} target="_blank" rel="noopener">
+                      {link.text}
+                    </a>
+                    {'.'}
+                  </>
+                )
+              }
+              const node =
+                link.text === 'email' ? (
+                  <EmailLink text={link.text} />
+                ) : (
+                  <a href={link.href} target="_blank" rel="noopener">
+                    {link.text}
+                  </a>
+                )
+              return (
+                <>
+                  {node}
+                  {suffix}
+                </>
+              )
+            })}
+          </>
+        )
+      })()
+    }
+  </p>
 </div>
 
 <style>
   @reference "../../styles/global.css";
 
   .about:not(:empty) {
-    @apply mb-5;
+    @apply mb-[1.75em];
   }
 </style>

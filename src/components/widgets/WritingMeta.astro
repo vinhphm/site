@@ -10,7 +10,7 @@ type Props = {
 const { writing, readingTime } = Astro.props
 ---
 
-<div class="date" style="color: var(--text-secondary);">
+<div class="date text-(--text-secondary)">
   <time datetime={writing.data.added.toISOString()}>
     {formatDate(writing.data.added)}
   </time>
