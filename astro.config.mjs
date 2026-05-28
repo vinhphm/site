@@ -26,7 +26,7 @@ export default defineConfig({
       provider: fontProviders.local(),
       name: 'Inter',
       cssVariable: '--font-inter',
-      subsets: ['latin', 'vietnamese'],
+      subsets: ['latin'],
       options: {
         variants: [
           {
@@ -48,7 +48,7 @@ export default defineConfig({
       provider: fontProviders.local(),
       name: 'Geist Mono',
       cssVariable: '--font-geist-mono',
-      subsets: ['latin', 'vietnamese'],
+      subsets: ['latin'],
       options: {
         variants: [
           {
