@@ -51,6 +51,9 @@ yarn.lock
 pnpm-lock.yaml
 bun.lock
 
+# Whitespace-sensitive components
+src/components/widgets/SocialLinks.astro
+
 # Environment files
 .env
 .env.*
