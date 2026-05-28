@@ -346,10 +346,16 @@ const { url, maxWidth = 800 } = Astro.props
 
   .video-container {
     @apply relative h-0 overflow-hidden pb-[56.25%];
+    background-color: var(--bg);
   }
 
   .video-container iframe {
     @apply absolute top-0 left-0 w-full h-full;
+  }
+
+  :global([data-theme='dark']) .oembed-content iframe {
+    color-scheme: dark;
+    background-color: var(--bg);
   }
 
   .oembed-content a {
