@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content'
 import rss from '@astrojs/rss'
-import config from '@/constants/config'
+import config from '@/config'
 import { getDisplayDate, sortWritingsByDate } from '@/utils/writing'
 
 type Context = {

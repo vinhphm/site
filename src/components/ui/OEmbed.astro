@@ -1,5 +1,5 @@
 ---
-import config from '@/constants/config'
+import config from '@/config'
 
 type Props = {
   url: string
@@ -43,6 +43,56 @@ const { url, maxWidth = 800 } = Astro.props
       console.error('Failed to fetch oembed data:', error)
       return null
     }
+  }
+
+  function isTwitterUrl(url: string): boolean {
+    return /^https?:\/\/(www\.)?(twitter\.com|x\.com)\//.test(url)
+  }
+
+  function loadTwitterWidgets() {
+    if (
+      document.querySelector('script[src*="platform.twitter.com/widgets.js"]')
+    ) {
+      // widgets.js already loaded; just re-process any new blockquotes
+      const twttr = (window as any).twttr
+      if (twttr?.widgets?.load) {
+        twttr.widgets.load()
+      }
+      return
+    }
+
+    const isDark = getCurrentTheme() === 'dark'
+    document.querySelectorAll('.twitter-tweet').forEach((el) => {
+      el.setAttribute('data-theme', isDark ? 'dark' : 'light')
+    })
+
+    const loadScript = () => {
+      const script = document.createElement('script')
+      script.src = 'https://platform.twitter.com/widgets.js'
+      script.async = true
+      document.head.appendChild(script)
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadScript, { timeout: 2000 })
+    } else {
+      setTimeout(loadScript, 100)
+    }
+  }
+
+  function injectTwitterEmbed(contentDiv: HTMLElement, html: string) {
+    const temp = document.createElement('div')
+    temp.innerHTML = html
+    // Strip the <script> tags — widgets.js is loaded separately via document.head
+    Array.from(temp.getElementsByTagName('script')).forEach((s) =>
+      s.parentNode?.removeChild(s)
+    )
+    const isDark = getCurrentTheme() === 'dark'
+    temp.querySelectorAll('.twitter-tweet').forEach((el) => {
+      el.setAttribute('data-theme', isDark ? 'dark' : 'light')
+    })
+    contentDiv.innerHTML = temp.innerHTML
+    loadTwitterWidgets()
   }
 
   function injectContent(
@@ -96,11 +146,17 @@ const { url, maxWidth = 800 } = Astro.props
     const contentDiv = container.querySelector('.oembed-content') as HTMLElement
     if (!contentDiv) return
 
+    const url = container.dataset.url ?? ''
+
     switch (data.type) {
       case 'rich':
         if (data.html) {
-          const isDark = getCurrentTheme() === 'dark'
-          injectContent(contentDiv, data.html, isDark)
+          if (isTwitterUrl(url)) {
+            injectTwitterEmbed(contentDiv, data.html)
+          } else {
+            const isDark = getCurrentTheme() === 'dark'
+            injectContent(contentDiv, data.html, isDark)
+          }
         }
         break
 

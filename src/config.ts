@@ -10,7 +10,7 @@ export const config: Config = {
     email: EMAIL,
     alias: 'vinhphm',
   },
-  title: 'Vinh Pham',
+  title: 'VINH',
   workerHost: WORKER_HOST,
   subtitle: 'Thoughts and ideas',
   description: 'Thoughts and ideas',
