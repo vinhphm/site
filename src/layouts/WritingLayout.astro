@@ -56,8 +56,8 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <ThemeInit />
 
     <Font cssVariable="--font-inter" preload />
-    <Font cssVariable="--font-geist-mono" preload />
-    <Font cssVariable="--font-besley" preload />
+    <Font cssVariable="--font-geist-mono" />
+    <Font cssVariable="--font-besley" />
 
     <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
@@ -102,9 +102,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
             <BackButton />
             {hasToc && <TableOfContents toc={toc} />}
             <div class="title">
-              <h1 transition:name={`writing-id-${writing.id}`}>
-                {writing.data.title}
-              </h1>
+              <h1>{writing.data.title}</h1>
               <WritingMeta writing={writing} readingTime={readingTime} />
             </div>
             <article class="content">

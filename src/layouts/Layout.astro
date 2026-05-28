@@ -50,8 +50,8 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <ThemeInit />
 
     <Font cssVariable="--font-inter" preload />
-    <Font cssVariable="--font-geist-mono" preload />
-    <Font cssVariable="--font-besley" preload />
+    <Font cssVariable="--font-geist-mono" />
+    <Font cssVariable="--font-besley" />
 
     <link rel="canonical" href={canonicalURL} />
     <title>{title}</title>
