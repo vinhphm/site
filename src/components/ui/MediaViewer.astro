@@ -1,0 +1,178 @@
+---
+
+---
+
+<div id="media-viewer" class="media-viewer">
+  <img id="media-viewer-img" src="" alt="" />
+  <video id="media-viewer-video" src="" autoplay loop muted playsinline></video>
+</div>
+
+<script>
+  type MediaViewerController = {
+    destroy: () => void
+  }
+
+  declare global {
+    interface Window {
+      __mediaViewerController?: MediaViewerController | null
+    }
+  }
+
+  function initMediaViewer() {
+    window.__mediaViewerController?.destroy()
+
+    const viewer = document.getElementById('media-viewer')
+    const viewerImg = document.getElementById(
+      'media-viewer-img'
+    ) as HTMLImageElement
+    const viewerVideo = document.getElementById(
+      'media-viewer-video'
+    ) as HTMLVideoElement
+    const contentArea =
+      document.querySelector<HTMLElement>('.prose') ||
+      document.querySelector<HTMLElement>('.content') ||
+      document.querySelector<HTMLElement>('article')
+
+    if (!viewer || !viewerImg || !viewerVideo || !contentArea) return
+
+    function showImage(src: string, alt?: string) {
+      viewerVideo!.classList.remove('active')
+      viewerVideo!.src = ''
+      if (viewerImg && src) {
+        viewerImg.src = src
+        viewerImg.alt = alt || ''
+      }
+      viewerImg!.classList.add('active')
+      void viewer!.offsetWidth
+      viewer!.classList.add('active')
+      document.body.classList.add('media-viewer-open')
+      document.body.style.overflow = 'hidden'
+      document.body.dataset.scrollY = window.scrollY.toString()
+    }
+
+    function showVideo(src: string) {
+      viewerImg!.classList.remove('active')
+      viewerImg!.src = ''
+      if (viewerVideo && src) {
+        viewerVideo.src = src
+        viewerVideo.load()
+        viewerVideo.play().catch(() => {})
+      }
+      viewerVideo!.classList.add('active')
+      void viewer!.offsetWidth
+      viewer!.classList.add('active')
+      document.body.classList.add('media-viewer-open')
+      document.body.style.overflow = 'hidden'
+      document.body.dataset.scrollY = window.scrollY.toString()
+    }
+
+    function hideViewer() {
+      viewer!.classList.remove('active')
+      document.body.classList.remove('media-viewer-open')
+      document.body.style.overflow = ''
+      viewerVideo!.pause()
+    }
+
+    function handleContentClick(e: MouseEvent) {
+      const target = e.target
+      if (target instanceof HTMLImageElement) {
+        e.preventDefault()
+        showImage(target.src, target.alt || '')
+      } else if (target instanceof HTMLVideoElement) {
+        e.preventDefault()
+        showVideo(target.src || target.currentSrc)
+      }
+    }
+
+    function handleViewerTransitionEnd(e: TransitionEvent) {
+      if (
+        e.propertyName === 'opacity' &&
+        !viewer!.classList.contains('active')
+      ) {
+        viewerImg.src = ''
+        viewerImg.alt = ''
+        viewerVideo.src = ''
+      }
+    }
+
+    function handleViewerTouchMove(e: TouchEvent) {
+      if (viewer!.classList.contains('active')) e.preventDefault()
+    }
+
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && viewer!.classList.contains('active'))
+        hideViewer()
+    }
+
+    viewer.addEventListener('transitionend', handleViewerTransitionEnd)
+    viewer.addEventListener('click', hideViewer)
+    contentArea.addEventListener('click', handleContentClick)
+    viewer.addEventListener('touchmove', handleViewerTouchMove, {
+      passive: false,
+    })
+    document.addEventListener('keydown', handleKeydown)
+    viewer.classList.remove('active')
+
+    const controller: MediaViewerController = {
+      destroy() {
+        viewer.removeEventListener('transitionend', handleViewerTransitionEnd)
+        viewer.removeEventListener('click', hideViewer)
+        viewer.removeEventListener('touchmove', handleViewerTouchMove)
+        contentArea.removeEventListener('click', handleContentClick)
+        document.removeEventListener('keydown', handleKeydown)
+        document.body.classList.remove('media-viewer-open')
+        document.body.style.overflow = ''
+        viewer.classList.remove('active')
+        viewerVideo.pause()
+        if (window.__mediaViewerController === controller) {
+          window.__mediaViewerController = null
+        }
+      },
+    }
+
+    window.__mediaViewerController = controller
+  }
+
+  document.addEventListener('astro:page-load', initMediaViewer)
+</script>
+
+<style>
+  @reference "../../styles/global.css";
+
+  .media-viewer {
+    @apply fixed inset-0 z-9999 flex items-center justify-center
+           opacity-0 invisible pointer-events-none;
+    transition: opacity 0.15s ease-in-out;
+    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  }
+
+  .media-viewer.active {
+    @apply opacity-100 visible pointer-events-auto;
+  }
+
+  :global(.prose img),
+  :global(.prose video) {
+    @apply cursor-pointer;
+  }
+
+  .media-viewer img,
+  .media-viewer video {
+    @apply hidden min-w-180 max-w-[60vw] max-h-[80vh] object-contain;
+  }
+
+  .media-viewer img.active,
+  .media-viewer video.active {
+    @apply block;
+  }
+
+  @media (max-width: 768px) {
+    .media-viewer img,
+    .media-viewer video {
+      @apply min-w-screen;
+    }
+  }
+
+  body.media-viewer-open {
+    @apply overflow-hidden;
+  }
+</style>

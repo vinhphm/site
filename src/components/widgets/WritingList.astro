@@ -27,13 +27,11 @@ const { writings } = Astro.props
     }
 
     ul:hover :global(li:hover .divider) {
-      @apply opacity-75;
-      background-color: var(--text-tertiary);
+      @apply opacity-75 bg-tertiary;
     }
 
     ul:hover :global(li:hover .post-date) {
-      @apply opacity-100;
-      color: var(--text-secondary);
+      @apply opacity-100 text-secondary;
     }
   }
 </style>

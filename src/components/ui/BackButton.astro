@@ -57,35 +57,26 @@
   .back-button {
     @apply w-32 inline-flex items-center gap-1.5 italic cursor-pointer
            border-none bg-transparent relative p-0 no-underline
-           transition-colors duration-200 ease-out;
-    font-family: var(--font-serif);
-    font-size: var(--font-size-m);
-    letter-spacing: 0;
-    line-height: 1.75;
-    color: var(--text-secondary);
-    margin-bottom: 2.5em;
-    left: -0.175em;
+           transition-colors duration-200 ease-out
+           mb-[2.5em] left-[-.175em] leading-[1.75] tracking-normal
+           text-secondary font-serif text-m;
   }
 
   .back-button:hover {
-    color: var(--text-primary);
+    @apply text-primary;
   }
 
   @media (hover: none) and (pointer: coarse) {
     .back-button:hover {
-      color: var(--text-secondary);
+      @apply text-secondary;
     }
   }
 
   .back-button svg {
-    @apply shrink-0;
-    width: 0.8rem;
-    height: 0.8rem;
+    @apply shrink-0 size-[0.8rem];
   }
 
   .back-button.fixed-position {
-    @apply fixed z-10 pl-3;
-    top: 6rem;
-    margin-bottom: 0;
+    @apply fixed z-10 pl-3 top-24 mb-0;
   }
 </style>
