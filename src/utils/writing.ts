@@ -1,16 +1,11 @@
 import type { CollectionEntry } from 'astro:content'
 
 export function getSortDate(writing: CollectionEntry<'writings'>): number {
-  const date = writing.data.updated || writing.data.added
-  return date.valueOf()
+  return writing.data.pubDate.valueOf()
 }
 
 export function getDisplayDate(writing: CollectionEntry<'writings'>): Date {
-  return writing.data.updated || writing.data.added
-}
-
-export function isUpdated(writing: CollectionEntry<'writings'>): boolean {
-  return Boolean(writing.data.updated)
+  return writing.data.pubDate
 }
 
 export function sortWritingsByDate(
@@ -38,9 +33,6 @@ export function createWritingStructuredData(
       '@type': 'Person',
       name: 'Vinh',
     },
-    datePublished: writing.data.added.toISOString(),
-    ...(isUpdated(writing) && {
-      dateModified: writing.data.updated?.toISOString(),
-    }),
+    datePublished: writing.data.pubDate.toISOString(),
   }
 }

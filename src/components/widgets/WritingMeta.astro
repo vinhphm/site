@@ -11,8 +11,8 @@ const { writing, readingTime } = Astro.props
 ---
 
 <div class="date text-(--text-secondary)">
-  <time datetime={writing.data.added.toISOString()}>
-    {formatDate(writing.data.added)}
+  <time datetime={writing.data.pubDate.toISOString()}>
+    {formatDate(writing.data.pubDate)}
   </time>
   {
     readingTime && (
