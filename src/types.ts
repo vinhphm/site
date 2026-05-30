@@ -28,7 +28,6 @@ export type Image = {
 
 export type Header = {
   logo: Image
-  navLinks: NavLink[]
 }
 
 export type Footer = {

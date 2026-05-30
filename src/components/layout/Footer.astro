@@ -9,11 +9,8 @@ const today = new Date()
   <div class="footer-content">
     <div class="copyright">
       <span class="date">&copy; {today.getFullYear()}</span>
-      {config.author.name}
+      {config.title}
     </div>
-    <!-- <div class="theme-toggle">
-      <ThemeToggle />
-    </div> -->
   </div>
 </footer>
 
@@ -21,15 +18,14 @@ const today = new Date()
   @reference "../../styles/global.css";
 
   .footer {
-    @apply text-(length:--font-size-s) font-light leading-[1.75] mt-16 opacity-75 text-(--text-secondary);
+    @apply text-s font-light leading-[1.75] mt-16 opacity-75 text-secondary;
   }
 
   .footer-content {
     @apply flex justify-between items-center flex-row flex-nowrap w-full;
   }
 
-  .copyright,
-  .theme-toggle {
+  .copyright {
     @apply whitespace-nowrap;
   }
 

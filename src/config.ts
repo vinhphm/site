@@ -23,12 +23,6 @@ export const config: Config = {
       src: '/logo.svg',
       alt: 'Logo Image',
     },
-    navLinks: [
-      {
-        text: 'Writing',
-        href: '/writing',
-      },
-    ],
   },
   footer: {
     navLinks: [
