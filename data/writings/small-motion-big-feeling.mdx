@@ -1,26 +1,24 @@
 ---
 title: Small motion, big feeling
-added: 2022-04-03T09:54:33.983+07:00
+added: 2024-06-29T16:31:12.124+07:00
 lang: en
-description: Learn how to make your website more enjoyable and engaging with micro-interactions. See how you can use HTML, CSS, React, and React Spring to create animated icons for your menu and theme toggle.
+description: 'The details that make a site feel alive: micro-interactions for toggle icons, and why you should ditch GIFs for video.'
 ---
 
 import menuToggle from '@/assets/images/2022/menu-toggle.webp'
 import themeToggle from '@/assets/images/2022/theme-toggle.webp'
 
-One of the few things I studied in the Google UX Design course is how a good UX design should be fun to use. Google didn't exactly use the word "fun" to describe a good UX design, the exact word is **"enjoyable"**
+Good UX doesn't need to be dramatic. The Google UX Design course puts it well:
 
-> "If a product is enjoyable, it means the design delights the user. The design reflects what the user may be thinking or feeling and creates a positive connection with them. A product's design doesn't have to be enjoyable for it to function properly. But, an enjoyable design adds to an already functional product and can enhance the user's feelings about the experience." - [Google UX Design course](https://www.coursera.org/professional-certificates/google-ux-design)
+> "If a product is enjoyable, it means the design delights the user. The design reflects what the user may be thinking or feeling and creates a positive connection with them. A product's design doesn't have to be enjoyable for it to function properly. But, an enjoyable design adds to an already functional product and can enhance the user's feelings about the experience."
 
-But what exactly are **"micro-interactions"** and how come they are related to this?
+**Micro-interactions** are one of the most effective ways to get there: small, purposeful animations tied to a single action. The kind of thing users don't consciously notice but would immediately miss if it were gone.
 
-> "Micro-interactions are events which have one main task - a single purpose - and they're found all over your device and within apps. Their purpose is to delight the user; to create a moment that is engaging, welcoming and, dare we say it - human." - [UXDesign.cc](https://uxdesign.cc/micro-interactions-why-when-and-how-to-use-them-to-boost-the-ux-17094b3baaa0)
+Here are two I added to my site, plus one media format change that quietly improved everything else.
 
-Okay, so in order to maker my site more engaging and enjoyable, I decided to add some micro-interactions/ animation to it. I'm not planning to add back all the stuff that I have got rid of, instead, I'm going to add some small other thing. One of the big reasons I decided to simplify my website in the first place is this because animations seems not work correctly on some devices.
+## Toggle menu icon
 
-## Toggle menu (hamburger) icon 🍔
-
-First is the toggle menu for mobile devices from [UXDesign.cc](https://uxdesign.cc/the-menu-210bec7ad80c) with a little tweak from me:
+The hamburger-to-X animation from [UXDesign.cc](https://uxdesign.cc/the-menu-210bec7ad80c) by Mikael Ainalem:
 
 <figure class="flex flex-col items-center pt-5">
   <img
@@ -31,7 +29,7 @@ First is the toggle menu for mobile devices from [UXDesign.cc](https://uxdesign.
   <figcaption class="text-center">Menu toggle</figcaption>
 </figure>
 
-I use React for my website but below is the plain HTML/CSS code shared by Mikael Ainalem from [UXDesign.cc](https://uxdesign.cc/the-menu-210bec7ad80c). I recommend you check out his article on how this icon and animation is made. It's fascinating.
+I recommend reading [his article](https://uxdesign.cc/the-menu-210bec7ad80c) on how the icon and animation work, it's a clever use of SVG paths. Here's the code, with a small tweak from me:
 
 ```html
 <button
@@ -98,9 +96,9 @@ I use React for my website but below is the plain HTML/CSS code shared by Mikael
 }
 ```
 
-## Theme toggle icon ☀️/🌙
+## Theme toggle icon
 
-Second, is the theme toggle icon from the top right corner:
+The sun/moon icon that switches with the theme:
 
 <figure class="flex flex-col items-center pt-5">
   <img
@@ -111,6 +109,57 @@ Second, is the theme toggle icon from the top right corner:
   <figcaption class="text-center">Theme toggle</figcaption>
 </figure>
 
-For this one, I use React Spring to animate SVG icons based on the instruction from [jfelix.info](https://jfelix.info/blog/using-react-spring-to-animate-svg-icons-dark-mode-toggle) with another small tweak from me to match with the current setup from my site. You can find the source code [here at GitHub](https://github.com/vinhphm/vinh-dev-archive/blob/main/components/AnimatedThemeIcon.js).
+I used React Spring to animate SVG icons based on [jfelix.info's guide](https://jfelix.info/blog/using-react-spring-to-animate-svg-icons-dark-mode-toggle), with tweaks to fit my setup. Source code is [on GitHub](https://github.com/vinhphm/vinh-dev-archive/blob/main/components/AnimatedThemeIcon.js).
 
-That's it for now. I hope you enjoy my sharing and if you have any questions, feel free to leave a comment below.
+## Ditch the GIFs
+
+While working on these animations I ran a Lighthouse audit and hit a flag I'd been ignoring: GIFs. I'd been using screen recordings saved as GIFs, and some had ballooned to several MB, slow to load, with that blank-screen delay while they buffered.
+
+The answer is MP4 or WebM. Lighthouse even has an article on it: [Use video formats for animated content](https://developer.chrome.com/docs/lighthouse/performance/efficient-animated-content/). Dramatically smaller files, better compression, no blank screen.
+
+The basic switch is simple:
+
+```html
+<video autoplay loop muted playsinline src="my-animation.mp4"></video>
+```
+
+But in Astro (and other SSGs), a plain `<video>` tag causes problems in Firefox, requiring a page reload to play. The fix is a wrapper component that resolves the URL at runtime:
+
+```vue title="src › components › Video.vue"
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+const props = defineProps<{
+  src: string
+}>()
+
+const videoSrc = ref<string | undefined>()
+
+function getVideoUrl(videoPath: string): string {
+  return new URL(videoPath, import.meta.url).href
+}
+
+onMounted(() => {
+  videoSrc.value = getVideoUrl(props.src)
+})
+</script>
+
+<template>
+  <video v-if="videoSrc" :src="videoSrc" autoplay loop muted playsinline />
+</template>
+```
+
+Use it in MDX like this:
+
+```mdx
+import themeTransitionAnimation from '@/assets/videos/2024/theme-transition-animation.mp4'
+import Video from '@/components/ui/Video.astro'
+
+<Video src={themeTransitionAnimation} />
+```
+
+The difference from a static `import` is that `import.meta.url` constructs the URL dynamically at runtime, which is what makes Firefox happy.
+
+## It all adds up
+
+None of these changes is dramatic on its own. A smooth hamburger animation, a satisfying theme toggle, videos that load instantly, each one is a small detail. Together they're the difference between a site that feels finished and one that feels assembled.

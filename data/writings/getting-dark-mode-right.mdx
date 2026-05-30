@@ -1,0 +1,98 @@
+---
+title: Getting dark mode right
+added: 2025-06-07T15:50:09.552+07:00
+description: 'Two things most sites get wrong about dark mode: the flicker on load and the jarring toggle. Here is how to fix both.'
+lang: en
+---
+
+import MdnWebDocs from '~icons/simple-icons/mdnwebdocs'
+import LogosChrome from '~icons/logos/chrome'
+import AstroIcon from '~icons/devicon-plain/astro'
+import VueFileIcon from '~icons/ph/file-vue'
+import themeTransitionAnimation from '@/assets/videos/2024/theme-transition-animation.mp4'
+import Video from '@/components/ui/Video.astro'
+
+Dark mode sounds simple. Add a class, swap the colors. Done. But there are two moments where it consistently goes wrong, and both are small enough to overlook until a real user notices them.
+
+## Problem 1: The flicker on load
+
+This is called **FOUC** (Flash of Unstyled Content). You load the page, the light theme flashes for a split second, then dark mode kicks in. It's jarring, and it comes from a timing mismatch between when you _detect_ the theme and when you _apply_ it.
+
+Most solutions suggest putting a detection script in `<head>`, which is correct. But here's the part that trips people up: it's not just about detecting, it's about _where_ you apply the result.
+
+```javascript showLineNumbers=false
+// Detection script in <head>
+;(function () {
+  const theme =
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light')
+  document.documentElement.setAttribute('data-theme', theme)
+})()
+```
+
+This script sets `data-theme` on the root `<html>` element. That means your theme-controlling styles need to be on `<html>` too, not `<body>`. Many developers habitually put background and text colors on `<body>`, which loads after the head script runs. That gap is the flicker.
+
+```css showLineNumbers=false
+/* ❌ This causes flicker */
+body {
+  @apply bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-200;
+}
+
+/* ✅ This prevents flicker */
+html {
+  @apply bg-white text-gray-900 dark:bg-zinc-900 dark:text-zinc-200;
+}
+
+/* Body can have its own non-theme styles */
+body {
+  @apply font-sans;
+}
+```
+
+FOUC in dark themes is usually not a detection problem, it's an application timing problem. Detect early, apply immediately, target the right element.
+
+## Problem 2: The jarring toggle
+
+Once load flicker is fixed, there's the toggle itself. Without any transition, switching themes is an instant hard cut: every element on the page snaps to its new colors simultaneously. It works, but it doesn't feel good.
+
+The View Transitions API gives you a clean way to animate this. It's now supported across all major browsers (Safari joined in version 18).
+
+<Video src={themeTransitionAnimation} videoClass="rounded-xl w-2/3 md:w-1/2" />
+
+This animation takes inspiration from [**@hooray**'s snippets](https://github.com/vuejs/vitepress/pull/2347) with some tweaks to avoid conflicting with Astro's built-in View Transitions feature. The implementation is in [<VueFileIcon /> ThemeToggle.vue](https://github.com/vinhphm/site.archive/blob/archives/2024/src/components/ThemeToggle.vue), with these CSS rules:
+
+```css
+.theme-transition::view-transition-old(root),
+.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+.theme-transition::view-transition-old(root) {
+  z-index: 1;
+}
+.theme-transition::view-transition-new(root) {
+  z-index: 9999;
+}
+.theme-transition.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+.theme-transition.dark::view-transition-new(root) {
+  z-index: 1;
+}
+```
+
+More reading if you want to go deeper:
+
+- <MdnWebDocs /> MDN · [View Transitions
+  API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)
+- <LogosChrome /> Chrome for Developers · [Smooth transitions with the View
+  Transition
+  API](https://developer.chrome.com/docs/web-platform/view-transitions)
+- <AstroIcon /> Astro Docs · [View
+  transitions](https://docs.astro.build/en/guides/view-transitions/)
+
+## The result
+
+Fix the flicker, smooth the toggle, and dark mode becomes invisible, in the best way. Neither moment calls attention to itself, which is exactly the point.

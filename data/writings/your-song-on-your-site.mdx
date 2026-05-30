@@ -2,32 +2,133 @@
 title: Your song on your site
 added: 2023-09-01T13:33:21.643+07:00
 lang: en
-description: Discover how to use Cloudflare Workers to interact with the Spotify API and display your current playing song on your website. Explore how to use Vite and Vue to create a Spotify widget with animation and style.
+description: 'The full story of getting a Spotify now-playing widget on your site: from auth tokens to a Cloudflare Worker to a Vue component that actually looks good.'
 ---
 
 import TsFileIcon from '~icons/ph/file-ts'
 import spotifyCurrentPlaying from '@/assets/images/2023/spotify-current-playing.webp'
+import clientIdSecret from '@/assets/images/2023/client-id-secret.png'
+import { Image } from 'astro:assets'
 
-In a previous post, we discussed how to [generate refresh tokens for Spotify API calls](/writing/staying-authenticated-with-spotify). Now, let's dive into the exciting part: using Cloudflare Workers to interact with the Spotify API.. Now, let's dive into the exciting part: using Cloudflare Workers to interact with the Spotify API.
+<figure class="pt-5">
+  <img
+    src={spotifyCurrentPlaying.src}
+    alt="Spotify current playing"
+    class="rounded-lg shadow"
+  />
+  <figcaption class="text-center">What we're building</figcaption>
+</figure>
 
-## A Worker API to handle Spotify APIs call
+I wanted to show what I'm listening to on my site, a small live thing that makes the page feel a little less static. Spotify has a Web API for this, but getting from zero to a working widget requires a few distinct steps: generating a long-lived auth token, building a Worker that talks to Spotify, and then a frontend component to display it. Here's the whole story.
 
-Before we begin, make sure you have a basic understanding of Cloudflare Workers and have set up a blank Worker with a configured route.
+## Step 1: Getting the refresh token
 
-In your **wrangler.toml** file, define non-sensitive variables you'll use in your Worker. For example, let's specify a list of allowed origins:
+The Spotify Web API needs OAuth tokens. Access tokens expire in an hour, so you need a refresh token to keep things running. Here's the simplest way to get one without a full OAuth flow in your app.
+
+### Prepare your Spotify application
+
+Go to the [Spotify Developer Dashboard](https://developer.spotify.com) and open your app. You'll need the **Client ID** and **Client Secret** from the Overview page.
+
+<Image src={clientIdSecret} alt="Client ID Secret" class="rounded-lg shadow" />
+
+In the app settings, set the **Redirect URI** to `http://localhost:3000/callback`.
+
+### Pick your scopes
+
+The scopes you need depend on what you're fetching. For now-playing, you want `user-read-currently-playing`. The [full scope list](https://developer.spotify.com/documentation/general/guides/authorization/scopes/) has everything.
+
+### Run a local server to capture the token
+
+Save this as **get-token.js** and run it once to capture your refresh token:
+
+```javascript title="get-token.js" showLineNumbers
+const express = require('express')
+const axios = require('axios')
+const cors = require('cors')
+
+const app = express()
+app.use(cors())
+
+CLIENT_ID = '<your client id>'
+CLIENT_SECRET = '<your client secret>'
+REDIRECT_URI = 'http://localhost:3000/callback'
+SCOPE = ['user-read-currently-playing']
+
+app.get('/login', (request, response) => {
+  const redirect_url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${CLIENT_ID}&scope=${SCOPE}&state=123456&redirect_uri=${REDIRECT_URI}&prompt=consent`
+  response.redirect(redirect_url)
+})
+
+app.get('/callback', async (request, response) => {
+  const code = request.query.code
+  await axios
+    .post(
+      (url = 'https://accounts.spotify.com/api/token'),
+      (data = new URLSearchParams({
+        grant_type: 'authorization_code',
+        redirect_uri: REDIRECT_URI,
+        code,
+      })),
+      (config = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        params: {
+          grant_type: 'client_credentials',
+        },
+        auth: {
+          username: CLIENT_ID,
+          password: CLIENT_SECRET,
+        },
+      })
+    )
+    .then((resp1) => {
+      axios
+        .post(
+          (url = 'https://accounts.spotify.com/api/token'),
+          (data = new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: resp1.data.refresh_token,
+            access_token: resp1.data.access_token,
+          })),
+          (config = {
+            auth: {
+              username: CLIENT_ID,
+              password: CLIENT_SECRET,
+            },
+          })
+        )
+        .then((resp2) => {
+          return response.send(JSON.stringify([resp1.data, resp2.data]))
+        })
+    })
+})
+app.listen(3000, () => {
+  console.log('Listening on :3000')
+})
+```
+
+```shell
+npm install express axios cors
+node get-token.js
+```
+
+Open `http://localhost:3000/login` in your browser. After authorizing, you'll get a JSON array with your refresh token in there. Save it somewhere safe.
+
+## Step 2: A Cloudflare Worker to handle the API calls
+
+The refresh token lives on your Worker, not in your frontend. The Worker exchanges it for a fresh access token, calls Spotify, and returns the data.
+
+### Managing secrets
+
+In your **wrangler.toml**, non-sensitive variables go directly:
 
 ```toml
 [vars]
 ALLOW_ORIGINS = "'https://abc.dev','http://localhost:3333'"
 ```
 
-However, for sensitive information like your Spotify Client ID and tokens, follow these steps:
-
-### Managing Secrets
-
-#### Development Secrets
-
-During local development, create a `.dev.vars` file at the root of your project to store secrets that will be available when running `wrangler dev`. This file should follow a dotenv-like format:
+For sensitive values (Client ID, Client Secret, refresh token), use `.dev.vars` locally:
 
 ```text
 SPOTIFY_CLIENT_ID=your_client_id
@@ -35,34 +136,29 @@ SPOTIFY_CLIENT_SECRET=your_client_secret
 SPOTIFY_REFRESH_TOKEN=your_refresh_token
 ```
 
-#### Deployed Worker Secrets
-
-To add secrets to the deployed Worker, run the following command in your terminal, replacing `KEY` with the name of your secret:
+And add secrets to the deployed Worker via:
 
 ```shell
-wrangler secret put `KEY`
+wrangler secret put KEY
 ```
 
-### Calling the APIs
+### The Worker code
 
-Depending on your preference, you can structure your source code. For instance, I prefer splitting it into two files: **index.ts** and **spotify.ts**.
+I split this into two files: [<TsFileIcon /> spotify.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/spotify.ts) for the Spotify API logic and [<TsFileIcon /> index.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/index.ts) for routing.
 
-In [<TsFileIcon /> spotify.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/spotify.ts), you can encapsulate the logic related to Spotify API interactions. In [<TsFileIcon /> index.ts](https://github.com/vinhphm/spotify-worker/blob/main/src/index.ts), you can handle the routing and overall structure of your Cloudflare Worker.
+## Step 3: The frontend component
 
-## Vite/Vue Spotify components
+The widget I wanted: Spotify logo, animated equalizer when something is playing, song title and artist:
 
-I want to archive the same style as my Spotify widget on my old site.
-
-<figure ckass="pt-5">
+<figure>
   <img
     src={spotifyCurrentPlaying.src}
     alt="Spotify current playing"
     class="rounded-lg shadow"
   />
-  <figcaption class="text-center">Spotify current playing</figcaption>
 </figure>
 
-It contains a **MusicEqualizer.vue** component to show an icon with a small animation to indicate a song is playing.
+First, the animated equalizer, three bars that shrink and expand in rhythm:
 
 ```vue title="MusicEqualizer.vue" showLineNumbers
 <script setup lang="ts">
@@ -79,8 +175,6 @@ defineProps<{
   </div>
 </template>
 ```
-
-Aside from custom CSS classes for animation, which are shown below, I also made use of UnoCSS/Tailwind CSS.
 
 ```css
 @keyframes shrink {
@@ -112,7 +206,7 @@ Aside from custom CSS classes for animation, which are shown below, I also made 
 }
 ```
 
-Now, for the main component, **NowPlaying.vue**:
+Then the main component, **NowPlaying.vue**, which fetches from your Worker and renders the result:
 
 ```vue title="NowPlaying.vue" showLineNumbers
 <script setup lang="ts">
@@ -173,6 +267,6 @@ const { data } = useSWRV('<your-worker-route>', fetcher)
 </template>
 ```
 
-## Conclusion
+## One thing to keep in mind
 
-I hope you have fun playing around and exploring Cloudflare Worker and Vite/Vue. You should always know there is a limit for the number of requests for a Worker in Cloudflare free account and you should take that into account when implementing it on your site.
+Cloudflare's free tier has a request limit for Workers. Keep that in mind when deciding how aggressively to poll the now-playing endpoint. A reasonable interval is fine, but hitting it on every page load without caching could burn through it fast.

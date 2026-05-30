@@ -1,0 +1,111 @@
+---
+title: Put Cloudflare to work
+added: 2025-01-14T21:02:10.921+07:00
+description: "My site runs several Cloudflare-powered features. Here's the setup: Workers routing, domain redirects, and dynamic OG images, and why I built each piece."
+---
+
+import { Image } from 'astro:assets'
+import Hono from '~icons/simple-icons/hono'
+import RepoIcon from '~icons/octicon/repo-16'
+import CloudflarePages from '~icons/simple-icons/cloudflarepages'
+import createNewBulkRedirectList from '@/assets/images/2023/create_a_new_bulk_redirect_list.png'
+import createNewBulkRedirect from '@/assets/images/2023/create_new_bulk_redirect.png'
+import wwwSubdomain from '@/assets/images/2023/www_subdomain.png'
+import redirectParameters from '@/assets/images/2023/redirect-parameters.png'
+
+[Cloudflare Pages](https://pages.cloudflare.com/) is where this site lives, and Cloudflare Workers handle several features that need a bit more than static files: dynamic OG image generation, oEmbed proxying, and various API calls. Getting all of this wired up correctly involved a few non-obvious steps. Here's the full picture.
+
+## Getting Workers to listen
+
+When you create a Worker, Cloudflare assigns it a default domain like `<worker-name>.<subdomain>.workers.dev`. You can leave it there, but I prefer something cleaner. There are two options: **Custom Domains** and **Routes**.
+
+### Custom domains
+
+The dashboard makes this a one-click operation for sites on Cloudflare DNS. The catch: custom domains point _all paths_ of a domain or subdomain to your Worker. So if your site is at `abc.dev`, don't add `abc.dev`, use a subdomain like `api.abc.dev` instead.
+
+### Routes
+
+Routes map a URL pattern to a Worker and give you more control. For paths without a subdomain (like `abc.dev/api/something`), clicking **Add route** in the dashboard is enough. For subdomain routes like `api.abc.dev/something`, you first need a proxied DNS record:
+
+| Type | Name  | IPv4 address | Proxy status |
+| ---- | ----- | ------------ | ------------ |
+| A    | `api` | `192.0.2.1`  | Proxied      |
+
+Then add the route via the dashboard. One thing to remember: all dashboard configurations get saved to `wrangler.toml`, so don't accidentally overwrite them when deploying new code.
+
+## Redirects
+
+[<CloudflarePages /> Cloudflare Pages](https://pages.cloudflare.com/) supports redirects through a `_redirects` file, similar to Netlify. But that file only works at the subpath level. Two common redirects it can't handle are `*.pages.dev` → custom domain and `www` → apex domain. Both need **Bulk Redirects**.
+
+### Redirect from `*.pages.dev` to your custom domain
+
+When you add a custom domain to a Pages project, the `*.pages.dev` address still exists separately. If you want one canonical URL:
+
+1. Log in to the [Cloudflare dashboard](https://dash.cloudflare.com) → **Workers & Pages** → your project → **Custom domains** (make sure your custom domain is listed).
+2. Go to **Account Home** → **Bulk Redirects** → **Create a new Bulk Redirects list** → **Create new list**.
+
+   <Image
+     src={createNewBulkRedirectList}
+     alt="Create new Bulk Redirect list"
+     class="rounded-lg dark:invert-95"
+   />
+
+3. Content type: **Redirect**. Add the `*.pages.dev` URL as source, your custom domain (with `https://`) as target.
+4. Click **Edit parameters** → check **Preserve query string**, **Subpath matching**, **Preserve path suffix**.
+
+   > Checking **Include subdomains** redirects all preview URLs too.
+
+5. **Add to list** → **Bulk Redirects** → **Create Bulk Redirects** → select the list → **Save and Deploy**.
+
+   <Image
+     src={createNewBulkRedirect}
+     alt="Create new Bulk Redirects"
+     class="rounded-lg dark:invert-95"
+   />
+
+### Redirect from `www` to apex domain
+
+If you want `abc.dev` in the address bar instead of `www.abc.dev`:
+
+1. Go to DNS → create a new record for the `www` subdomain (type `A`, value `192.0.2.1`, or `AAAA` with `100::`). Must be proxied (orange cloud).
+
+   <Image
+     src={wwwSubdomain}
+     alt="DNS record setting"
+     class="rounded-lg dark:invert-95"
+   />
+
+2. Add another Bulk Redirect rule: source is `www.abc.dev`, target is `https://abc.dev`. Same parameters: **Preserve query string**, **Subpath matching**, **Preserve path suffix** → **Save and Deploy**.
+
+   <Image
+     src={redirectParameters}
+     alt="Redirect parameters"
+     class="rounded-lg dark:invert-95"
+   />
+
+## OG images on the edge
+
+Dynamic OG images (the preview cards that show up when you share a link) are one of those things that make a site feel more complete. I've been generating them with Cloudflare Workers, but the setup has evolved a lot.
+
+### The old way
+
+I was using a package called **workers-og** (an adaptation of **@vercel/og** for Workers). Fonts and images lived in Cloudflare KV. Changing the design meant:
+
+1. Validating HTML/CSS against satori's limited subset
+2. Converting images to base64 and uploading to KV via dashboard or CLI
+3. Adding fonts via Wrangler CLI
+4. Deploying and testing, and if something broke, starting over
+
+Manageable, but painful.
+
+### The new way
+
+Two Cloudflare features fixed this:
+
+**Static Assets** (currently in beta) lets you colocate images, fonts, and code in the same project directory. No more jumping between KV and your repo.
+
+**`nodejs_compat` flag** enables the runtime features needed for OG generation. With it, you can swap out **workers-og** for the official **`@cloudflare/pages-plugin-vercel-og/api`** package.
+
+And thanks to [<Hono /> Hono](https://hono.dev), running multiple endpoints in a single Worker is now trivial. Combined with [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) for CI/CD, the whole thing is much cleaner to maintain.
+
+My current setup is at [<RepoIcon /> vinhphm/site-workers](https://github.com/vinhphm/site-workers) if you want to see how it all fits together.

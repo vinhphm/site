@@ -1,0 +1,126 @@
+---
+title: Zed, my way
+added: 2025-05-08T19:05:10.098+07:00
+lang: en
+description: The editor I switched to, how I set it up, and where the AI features actually make a difference.
+---
+
+import Video from '@/components/ui/Video.astro'
+import { Image } from 'astro:assets'
+import zedMainUI from '@/assets/images/2024/zed-main-ui.png'
+import zedInlineCompletion from '@/assets/images/2024/zed-inline-completion.webp'
+import zedAssistantPanel from '@/assets/images/2024/zed-assistant-panel.png'
+import review from '@/assets/videos/2025/zed-agentic-editing-review.mp4'
+import agenticEditing from '@/assets/images/2025/zed-agentic-editing.png'
+
+I switched to Zed a while back and I'm still obsessed with it. Not because it's the flashiest editor out there. It's actually quite the opposite. It's fast, focused, and gets out of the way. Here's how I've set it up and what I've found genuinely useful along the way.
+
+## Basic UI
+
+<figure class="extended-pt">
+  <div class="extended-wrapper">
+    <Image src={zedMainUI} alt="Zed's main UI" />
+  </div>
+  <figcaption class="mt-8 text-center">Zed's main UI</figcaption>
+</figure>
+
+Zed's UI is quite simple, reminds me of [rxi's Lite Editor](https://github.com/rxi/lite) but not as extreme. If you're used to a GUI-heavy editor, you might have a few moments of "wait, where is that?" at first. That passes quickly.
+
+There's no GUI for settings; everything lives in a JSON file. Open it with <kbd>Cmd</kbd> + <kbd>,</kbd> on macOS or <kbd>Ctrl</kbd> + <kbd>,</kbd> on Windows/Linux. The [official docs on configuration](https://zed.dev/docs/configuring-zed) are a good starting point. Here's what I started with:
+
+```json
+{
+  "ui_font_size": 16,
+  "ui_font_family": ".SystemUIFont",
+  "buffer_font_size": 14,
+  "buffer_font_family": "Geist Mono",
+  "theme": {
+    "mode": "system",
+    "light": "One Dark",
+    "dark": "One Dark"
+  },
+  "tabs": {
+    "close_position": "left"
+  },
+  "terminal": {
+    "toolbar": {
+      "breadcrumbs": false
+    }
+  }
+}
+```
+
+A few notes on these:
+
+- **Fonts**: I use `.SystemUIFont` for the UI and [Geist Mono](https://vercel.com/font) for the editor. It's a monospace font I like a lot.
+- **Theme**: Zed ships with a decent selection and extension support means more are coming. I landed on One Dark. You can set different themes for light/dark mode so it follows the system.
+- **Close button position**: Left on macOS for consistency with the rest of the OS.
+- **Terminal breadcrumbs**: Turned off, I have no use for them.
+
+For anything not in the docs, open the command palette with <kbd>Cmd/Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> and search for `zed: open default settings`. That file is the full reference.
+
+## AI features
+
+Zed has AI built in, and my relationship with these features has changed over time. Early on, they felt intrusive: shoved into the main UI by default, locked to one service. Now Zed supports multiple providers per feature, including local models, so you're not forced into anything.
+
+The team ships improvements fast so the docs will always be more current than a blog post. Bookmark [the Assistant docs](https://zed.dev/docs/assistant/assistant). Here's what the features look like in practice:
+
+### Inline completion
+
+<figure>
+  <img
+    src={zedInlineCompletion.src}
+    alt="Zed inline completion"
+    class="rounded-lg shadow-lg"
+  />
+</figure>
+
+### Assistant panel
+
+<figure class="extended-py">
+  <div class="extended-wrapper">
+    <Image
+      src={zedAssistantPanel}
+      alt="Zed's assistant panel"
+      class="rounded shadow-lg"
+    />
+  </div>
+</figure>
+
+### Agentic editing
+
+This is where things get genuinely interesting. Agentic Editing means the AI can use tools to search, read, and make changes across your project to complete a query. Not just suggest completions, but act. It's what made editors like Cursor and Windsurf popular, and Zed now has it too.
+
+<figure class="extended-pt">
+  <div class="extended-wrapper">
+    <Image src={agenticEditing} class="shadow-xl" alt="Zed's Agentic Editing" />
+  </div>
+  <figcaption class="text-center">Zed's Agentic Editing</figcaption>
+</figure>
+
+#### Provider options
+
+Even before Agentic Editing shipped, Zed offered a range of providers:
+
+- **Zed**: Anthropic models hosted by Zed directly
+- **GitHub Copilot**: Anthropic and OpenAI models via Copilot
+- **OpenAI**: Direct API integration
+- **Anthropic**: Direct API integration
+
+The first two have Free and Pro tiers. If you're not ready to spend anything, Zed already gives you two free options instead of one. If you're willing to pay, GitHub Copilot's Pro tier is among the lowest-priced options in this space, worth considering.
+
+Zed also supports local models via [Ollama](https://zed.dev/docs/ai/custom-api-keys#ollama), which is great if you want to keep things offline or private.
+
+#### Reviewing changes
+
+The best part of Zed's agentic editing isn't the AI. It's the review experience. Zed has a fully editable unified diff view that I've loved for project search, and that same interface now handles AI change review. You can see everything in one place and edit directly:
+
+<Video src={review} extended videoClass="rounded shadow-lg" />
+
+#### Wrapping up on agentic editing
+
+Zed's implementation is a strong contender: flexible providers, local model support, and a genuinely good review interface. Whether you're budget-conscious, privacy-focused, or just want a clean setup, there's an option here that works.
+
+## Where I've landed
+
+Zed suits me because it's fast and I'm not fighting it. The JSON config feels natural once you're used to it, and the AI features have matured to the point where they're useful without being in the way. If you're coming from VS Code, the learning curve is real but short.
