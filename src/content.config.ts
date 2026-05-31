@@ -12,4 +12,9 @@ const writings = defineCollection({
   }),
 })
 
-export const collections = { writings }
+const about = defineCollection({
+  loader: glob({ base: './data/about', pattern: '**/*.md' }),
+  schema: z.object({}),
+})
+
+export const collections = { writings, about }

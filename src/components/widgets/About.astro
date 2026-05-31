@@ -1,19 +1,23 @@
 ---
+import { getEntry, render } from 'astro:content'
 import SocialLinks from '@/components/widgets/SocialLinks.astro'
+
+const aboutEntry = await getEntry('about', 'about')
+const hasContent = aboutEntry?.body
+  ? aboutEntry.body.replace(/<!--[\s\S]*?-->/g, '').trim().length > 0
+  : false
+const { Content } =
+  hasContent && aboutEntry ? await render(aboutEntry) : { Content: null }
 ---
 
-<div class="about prose">
-  <p>
-    Developer and tinkerer. I work at PwC building digital solutions. Been
-    coding for 10+ years, with nights spent on side projects, performance
-    puzzles, and the occasional tech rabbit hole.
-  </p>
-  <p>
-    My goal is to turn complex problems into <em>simple, well-crafted</em> software.
-    Fueled by coffee, tea, and a deep love of travel.
-  </p>
-  <SocialLinks />
-</div>
+{
+  hasContent && Content && (
+    <div class="about prose">
+      <Content />
+      <SocialLinks />
+    </div>
+  )
+}
 
 <style>
   @reference "../../styles/global.css";

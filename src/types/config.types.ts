@@ -1,9 +1,3 @@
-import type { CollectionEntry } from 'astro:content'
-
-export type WritingKey = 'writings'
-
-export type CollectionWritings = CollectionEntry<WritingKey>
-
 export type Author = {
   name: string
   email: string
@@ -13,12 +7,6 @@ export type Author = {
 export type NavLink = {
   text: string
   href: string
-}
-
-export type OEmbedOptions = {
-  maxWidth?: number
-  maxHeight?: number
-  theme?: 'light' | 'dark'
 }
 
 export type Image = {

@@ -1,55 +1,101 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import readline from 'node:readline'
 import { fileURLToPath } from 'node:url'
-
-type DirMap = {
-  [key: string]: string
-}
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const projectRoot = path.join(__dirname, '..')
 
-const dirMap: DirMap = {
+const dirMap: Record<string, string> = {
   writing: 'writings',
 }
 
-const type = process.argv[2]
-const title = process.argv[3]
-
-if (type !== 'writing' || !title) {
-  process.exit(1)
+function ask(rl: readline.Interface, question: string): Promise<string> {
+  return new Promise((resolve) => rl.question(question, resolve))
 }
 
-const contentDir = path.join(projectRoot, 'data', dirMap[type] ?? 'writings')
-const slug = title
-  .toLowerCase()
-  .replace(/\s+/g, '-')
-  .replace(/[^\w-]/g, '')
-const fileName = `${slug}.mdx`
-const filePath = path.join(contentDir, fileName)
+function formatUtc7(): string {
+  const now = new Date()
+  const utc7 = new Date(now.getTime() + 7 * 60 * 60 * 1000)
+  return utc7.toISOString().replace('Z', '+07:00')
+}
 
-const UTC7_OFFSET_HOURS = 7
-const SECONDS_PER_MINUTE = 60
-const MINUTES_PER_HOUR = 60
-const MILLISECONDS_PER_SECOND = 1000
-const MILLISECONDS_PER_HOUR =
-  SECONDS_PER_MINUTE * MINUTES_PER_HOUR * MILLISECONDS_PER_SECOND
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '')
+}
 
-const now = new Date()
-const utc7Time = new Date(
-  now.getTime() + UTC7_OFFSET_HOURS * MILLISECONDS_PER_HOUR
-)
-const formattedTime = utc7Time.toISOString().replace('Z', '+07:00')
+async function main() {
+  let type: string = process.argv[2] ?? ''
+  let title: string = process.argv[3] ?? ''
+  let description: string = process.argv[4] ?? ''
+  let format: string = process.argv[5] ?? ''
 
-const template = `---
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+
+  if (!type || !(type in dirMap)) {
+    const ans = await ask(rl, 'Type (writing): ')
+    type = ans.trim() || 'writing'
+  }
+
+  const dir = dirMap[type]
+  if (!dir) {
+    console.error(`Unknown type: ${type}`)
+    rl.close()
+    process.exit(1)
+  }
+
+  if (!title) {
+    title = await ask(rl, 'Title: ')
+    if (!title.trim()) {
+      console.error('Title is required')
+      rl.close()
+      process.exit(1)
+    }
+    title = title.trim()
+  }
+
+  if (!description) {
+    const ans = await ask(rl, 'Description (optional): ')
+    description = ans.trim()
+  }
+
+  if (!format) {
+    const ans = await ask(rl, 'Format — md or mdx? (default: mdx): ')
+    const normalized = ans.trim().toLowerCase()
+    format = normalized === 'md' ? 'md' : 'mdx'
+  }
+
+  rl.close()
+
+  const contentDir = path.join(projectRoot, 'data', dir)
+  const slug = slugify(title)
+  const ext = format === 'md' ? 'md' : 'mdx'
+  const filePath = path.join(contentDir, `${slug}.${ext}`)
+
+  const pubDate = formatUtc7()
+  const descLine = description
+    ? `description: ${description}`
+    : `description: ''`
+
+  const template = `---
 title: ${title}
-added: ${formattedTime}
-description: A new writing about ${title}
+pubDate: ${pubDate}
+${descLine}
 ---
 
-Start writing your content here...
+Start writing here...
 `
 
-await fs.promises.mkdir(contentDir, { recursive: true })
-await fs.promises.writeFile(filePath, template)
+  await fs.promises.mkdir(contentDir, { recursive: true })
+  await fs.promises.writeFile(filePath, template)
+  console.log(`Created: data/${dir}/${slug}.${ext}`)
+}
+
+main()
