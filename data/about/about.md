@@ -1,7 +1,7 @@
 ---
 ---
 
-Developer and tinkerer. I work at PwC building digital solutions. Been
+Developer and explorer. I work at PwC building digital solutions. Been
 coding for 10+ years, with nights spent on side projects, performance
 puzzles, and the occasional tech rabbit hole.
 
