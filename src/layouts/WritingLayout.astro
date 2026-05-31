@@ -33,7 +33,7 @@ const imageUrl = getImageUrl()
   title={writing.data.title}
   description={writing.data.description}
   image={imageUrl}
-  datePublished={writing.data.pubDate.toISOString()}
+  pubDate={writing.data.pubDate.toISOString()}
   type="post"
 >
   <slot name="structured-data" slot="structured-data" />

@@ -31,7 +31,7 @@ export function createWritingStructuredData(
     image: writing.data.image,
     author: {
       '@type': 'Person',
-      name: 'Vinh',
+      name: 'Vinh Pham',
     },
     datePublished: writing.data.pubDate.toISOString(),
   }

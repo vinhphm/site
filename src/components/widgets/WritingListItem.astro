@@ -14,7 +14,7 @@ const displayDate = getDisplayDate(writing)
 <li class="list-none m-0 p-0">
   <a
     href={`/writing/${writing.id}`}
-    class="block no-underline transition-opacity duration-150 ease-out text-(--text-primary)"
+    class="block no-underline transition-opacity duration-150 ease-out text-primary"
   >
     <div class="h-11 flex justify-between items-center gap-3">
       <p
@@ -22,8 +22,7 @@ const displayDate = getDisplayDate(writing)
       >
         {writing.data.title}
       </p>
-      <div class="divider flex-auto min-w-12 mx-1 h-[0.5px] bg-(--border)">
-      </div>
+      <div class="divider flex-auto min-w-12 mx-1 h-[0.5px] bg-border"></div>
       <p class="date m-0 shrink-0 whitespace-nowrap">
         {formatDate(displayDate)}
       </p>

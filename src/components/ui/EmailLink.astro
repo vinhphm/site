@@ -31,14 +31,14 @@ const encodedDomain = btoa(cipher(emailParts[1]))
 
 <!-- Enhanced email obfuscation with encoded data attributes -->
 <span
-  class={`email-obfuscated cursor-pointer underline decoration-(--text-tertiary) hover:decoration-(--text-primary) transition-[text-decoration-color] duration-200 ease-out ${className}`}
+  class={`email-obfuscated cursor-pointer underline decoration-tertiary hover:decoration-primary transition-[text-decoration-color] duration-200 ease-out ${className}`}
   data-text={text}
   data-u={encodedUser}
   data-d={encodedDomain}
   data-suffix={suffix}>{text}{suffix}</span
 >
 
-<script define:vars={{ CLIENT_CIPHER_SHIFT: CIPHER_SHIFT }}>
+<script is:inline define:vars={{ CLIENT_CIPHER_SHIFT: CIPHER_SHIFT }}>
   // Enhanced client-side email deobfuscation
   function deobfuscateEmails() {
     const emailElements = document.querySelectorAll('.email-obfuscated')

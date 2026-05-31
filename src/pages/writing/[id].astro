@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content'
 import { getCollection, render } from 'astro:content'
+import StructuredData from '@/components/ui/StructuredData.astro'
 import WritingLayout from '@/layouts/WritingLayout.astro'
 import { createWritingStructuredData } from '@/utils/writing'
 import getReadingTime from 'reading-time'
@@ -36,10 +37,6 @@ const structuredData = createWritingStructuredData(writing)
 ---
 
 <WritingLayout writing={writing} toc={toc} readingTime={readingTime}>
-  <script
-    type="application/ld+json"
-    set:html={JSON.stringify(structuredData)}
-    slot="structured-data"
-  />
+  <StructuredData data={structuredData} slot="structured-data" />
   <Content />
 </WritingLayout>
