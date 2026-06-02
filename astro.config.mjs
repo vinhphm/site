@@ -16,7 +16,6 @@ export default defineConfig({
 
   build: {
     assets: '_assets',
-    format: 'file',
   },
 
   compressHTML: true,
