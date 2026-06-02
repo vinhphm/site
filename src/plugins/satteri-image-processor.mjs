@@ -21,8 +21,8 @@ export function createSatteriImageProcessorPlugin() {
           }
 
           ctx.setProperty(node, 'data-preview', 'true')
-          ctx.setProperty(node, 'loading', 'lazy')
-          ctx.setProperty(node, 'decoding', 'async')
+          ctx.setProperty(node, 'loading', shouldPrioritize ? 'eager' : 'lazy')
+          ctx.setProperty(node, 'decoding', shouldPrioritize ? 'sync' : 'async')
           ctx.setProperty(node, 'className', classes)
           if (shouldPrioritize) {
             ctx.setProperty(node, 'fetchpriority', 'high')
