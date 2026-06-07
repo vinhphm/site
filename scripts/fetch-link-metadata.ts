@@ -46,6 +46,7 @@ function extractLinkCardUrls(content: string): Set<string> {
     .replace(/~~~[\s\S]*?~~~/g, '')
     .replace(/`[^`\n]*`/g, '')
   for (const match of withoutCodeBlocks.matchAll(pattern)) {
+    if (!match[2]) continue
     const url = normalizeUrl(match[2])
     if (url) urls.add(url)
   }
@@ -132,6 +133,7 @@ const results = await Promise.allSettled(
 
 results.forEach((result, i) => {
   const url = newUrls[i]
+  if (!url) return
   if (result.status === 'fulfilled') {
     metadata[url] = result.value
     mutated = true
