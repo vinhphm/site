@@ -292,18 +292,7 @@ const { url, maxWidth = 800 } = Astro.props
     ;(window as any).__oembedThemeObserver = observer
   }
 
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      initOembedContainers()
-      setupThemeObserver()
-    })
-  } else {
-    initOembedContainers()
-    setupThemeObserver()
-  }
-
-  // Re-initialize on Astro page navigation
+  // Initialize on page load (fires for both initial load and Astro client-side navigation)
   document.addEventListener('astro:page-load', () => {
     initOembedContainers()
     setupThemeObserver()
