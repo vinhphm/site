@@ -47,4 +47,25 @@ const { class: className = '' } = Astro.props
       transform: translateZ(0);
     }
   }
+
+  /* Theme toggle transition (view-transition API) */
+  .theme-transition::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    z-index: 1;
+  }
+
+  .theme-transition::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    z-index: 9999;
+  }
+
+  html[data-theme='dark'].theme-transition::view-transition-old(root) {
+    z-index: 9999;
+  }
+
+  html[data-theme='dark'].theme-transition::view-transition-new(root) {
+    z-index: 1;
+  }
 </style>

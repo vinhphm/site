@@ -196,26 +196,3 @@ html:not([data-theme='dark']) .img-dark,
 html:not([data-theme='dark']) [img-dark] {
   @apply hidden;
 }
-
-/* Theme toggle transition (view-transition API) */
-.theme-transition::view-transition-old(root),
-.theme-transition::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-.theme-transition::view-transition-old(root) {
-  @apply z-1;
-}
-
-.theme-transition::view-transition-new(root) {
-  @apply z-9999;
-}
-
-html[data-theme='dark'].theme-transition::view-transition-old(root) {
-  @apply z-9999;
-}
-
-html[data-theme='dark'].theme-transition::view-transition-new(root) {
-  @apply z-1;
-}
