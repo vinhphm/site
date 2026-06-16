@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="256"><svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="256" height="256" fill="#F0EFEA"></rect>
-<path d="M170 67L118.596 188H88.3077L35 67H68.5769L104.231 152.262L139.365 67H170Z" fill="#141412"></path>
-<path d="M140 188L191.25 67H222L170.403 188H140Z" fill="#141412"></path>
-</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
-@media (prefers-color-scheme: dark) { :root { filter: none; } }
-</style></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1067 1067" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2" width="1067" height="1067"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><path style="fill:#f0efea" d="M0 0h1066.667v1066.667H0z"></path><path d="M708.333 308.333 494.15 812.5H367.949L145.834 308.333h139.904l148.559 355.258 146.392-355.258h127.646ZM583.333 812.5l213.542-504.167H925L710.012 812.5H583.333Z" style="fill:#141412;fill-rule:nonzero"></path></svg>
