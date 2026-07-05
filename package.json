@@ -20,13 +20,13 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.3.2",
-    "@astrojs/mdx": "7.0.0",
+    "@astrojs/markdown-satteri": "^0.3.3",
+    "@astrojs/mdx": "7.0.2",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.3",
     "@expressive-code/plugin-collapsible-sections": "^0.44.0",
     "@expressive-code/plugin-line-numbers": "^0.44.0",
-    "astro": "7.0.4",
+    "astro": "7.0.6",
     "astro-expressive-code": "^0.44.0",
     "mdast-util-to-string": "^4.0.0",
     "node-html-parser": "^8.0.4",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@astrojs/compiler-rs": "^0.3.0",
-    "@iconify/json": "^2.2.494",
+    "@iconify/json": "^2.2.496",
     "@prettier/plugin-oxc": "^0.2.0",
     "@tailwindcss/vite": "4.3.2",
     "@types/prompts": "^2.4.9",

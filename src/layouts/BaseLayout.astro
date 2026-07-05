@@ -2,7 +2,6 @@
 import { Font } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
-import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
 import config from '@/config'
 import '@/styles/global.css'
 
@@ -74,8 +73,8 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <ClientRouter />
   </head>
   <body data-centered="true">
-    <TransitionWrapper class="flex flex-col flex-1 min-h-0">
+    <div class="flex flex-col flex-1 min-h-0">
       <slot />
-    </TransitionWrapper>
+    </div>
   </body>
 </html>
