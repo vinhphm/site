@@ -35,11 +35,16 @@ function unwrapLayers(css) {
   return out
 }
 
-// Some iOS Safari betas silently drop @layer contents without any console
-// error, leaving the page fully unstyled. Tailwind v4 always emits its
-// output inside @layer blocks in correct cascade order (properties, theme,
-// base, components, utilities), so unwrapping them in place is safe and
-// preserves the same effective rule order.
+// TEMPORARY WORKAROUND — remove once iOS Safari fixes cascade-layer support
+// or Tailwind stops relying on @layer for its output.
+//
+// Some iOS Safari betas (confirmed: iOS 27 beta) silently drop @layer
+// contents without any console error, leaving the page fully unstyled.
+// Tailwind v4 always emits its output inside @layer blocks in correct
+// cascade order (properties, theme, base, components, utilities), so
+// unwrapping them in place is safe and preserves the same effective rule
+// order. Re-test on affected iOS versions periodically and drop this plugin
+// once the regression is resolved upstream.
 export function unwrapCssLayers() {
   return {
     name: 'unwrap-css-layers',
