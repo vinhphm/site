@@ -8,7 +8,6 @@ import { createSatteriHeadingsPlugin } from './src/plugins/satteri-headings.mjs'
 import { satteriLinkCard } from './src/plugins/satteri-link-card.mjs'
 import { createSatteriCleanupPlugin } from './src/plugins/satteri-cleanup.mjs'
 import { createSatteriImageProcessorPlugin } from './src/plugins/satteri-image-processor.mjs'
-import { unwrapCssLayers } from './src/plugins/vite-unwrap-css-layers.mjs'
 import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
@@ -107,7 +106,6 @@ export default defineConfig({
         scale: 1.2,
         defaultStyle: 'display: inline-block; vertical-align: text-bottom;',
       }),
-      unwrapCssLayers(),
     ],
     build: {
       minify: 'terser',
