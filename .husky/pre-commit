@@ -3,7 +3,7 @@ if git diff --cached --name-only | grep -q 'src/assets/fonts/.*\.woff2'; then
   git add src/assets/fonts/
 fi
 
-npx oxlint --fix .
-npx oxfmt --no-error-on-unmatched-pattern .
-npx prettier --write "**/*.astro"
+bun x oxlint --fix .
+bun x oxfmt --no-error-on-unmatched-pattern .
+bun x prettier --write "**/*.astro"
 git add -u
