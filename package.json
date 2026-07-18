@@ -26,7 +26,7 @@
     "@astrojs/sitemap": "3.7.3",
     "@expressive-code/plugin-collapsible-sections": "^0.44.0",
     "@expressive-code/plugin-line-numbers": "^0.44.0",
-    "astro": "7.1.0",
+    "astro": "7.1.1",
     "astro-expressive-code": "^0.44.0",
     "mdast-util-to-string": "^4.0.0",
     "node-html-parser": "^9.0.0",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@astrojs/compiler-rs": "^0.3.1",
-    "@iconify/json": "^2.2.500",
+    "@iconify/json": "^2.2.501",
     "@prettier/plugin-oxc": "^0.2.1",
     "@tailwindcss/vite": "4.3.3",
     "@types/prompts": "^2.4.9",
