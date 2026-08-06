@@ -21,6 +21,10 @@ export default defineConfig({
 
   compressHTML: true,
 
+  experimental: {
+    incrementalBuild: true,
+  },
+
   fonts: [
     {
       provider: fontProviders.local(),

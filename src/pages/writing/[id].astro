@@ -11,6 +11,7 @@ export async function getStaticPaths() {
   return writings.map((entry) => ({
     params: { id: entry.id },
     props: entry,
+    cacheKey: entry.digest,
   }))
 }
 
