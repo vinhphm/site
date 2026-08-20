@@ -24,14 +24,12 @@
     "@astrojs/mdx": "7.0.7",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.3",
-    "@expressive-code/plugin-collapsible-sections": "^0.44.1",
-    "@expressive-code/plugin-line-numbers": "^0.44.1",
     "astro": "7.2.4",
-    "astro-expressive-code": "^0.44.1",
     "mdast-util-to-string": "^4.0.0",
     "node-html-parser": "^9.0.1",
     "reading-time": "^1.5.0",
     "sharp": "^0.35.3",
+    "simple-git": "^3.36.0",
     "unplugin-icons": "^23.0.1"
   },
   "devDependencies": {
@@ -46,7 +44,6 @@
     "husky": "^9.1.7",
     "oxfmt": "^0.64.0",
     "oxlint": "^1.79.0",
-    "picocolors": "^1.1.1",
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "prompts": "^2.4.2",
