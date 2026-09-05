@@ -59,11 +59,15 @@ if (
       if (!content || !worker || !source) continue
       const theme =
         document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
+      const bg = getComputedStyle(document.documentElement)
+        .getPropertyValue('--bg')
+        .trim()
       const endpoint = new URL(`${worker}/oembed`)
       // Also protect local previews and accidental same-origin runtime configuration.
       if (endpoint.origin === location.origin) continue
       endpoint.searchParams.set('url', source)
       endpoint.searchParams.set('theme', theme)
+      if (bg) endpoint.searchParams.set('bg', bg)
       void fetch(endpoint, {
         signal: AbortSignal.any([
           controller.signal,
@@ -148,6 +152,6 @@ if (
     @apply max-w-full;
   }
   .oembed-content :global(iframe) {
-    @apply w-full h-150 border-0;
+    @apply w-full h-150 border-0 bg-surface;
   }
 </style>
