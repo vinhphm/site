@@ -1,6 +1,6 @@
 <dialog id="media-viewer" aria-label="Media preview">
   <img alt="" hidden />
-  <video controls loop muted playsinline hidden></video>
+  <video autoplay loop muted playsinline hidden></video>
 </dialog>
 
 <script>
@@ -48,6 +48,8 @@
               image.alt = media.alt
             } else {
               video.src = media.currentSrc || media.src
+              video.load()
+              video.play().catch(() => {})
             }
             previousOverflow = document.body.style.overflow
             viewer.showModal()
