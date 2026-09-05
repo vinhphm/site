@@ -3,11 +3,14 @@
   "version": "3.0.1",
   "type": "module",
   "scripts": {
-    "dev": "bun scripts/fetch-link-metadata.ts && astro dev",
+    "dev": "astro dev",
     "compress": "bun scripts/img-compress-staged.ts",
     "start": "astro dev",
-    "build": "bun scripts/fetch-link-metadata.ts && astro build",
+    "build": "astro build",
     "preview": "astro preview",
+    "test": "bun test tests/unit",
+    "test:e2e": "playwright test",
+    "check": "astro check",
     "fetch-links": "bun scripts/fetch-link-metadata.ts",
     "new": "bun scripts/create.ts",
     "subset-fonts": "bun scripts/subset-fonts.ts",
@@ -33,10 +36,13 @@
     "unplugin-icons": "^23.0.1"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@astrojs/compiler-rs": "^0.4.0",
     "@iconify/json": "^2.2.525",
+    "@playwright/test": "^1.63.0",
     "@prettier/plugin-oxc": "^0.2.2",
     "@tailwindcss/vite": "4.3.3",
+    "@types/bun": "^1.4.1",
     "@types/prompts": "^2.4.9",
     "@types/subset-font": "^2.3.0",
     "bumpp": "^12.3.0",
@@ -51,7 +57,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "4.3.3",
     "terser": "^5.51.2",
-    "typescript": "^7.0.2"
+    "typescript": "^6"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",

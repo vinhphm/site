@@ -1,317 +1,142 @@
 ---
 import config from '@/config'
+import { httpUrl } from '@/utils/embed'
 
-type Props = {
-  url: string
-  maxWidth?: number
-}
-
+type Props = { url: string; maxWidth?: number }
 const { url, maxWidth = 800 } = Astro.props
+const source = httpUrl(url)
+if (!source) throw new Error('Embed URL must use HTTP or HTTPS')
+if (
+  new URL(config.workerHost).origin === new URL(Astro.site ?? Astro.url).origin
+) {
+  throw new Error(
+    'PUBLIC_WORKER_HOST must use a separate origin for rich embeds'
+  )
+}
 ---
 
-<script is:inline define:vars={{ workerHost: config.workerHost }}>
-  window.__WORKER_HOST__ = workerHost
-</script>
+<div
+  class="oembed-container"
+  data-url={source}
+  data-worker={config.workerHost}
+  style={`max-width: ${maxWidth}px`}
+>
+  <div class="oembed-content"></div>
+  <noscript>
+    <a href={source} target="_blank" rel="noopener noreferrer"
+      >View original post</a
+    >
+  </noscript>
+</div>
 
 <script>
-  interface OEmbedData {
-    type: string
-    url: string
-    title?: string
-    html?: string
-    width?: number
-    height?: number
-  }
+  import { onPageLoad } from '@/utils/browser-lifecycle'
+  import { parseEmbed, embedHeight } from '@/utils/embed'
 
-  function getCurrentTheme(): string {
-    return document.documentElement.hasAttribute('data-theme') &&
-      document.documentElement.getAttribute('data-theme') === 'dark'
-      ? 'dark'
-      : 'light'
-  }
-
-  async function fetchOembedData(
-    url: string,
-    theme: string
-  ): Promise<OEmbedData | null> {
-    try {
-      const response = await fetch(
-        `${(window as any).__WORKER_HOST__}/oembed?url=${encodeURIComponent(url)}&theme=${theme}`
-      )
-      return await response.json()
-    } catch (error) {
-      console.error('Failed to fetch oembed data:', error)
-      return null
-    }
-  }
-
-  function isTwitterUrl(url: string): boolean {
-    return /^https?:\/\/(www\.)?(twitter\.com|x\.com)\//.test(url)
-  }
-
-  function isThreadsUrl(url: string): boolean {
-    return /^https?:\/\/(www\.)?threads\.(com|net)\//.test(url)
-  }
-
-  function loadTwitterWidgets() {
-    if (
-      document.querySelector('script[src*="platform.twitter.com/widgets.js"]')
-    ) {
-      // widgets.js already loaded; just re-process any new blockquotes
-      const twttr = (window as any).twttr
-      if (twttr?.widgets?.load) {
-        twttr.widgets.load()
-      }
-      return
-    }
-
-    const isDark = getCurrentTheme() === 'dark'
-    document.querySelectorAll('.twitter-tweet').forEach((el) => {
-      el.setAttribute('data-theme', isDark ? 'dark' : 'light')
-    })
-
-    const loadScript = () => {
-      const script = document.createElement('script')
-      script.src = 'https://platform.twitter.com/widgets.js'
-      script.async = true
-      document.head.appendChild(script)
-    }
-
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadScript, { timeout: 2000 })
-    } else {
-      setTimeout(loadScript, 100)
-    }
-  }
-
-  function injectTwitterEmbed(contentDiv: HTMLElement, html: string) {
-    const temp = document.createElement('div')
-    temp.innerHTML = html
-    // Strip the <script> tags — widgets.js is loaded separately via document.head
-    Array.from(temp.getElementsByTagName('script')).forEach((s) =>
-      s.parentNode?.removeChild(s)
-    )
-    const isDark = getCurrentTheme() === 'dark'
-    temp.querySelectorAll('.twitter-tweet').forEach((el) => {
-      el.setAttribute('data-theme', isDark ? 'dark' : 'light')
-    })
-    contentDiv.innerHTML = temp.innerHTML
-    loadTwitterWidgets()
-  }
-
-  function loadThreadsEmbeds() {
-    if (document.querySelector('script[src*="threads.com/embed.js"]')) {
-      const instgrm = (window as any).instgrm
-      if (instgrm?.Embeds?.process) {
-        instgrm.Embeds.process()
-      }
-      return
-    }
-
-    const loadScript = () => {
-      const script = document.createElement('script')
-      script.src = 'https://www.threads.com/embed.js'
-      script.async = true
-      document.head.appendChild(script)
-    }
-
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadScript, { timeout: 2000 })
-    } else {
-      setTimeout(loadScript, 100)
-    }
-  }
-
-  function injectThreadsEmbed(contentDiv: HTMLElement, html: string) {
-    const temp = document.createElement('div')
-    temp.innerHTML = html
-    // Strip the <script> tags — embed.js is loaded separately via document.head
-    Array.from(temp.getElementsByTagName('script')).forEach((s) =>
-      s.parentNode?.removeChild(s)
-    )
-    contentDiv.innerHTML = temp.innerHTML
-    loadThreadsEmbeds()
-  }
-
-  function injectContent(
-    container: HTMLElement,
-    html: string,
-    isDark: boolean
-  ) {
-    container.innerHTML = ''
-    const temp = document.createElement('div')
-    temp.innerHTML = html
-
-    // Add data-bluesky-embed-color-mode attribute to blockquote elements for Bluesky embeds
-    const blockquotes = Array.from(temp.getElementsByTagName('blockquote'))
-    blockquotes.forEach((blockquote) => {
-      if (
-        blockquote.classList.contains('bluesky-embed') ||
-        (blockquote.getAttribute('data-bluesky-uri') &&
-          blockquote.getAttribute('data-bluesky-uri')?.includes('bsky'))
-      ) {
-        blockquote.setAttribute(
-          'data-bluesky-embed-color-mode',
-          isDark ? 'dark' : 'light'
-        )
-      }
-    })
-
-    // Remove existing scripts to avoid duplicates
-    const scripts = Array.from(temp.getElementsByTagName('script'))
-    scripts.forEach((oldScript) => {
-      oldScript.parentNode?.removeChild(oldScript)
-    })
-
-    container.innerHTML = temp.innerHTML
-
-    // Re-inject scripts to make them executable
-    scripts.forEach((oldScript) => {
-      const newScript = document.createElement('script')
-      Array.from(oldScript.attributes).forEach((attr) => {
-        newScript.setAttribute(attr.name, attr.value)
-      })
-      newScript.innerHTML = oldScript.innerHTML
-      container.appendChild(newScript)
-    })
-  }
-
-  function renderOembedContent(
-    container: HTMLElement,
-    data: OEmbedData,
-    maxWidth: number
-  ) {
-    const contentDiv = container.querySelector('.oembed-content') as HTMLElement
-    if (!contentDiv) return
-
-    const url = container.dataset.url ?? ''
-
-    switch (data.type) {
-      case 'rich':
-        if (data.html) {
-          if (isTwitterUrl(url)) {
-            injectTwitterEmbed(contentDiv, data.html)
-          } else if (isThreadsUrl(url)) {
-            injectThreadsEmbed(contentDiv, data.html)
-          } else {
-            const isDark = getCurrentTheme() === 'dark'
-            injectContent(contentDiv, data.html, isDark)
+  function loadEmbeds() {
+    const controller = new AbortController()
+    const frames = new Map<HTMLIFrameElement, string>()
+    window.addEventListener(
+      'message',
+      (event) => {
+        const height = embedHeight(event.data)
+        if (height === null) return
+        for (const [frame, origin] of frames) {
+          if (event.source === frame.contentWindow && event.origin === origin) {
+            frame.style.height = `${height}px`
+            break
           }
         }
-        break
-
-      case 'photo':
-        contentDiv.innerHTML = `
-          <img src="${data.url}"
-               alt="${data.title || ''}"
-               ${data.width ? `width="${data.width}"` : ''}
-               ${data.height ? `height="${data.height}"` : ''}
-               style="max-width: ${maxWidth}px;">
-        `
-        break
-
-      case 'video':
-        contentDiv.innerHTML = `
-          <div class="video-container" style="max-width: ${maxWidth}px;">
-            ${data.html || ''}
-          </div>
-        `
-        break
-
-      case 'link':
-        contentDiv.innerHTML = `
-          <a href="${data.url}" target="_blank" rel="noopener noreferrer">
-            ${data.title || data.url}
-          </a>
-        `
-        break
-
-      default:
-        contentDiv.innerHTML = `
-          <a href="${data.url}" target="_blank" rel="noopener noreferrer">
-            ${data.title || data.url}
-          </a>
-        `
-    }
-  }
-
-  async function loadOembedContent(container: HTMLElement) {
-    const url = container.dataset.url
-    const maxWidth = parseInt(container.dataset.maxWidth || '800')
-
-    if (!url) return
-
-    const loadingDiv = container.querySelector('.oembed-loading') as HTMLElement
-    const contentDiv = container.querySelector('.oembed-content') as HTMLElement
-
-    if (!loadingDiv || !contentDiv) return
-
-    try {
-      const theme = getCurrentTheme()
-      const data = await fetchOembedData(url, theme)
-
-      if (data) {
-        loadingDiv.style.display = 'none'
-        renderOembedContent(container, data, maxWidth)
-      } else {
-        loadingDiv.textContent = 'Failed to load embed'
-      }
-    } catch (error) {
-      console.error('Error loading oembed content:', error)
-      loadingDiv.textContent = 'Failed to load embed'
-    }
-  }
-
-  function initOembedContainers() {
-    const containers = document.querySelectorAll('.oembed-container')
-    containers.forEach((container) => {
-      loadOembedContent(container as HTMLElement)
-    })
-  }
-
-  // Theme change observer
-  function setupThemeObserver() {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (
-          mutation.type === 'attributes' &&
-          mutation.attributeName === 'data-theme'
-        ) {
-          // Reload all oembed content when theme changes
-          initOembedContainers()
-        }
+      },
+      { signal: controller.signal }
+    )
+    const containers =
+      document.querySelectorAll<HTMLElement>('.oembed-container')
+    for (const container of containers) {
+      const content = container.querySelector<HTMLElement>('.oembed-content')
+      const worker = container.dataset.worker
+      const source = container.dataset.url
+      if (!content || !worker || !source) continue
+      const theme =
+        document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
+      const endpoint = new URL(`${worker}/oembed`)
+      // Also protect local previews and accidental same-origin runtime configuration.
+      if (endpoint.origin === location.origin) continue
+      endpoint.searchParams.set('url', source)
+      endpoint.searchParams.set('theme', theme)
+      void fetch(endpoint, {
+        signal: AbortSignal.any([
+          controller.signal,
+          AbortSignal.timeout(10000),
+        ]),
       })
-    })
+        .then(async (response) => {
+          if (!response.ok) throw new Error(`Embed HTTP ${response.status}`)
+          const data = parseEmbed(await response.json())
+          if (controller.signal.aborted) return
+          if (!data) throw new Error('Invalid embed response')
+          if (data.type === 'photo' && data.url) {
+            const image = document.createElement('img')
+            image.src = data.url
+            image.alt = data.title || ''
+            image.loading = 'lazy'
+            content.replaceChildren(image)
+          } else if (data.type === 'link' && data.url) {
+            const link = document.createElement('a')
+            link.href = data.url
+            link.textContent = data.title || data.url
+            link.target = '_blank'
+            link.rel = 'noopener noreferrer'
+            content.replaceChildren(link)
+          } else if (data.html) {
+            const frame = document.createElement('iframe')
+            frame.title = 'Embedded post'
+            // Execute provider HTML on the worker's separate, public origin.
+            // Do not sandbox it to an opaque origin: nested provider CORS needs
+            // its real origin. Never assign worker HTML to srcdoc or our DOM.
+            const renderUrl = new URL(`${worker}/oembed/render`)
+            renderUrl.search = endpoint.search
+            frame.src = renderUrl.href
+            frame.referrerPolicy = 'no-referrer'
+            frame.loading = 'lazy'
+            frames.set(frame, renderUrl.origin)
+            content.replaceChildren(frame)
+          } else {
+            throw new Error('Empty embed response')
+          }
+        })
+        .catch(() => {
+          if (controller.signal.aborted) return
+          const link = document.createElement('a')
+          link.href = source
+          link.textContent = 'View original post'
+          link.target = '_blank'
+          link.rel = 'noopener noreferrer'
+          content.replaceChildren(link)
+        })
+    }
+    return () => {
+      controller.abort()
+      frames.clear()
+    }
+  }
 
+  onPageLoad(() => {
+    let cleanup = loadEmbeds()
+    const observer = new MutationObserver(() => {
+      cleanup()
+      cleanup = loadEmbeds()
+    })
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['data-theme'],
     })
-
-    // Store observer for cleanup if needed
-    ;(window as any).__oembedThemeObserver = observer
-  }
-
-  // Initialize on page load (fires for both initial load and Astro client-side navigation)
-  document.addEventListener('astro:page-load', () => {
-    initOembedContainers()
-    setupThemeObserver()
-  })
-
-  // Cleanup on page unload
-  document.addEventListener('astro:before-swap', () => {
-    const observer = (window as any).__oembedThemeObserver
-    if (observer) {
+    return () => {
       observer.disconnect()
-      delete (window as any).__oembedThemeObserver
+      cleanup()
     }
   })
 </script>
-
-<div class="oembed-container" data-url={url} data-max-width={maxWidth}>
-  <div class="oembed-loading">Loading embed...</div>
-  <div class="oembed-content" style={`max-width: ${maxWidth}px;`}></div>
-</div>
 
 <style>
   @reference "../../styles/global.css";
@@ -319,32 +144,10 @@ const { url, maxWidth = 800 } = Astro.props
   .oembed-container {
     @apply my-4 w-full;
   }
-
-  .oembed-loading {
-    @apply p-4 text-center italic text-secondary;
+  .oembed-content :global(img) {
+    @apply max-w-full;
   }
-
-  .oembed-content {
-    @apply w-full flex justify-center-safe;
-  }
-
-  .oembed-content img {
-    @apply max-w-full h-auto;
-  }
-
-  .video-container {
-    @apply relative h-0 overflow-hidden pb-[56.25%];
-  }
-
-  .video-container iframe {
-    @apply absolute top-0 left-0 w-full h-full;
-  }
-
-  .oembed-content a {
-    @apply text-blue-500 underline dark:text-blue-400;
-  }
-
-  .oembed-content a:hover {
-    @apply no-underline;
+  .oembed-content :global(iframe) {
+    @apply w-full h-150 border-0;
   }
 </style>

@@ -127,9 +127,15 @@ for (const url of Object.keys(metadata)) {
 }
 
 const newUrls = [...urls].sort().filter((url) => force || !metadata[url])
-const results = await Promise.allSettled(
-  newUrls.map((url) => fetchMetadata(url))
-)
+const results: PromiseSettledResult<LinkMetadata>[] = []
+// Keep refreshes polite to providers and bounded on large archives.
+for (let offset = 0; offset < newUrls.length; offset += 4) {
+  results.push(
+    ...(await Promise.allSettled(
+      newUrls.slice(offset, offset + 4).map((url) => fetchMetadata(url))
+    ))
+  )
+}
 
 results.forEach((result, i) => {
   const url = newUrls[i]

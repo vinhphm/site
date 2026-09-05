@@ -62,8 +62,8 @@ export function createSatteriCleanupPlugin() {
           if (!allOk || rawFigures.length === 0) return
 
           // Replace <p> with its raw figure children by inserting before and removing
-          for (let i = rawFigures.length - 1; i >= 0; i--) {
-            ctx.insertBefore(node, rawFigures[i])
+          for (const figure of rawFigures) {
+            ctx.insertBefore(node, figure)
           }
           ctx.removeNode(node)
         },

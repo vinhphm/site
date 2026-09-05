@@ -76,7 +76,7 @@ function renderLinkCard(node) {
                 : ''
             }
           </a>
-        </div>`,
+        </div>`.replace(/\n\s*/g, ''),
   }
 }
 

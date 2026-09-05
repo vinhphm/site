@@ -10,7 +10,6 @@ import FootnoteScroll from '@/components/widgets/FootnoteScroll.astro'
 import WritingMeta from '@/components/widgets/WritingMeta.astro'
 import LinkCard from '@/components/ui/LinkCard.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import config from '@/config'
 import type { CollectionEntry } from 'astro:content'
 
 type Props = {
@@ -21,18 +20,12 @@ type Props = {
 
 const { writing, toc = [], readingTime } = Astro.props
 const hasToc = toc.length > 0
-
-function getImageUrl() {
-  if (writing.data.image) return writing.data.image
-  return `${config.workerHost}/og?title=${encodeURIComponent(writing.data.title)}`
-}
-const imageUrl = getImageUrl()
 ---
 
 <BaseLayout
   title={writing.data.title}
   description={writing.data.description}
-  image={imageUrl}
+  image={writing.data.image}
   pubDate={writing.data.pubDate.toISOString()}
   type="post"
 >

@@ -68,8 +68,8 @@ export function createSatteriImageProcessorPlugin() {
           })
 
           // Replace <p> with figure nodes
-          for (let i = newNodes.length - 1; i >= 0; i--) {
-            ctx.insertBefore(node, newNodes[i])
+          for (const newNode of newNodes) {
+            ctx.insertBefore(node, newNode)
           }
           ctx.removeNode(node)
         },

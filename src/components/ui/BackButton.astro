@@ -20,35 +20,24 @@
   index
 </a>
 
-<script is:inline>
-  ;(function () {
-    var contentWidth = 35
-    var tocEnabled = true
+<script>
+  import { onPageLoad } from '@/utils/browser-lifecycle'
 
+  onPageLoad(() => {
+    const button = document.querySelector<HTMLElement>('.back-button')
+    const prose = document.querySelector<HTMLElement>('.prose')
+    if (!button || !prose) return
     function adjustBackButtonPosition() {
-      var button = document.querySelector('.back-button')
-      if (!button) return
-
-      var pageWidth = window.innerWidth
-      var margin = (pageWidth - contentWidth * 16) / 2
-      var baseMinSpace = 11 * 16
-      var minSpace = tocEnabled ? baseMinSpace + 52 : baseMinSpace + 12
-
-      if (margin >= minSpace) {
-        button.classList.add('fixed-position')
-        var basePosition = margin - baseMinSpace
-        var leftPosition = tocEnabled ? basePosition - 40 : basePosition
-        button.style.left = leftPosition + 'px'
-      } else {
-        button.classList.remove('fixed-position')
-        button.style.left = ''
-      }
+      const left = prose!.getBoundingClientRect().left
+      const fixed = left >= 228
+      button!.classList.toggle('fixed-position', fixed)
+      button!.style.left = fixed ? `${left - 216}px` : ''
     }
 
     adjustBackButtonPosition()
-    document.addEventListener('astro:page-load', adjustBackButtonPosition)
     window.addEventListener('resize', adjustBackButtonPosition)
-  })()
+    return () => window.removeEventListener('resize', adjustBackButtonPosition)
+  })
 </script>
 
 <style>

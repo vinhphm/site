@@ -15,10 +15,10 @@ export async function GET(context: Context) {
     description: config.description,
     site: context.site,
     items: writings.map((writing) => ({
-      ...writing.data,
-      link: `${context.site}writing/${writing.id}`,
+      title: writing.data.title,
+      description: writing.data.description ?? config.description,
+      link: new URL(`/writing/${writing.id}`, context.site).href,
       pubDate: getDisplayDate(writing),
-      content: writing.body,
     })),
   })
 }
