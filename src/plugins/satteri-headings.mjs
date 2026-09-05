@@ -8,7 +8,7 @@ function generateSlug(text) {
 }
 
 function generateUniqueSlug(text, usedSlugs) {
-  let slug = generateSlug(text)
+  const slug = generateSlug(text) || 'section'
   let counter = 1
   let uniqueSlug = slug
 

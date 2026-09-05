@@ -1,8 +1,11 @@
 import type { Config } from '@/types'
+import { readEnvironment } from '@/utils/environment'
 
-const EMAIL = import.meta.env.PUBLIC_EMAIL
-const WORKER_HOST = import.meta.env.PUBLIC_WORKER_HOST
-const CIPHER_SHIFT = Number(import.meta.env.PUBLIC_CIPHER_SHIFT)
+const {
+  email: EMAIL,
+  workerHost: WORKER_HOST,
+  cipherShift: CIPHER_SHIFT,
+} = readEnvironment(import.meta.env)
 
 export const config: Config = {
   author: {

@@ -12,8 +12,19 @@
 
 <script is:inline>
   ;(function () {
+    if (window.__themeManagerInitialized) return
+    window.__themeManagerInitialized = true
+
+    function storedTheme() {
+      try {
+        return localStorage.getItem('color-scheme')
+      } catch {
+        return 'auto'
+      }
+    }
+
     function applyThemeAttr() {
-      const stored = localStorage.getItem('color-scheme')
+      const stored = storedTheme()
       const isDark =
         stored === 'dark' ||
         (stored !== 'light' &&
@@ -30,7 +41,7 @@
     window
       .matchMedia('(prefers-color-scheme: dark)')
       .addEventListener('change', function () {
-        const stored = localStorage.getItem('color-scheme')
+        const stored = storedTheme()
         if (!stored || stored === 'auto') {
           applyThemeAttr()
         }

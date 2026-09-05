@@ -5,7 +5,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["astro/client", "unplugin-icons/types/vue"],
+    "types": ["astro/client", "unplugin-icons/types/vue", "bun"],
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
