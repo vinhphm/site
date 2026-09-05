@@ -38,7 +38,8 @@ scripts execute on that separate public origin so nested provider frames retain
 their real origins for CORS. Never point this host at the site origin or an
 authenticated application. Photo/link responses still use validated DOM rendering.
 Resize messages must match both the worker origin and the frame window; heights
-are bounded to 120–2000px. The original-post link always remains available.
+are bounded to 120–2000px. An original-post link appears only when the embed
+request fails or JavaScript is disabled, not beneath successfully loaded embeds.
 Deploy the worker's renderer before deploying this site change. Provider restrictions,
 authentication requirements, and browser blockers can still prevent rendering.
 

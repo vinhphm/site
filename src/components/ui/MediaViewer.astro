@@ -87,39 +87,25 @@
 </script>
 
 <style>
+  @reference "../../styles/global.css";
+
   dialog {
-    border: 0;
-    padding: 3rem 1rem 1rem;
-    background: var(--bg);
-    color: var(--text-primary);
-    max-width: 95vw;
-    max-height: 95vh;
+    @apply border-0 pt-12 px-4 pb-4 bg-(--bg) text-primary max-w-[95vw] max-h-[95vh];
   }
   dialog::backdrop {
-    background: rgb(0 0 0 / 80%);
+    @apply bg-black/80;
   }
   dialog > button {
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-    cursor: pointer;
+    @apply absolute top-3 right-4 cursor-pointer;
   }
   img,
   video {
-    max-width: 85vw;
-    max-height: 80vh;
-    object-fit: contain;
+    @apply max-w-[85vw] max-h-[80vh] object-contain;
   }
   :global(.media-preview-trigger) {
-    display: block;
-    max-width: 100%;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: zoom-in;
+    @apply block max-w-full p-0 border-0 bg-transparent cursor-zoom-in;
   }
   :global(.media-preview-trigger:focus-visible) {
-    outline: 2px solid currentColor;
-    outline-offset: 4px;
+    @apply outline-2 outline-solid outline-current outline-offset-4;
   }
 </style>

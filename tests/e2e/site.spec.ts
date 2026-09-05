@@ -95,7 +95,7 @@ test('untrusted embed scripts cannot reach the parent document', async ({
   await expect(frame).toHaveCSS('height', '350px')
   await expect(
     page.getByRole('link', { name: 'View original post' }).first()
-  ).toBeVisible()
+  ).not.toBeVisible()
 })
 
 test('nested provider frames keep their real origin for CORS', async ({
@@ -190,6 +190,21 @@ test('media dialog fits a mobile viewport', async ({ page }) => {
   const bounds = await dialog.boundingBox()
   expect(bounds!.x).toBeGreaterThanOrEqual(0)
   expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390)
+})
+
+test('embed fallback appears when the provider request fails', async ({
+  page,
+}) => {
+  await page.route('https://example.com/oembed?**', (route) =>
+    route.fulfill({ status: 503, json: { error: 'Provider unavailable' } })
+  )
+  await page.goto('/writing/getting-good-at-claude-code')
+  await expect(
+    page.getByRole('link', { name: 'View original post' })
+  ).toHaveAttribute('href', 'https://x.com/vinhev/status/1943879411696079142')
+  await expect(
+    page.getByRole('link', { name: 'View original post' })
+  ).toBeVisible()
 })
 
 test('embed fallback works without JavaScript', async ({ browser }) => {
