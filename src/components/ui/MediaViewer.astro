@@ -1,6 +1,4 @@
 <dialog id="media-viewer" aria-label="Media preview">
-  <button type="button" autofocus aria-label="Close media preview">Close</button
-  >
   <img alt="" hidden />
   <video controls loop muted playsinline hidden></video>
 </dialog>
@@ -12,8 +10,7 @@
     const viewer = document.querySelector<HTMLDialogElement>('#media-viewer')
     const image = viewer?.querySelector('img')
     const video = viewer?.querySelector('video')
-    const close = viewer?.querySelector('button')
-    if (!viewer || !image || !video || !close) return
+    if (!viewer || !image || !video) return
     const controller = new AbortController()
     const options = { signal: controller.signal }
     const buttons: HTMLButtonElement[] = []
@@ -66,7 +63,6 @@
       image!.removeAttribute('src')
       document.body.style.overflow = previousOverflow
     }
-    close.addEventListener('click', () => viewer.close(), options)
     viewer.addEventListener(
       'click',
       (event) => {
@@ -90,13 +86,10 @@
   @reference "../../styles/global.css";
 
   dialog {
-    @apply m-auto border-0 pt-12 px-4 pb-4 bg-(--bg) text-primary max-w-[95vw] max-h-[95vh];
+    @apply m-auto border-0 bg-transparent p-0 max-w-[95vw] max-h-[95vh];
   }
   dialog::backdrop {
     @apply bg-black/80;
-  }
-  dialog > button {
-    @apply absolute top-3 right-4 cursor-pointer;
   }
   img,
   video {
