@@ -8,6 +8,19 @@ export function httpUrl(value: unknown): string | null {
   }
 }
 
+export function embedHeight(data: unknown): number | null {
+  if (!data || typeof data !== 'object') return null
+  const message = data as Record<string, unknown>
+  if (
+    message.type !== 'vinh:embed-size' ||
+    typeof message.height !== 'number' ||
+    !Number.isFinite(message.height) ||
+    message.height <= 0
+  )
+    return null
+  return Math.max(120, Math.min(2000, Math.ceil(message.height)))
+}
+
 export type Embed = {
   type: 'photo' | 'link' | 'rich' | 'video'
   url?: string

@@ -6,6 +6,13 @@ type Props = { url: string; maxWidth?: number }
 const { url, maxWidth = 800 } = Astro.props
 const source = httpUrl(url)
 if (!source) throw new Error('Embed URL must use HTTP or HTTPS')
+if (
+  new URL(config.workerHost).origin === new URL(Astro.site ?? Astro.url).origin
+) {
+  throw new Error(
+    'PUBLIC_WORKER_HOST must use a separate origin for rich embeds'
+  )
+}
 ---
 
 <div
@@ -22,10 +29,25 @@ if (!source) throw new Error('Embed URL must use HTTP or HTTPS')
 
 <script>
   import { onPageLoad } from '@/utils/browser-lifecycle'
-  import { parseEmbed } from '@/utils/embed'
+  import { parseEmbed, embedHeight } from '@/utils/embed'
 
   function loadEmbeds() {
     const controller = new AbortController()
+    const frames = new Map<HTMLIFrameElement, string>()
+    window.addEventListener(
+      'message',
+      (event) => {
+        const height = embedHeight(event.data)
+        if (height === null) return
+        for (const [frame, origin] of frames) {
+          if (event.source === frame.contentWindow && event.origin === origin) {
+            frame.style.height = `${height}px`
+            break
+          }
+        }
+      },
+      { signal: controller.signal }
+    )
     const containers =
       document.querySelectorAll<HTMLElement>('.oembed-container')
     for (const container of containers) {
@@ -33,12 +55,13 @@ if (!source) throw new Error('Embed URL must use HTTP or HTTPS')
       const worker = container.dataset.worker
       const source = container.dataset.url
       if (!content || !worker || !source) continue
-      const endpoint = new URL(`${worker}/oembed`)
-      endpoint.searchParams.set('url', source)
-      endpoint.searchParams.set(
-        'theme',
+      const theme =
         document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
-      )
+      const endpoint = new URL(`${worker}/oembed`)
+      // Also protect local previews and accidental same-origin runtime configuration.
+      if (endpoint.origin === location.origin) continue
+      endpoint.searchParams.set('url', source)
+      endpoint.searchParams.set('theme', theme)
       void fetch(endpoint, {
         signal: AbortSignal.any([
           controller.signal,
@@ -66,13 +89,16 @@ if (!source) throw new Error('Embed URL must use HTTP or HTTPS')
           } else if (data.html) {
             const frame = document.createElement('iframe')
             frame.title = 'Embedded post'
-            // Opaque origin: provider scripts cannot access our document or storage.
-            // No top navigation, forms, popups, or same-origin permission.
-            frame.setAttribute('sandbox', 'allow-scripts')
+            // Execute provider HTML on the worker's separate, public origin.
+            // Do not sandbox it to an opaque origin: nested provider CORS needs
+            // its real origin. Never assign worker HTML to srcdoc or our DOM.
+            const renderUrl = new URL(`${worker}/oembed/render`)
+            renderUrl.search = endpoint.search
+            frame.src = renderUrl.href
             frame.referrerPolicy = 'no-referrer'
             frame.loading = 'lazy'
             frame.style.cssText = 'width:100%;height:600px;border:0'
-            frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body>${data.html}</body></html>`
+            frames.set(frame, renderUrl.origin)
             content.replaceChildren(frame)
           }
         })
@@ -80,7 +106,10 @@ if (!source) throw new Error('Embed URL must use HTTP or HTTPS')
           // The persistent source link remains usable on timeout/provider failure.
         })
     }
-    return () => controller.abort()
+    return () => {
+      controller.abort()
+      frames.clear()
+    }
   }
 
   onPageLoad(() => {

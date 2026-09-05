@@ -53,14 +53,90 @@ test('untrusted embed scripts cannot reach the parent document', async ({
       },
     })
   )
+  await page.route('https://example.com/oembed/render?**', (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: `<p>Embed fixture</p><script>
+        try { parent.document.body.dataset.compromised = 'yes' } catch {}
+        parent.postMessage({type:'vinh:embed-size',height:350}, '*')
+      </script>`,
+    })
+  )
   await page.goto('/writing/one-embed-to-rule-them-all')
   const frame = page.locator('.oembed-content iframe').first()
-  await expect(frame).toHaveAttribute('sandbox', 'allow-scripts')
+  await expect(frame).not.toHaveAttribute('sandbox')
+  await expect(frame).not.toHaveAttribute('srcdoc')
+  await expect(frame).toHaveAttribute(
+    'src',
+    /^https:\/\/example.com\/oembed\/render\?/
+  )
   await expect(frame.contentFrame().locator('p')).toHaveText('Embed fixture')
+  await expect(frame).toHaveCSS('height', '350px')
   await expect(page.locator('body')).not.toHaveAttribute('data-compromised')
+  await page.evaluate(() => {
+    const source = document.querySelector<HTMLIFrameElement>(
+      '.oembed-content iframe'
+    )!.contentWindow
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        origin: 'https://example.com',
+        source: window,
+        data: { type: 'vinh:embed-size', height: 999 },
+      })
+    )
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        origin: 'https://evil.example',
+        source,
+        data: { type: 'vinh:embed-size', height: 999 },
+      })
+    )
+  })
+  await expect(frame).toHaveCSS('height', '350px')
   await expect(
     page.getByRole('link', { name: 'View original post' }).first()
   ).toBeVisible()
+})
+
+test('nested provider frames keep their real origin for CORS', async ({
+  page,
+}) => {
+  await page.route('https://example.com/oembed?**', (route) =>
+    route.fulfill({
+      json: { type: 'rich', html: '<iframe></iframe>' },
+    })
+  )
+  await page.route('https://example.com/oembed/render?**', (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: '<iframe src="https://platform.twitter.com/embed/fixture"></iframe>',
+    })
+  )
+  await page.route('https://platform.twitter.com/embed/fixture', (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: `<p id="result">Loading</p><script>
+      fetch('https://cdn.syndication.twimg.com/fixture').then(r => r.text()).then(text => {
+        document.getElementById('result').textContent = location.origin + ':' + text
+      })
+    </script>`,
+    })
+  )
+  await page.route('https://cdn.syndication.twimg.com/fixture', (route) =>
+    route.fulfill({
+      headers: {
+        'Access-Control-Allow-Origin': 'https://platform.twitter.com',
+      },
+      body: 'loaded',
+    })
+  )
+  await page.goto('/writing/getting-good-at-claude-code')
+  await expect(
+    page
+      .frameLocator('.oembed-content iframe')
+      .frameLocator('iframe')
+      .locator('#result')
+  ).toHaveText('https://platform.twitter.com:loaded')
 })
 
 test('RSS contains excerpts, not raw MDX', async ({ request }) => {

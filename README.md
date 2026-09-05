@@ -33,9 +33,14 @@ TypeScript stays on 6.x until Astro's checker supports TypeScript 7's native com
 ## Content and browser behavior
 
 RSS intentionally publishes descriptions with links, not raw Markdown/MDX.
-Rich embeds render in opaque-origin sandboxed frames. Providers that require
-additional permissions may not render; the original-post link always remains.
-Frames use a bounded height with internal scrolling, not access to the parent page.
+Rich embeds load `/oembed/render` on `PUBLIC_WORKER_HOST`, not `srcdoc`. Provider
+scripts execute on that separate public origin so nested provider frames retain
+their real origins for CORS. Never point this host at the site origin or an
+authenticated application. Photo/link responses still use validated DOM rendering.
+Resize messages must match both the worker origin and the frame window; heights
+are bounded to 120–2000px. The original-post link always remains available.
+Deploy the worker's renderer before deploying this site change. Provider restrictions,
+authentication requirements, and browser blockers can still prevent rendering.
 
 New browser enhancements should use `onPageLoad` from
 `src/utils/browser-lifecycle.ts`, returning cleanup for listeners, observers, and

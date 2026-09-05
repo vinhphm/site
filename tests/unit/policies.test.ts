@@ -1,8 +1,16 @@
 import { describe, expect, test } from 'bun:test'
-import { httpUrl, parseEmbed } from '../../src/utils/embed'
+import { httpUrl, parseEmbed, embedHeight } from '../../src/utils/embed'
 import { readEnvironment } from '../../src/utils/environment'
 
 describe('embed boundary', () => {
+  test('resize messages are typed, finite, and bounded', () => {
+    for (const height of [NaN, Infinity, -1, 0, '400']) {
+      expect(embedHeight({ type: 'vinh:embed-size', height })).toBeNull()
+    }
+    expect(embedHeight({ type: 'other', height: 400 })).toBeNull()
+    expect(embedHeight({ type: 'vinh:embed-size', height: 1 })).toBe(120)
+    expect(embedHeight({ type: 'vinh:embed-size', height: 9000 })).toBe(2000)
+  })
   test('rejects executable and relative URLs', () => {
     for (const value of [
       'javascript:alert(1)',
