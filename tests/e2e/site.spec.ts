@@ -23,12 +23,11 @@ test('media preview opens by keyboard and restores focus', async ({ page }) => {
   const trigger = page.locator('.media-preview-trigger').first()
   await trigger.focus()
   await page.keyboard.press('Enter')
-  await expect(page.getByRole('dialog')).toBeVisible()
-  await expect(
-    page.getByRole('button', { name: 'Close media preview' })
-  ).toBeFocused()
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toBeVisible()
+  await expect(dialog).toBeFocused()
   await page.keyboard.press('Escape')
-  await expect(page.getByRole('dialog')).not.toBeVisible()
+  await expect(dialog).not.toBeVisible()
   await expect(trigger).toBeFocused()
 })
 
@@ -157,7 +156,8 @@ test('previews reinitialize after client navigation and skip linked images', asy
   const trigger = page.locator('.media-preview-trigger').first()
   await trigger.click()
   await expect(page.getByRole('dialog')).toBeVisible()
-  await page.getByRole('button', { name: 'Close media preview' }).click()
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('dialog')).not.toBeVisible()
   await expect(trigger).toBeFocused()
   // Fixture a linked preview image, then exercise the same page-load initializer.
   await page.evaluate(() => {
