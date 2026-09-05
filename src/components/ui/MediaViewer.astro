@@ -1,106 +1,178 @@
-<dialog id="media-viewer" aria-label="Media preview">
-  <img alt="" hidden />
-  <video autoplay loop muted playsinline hidden></video>
-</dialog>
+---
+
+---
+
+<div id="media-viewer" class="media-viewer">
+  <img id="media-viewer-img" src="" alt="" />
+  <video id="media-viewer-video" src="" autoplay loop muted playsinline></video>
+</div>
 
 <script>
-  import { onPageLoad } from '@/utils/browser-lifecycle'
+  type MediaViewerController = {
+    destroy: () => void
+  }
 
-  onPageLoad(() => {
-    const viewer = document.querySelector<HTMLDialogElement>('#media-viewer')
-    const image = viewer?.querySelector('img')
-    const video = viewer?.querySelector('video')
-    if (!viewer || !image || !video) return
-    const controller = new AbortController()
-    const options = { signal: controller.signal }
-    const buttons: HTMLButtonElement[] = []
-    let previousOverflow = ''
-    document
-      .querySelectorAll<HTMLImageElement | HTMLVideoElement>(
-        '.prose img[data-preview], .prose video[data-preview]'
-      )
-      .forEach((media) => {
-        if (
-          media.closest('a, button') ||
-          (media instanceof HTMLVideoElement && media.controls)
-        )
-          return
-        const button = document.createElement('button')
-        button.type = 'button'
-        button.className = 'media-preview-trigger'
-        button.setAttribute('aria-haspopup', 'dialog')
-        button.setAttribute(
-          'aria-label',
-          media instanceof HTMLImageElement
-            ? `Preview image: ${media.alt || 'Article image'}`
-            : 'Preview video'
-        )
-        media.before(button)
-        button.append(media)
-        buttons.push(button)
-        button.addEventListener(
-          'click',
-          () => {
-            image.hidden = !(media instanceof HTMLImageElement)
-            video.hidden = media instanceof HTMLImageElement
-            if (media instanceof HTMLImageElement) {
-              image.src = media.currentSrc || media.src
-              image.alt = media.alt
-            } else {
-              video.src = media.currentSrc || media.src
-              video.load()
-              video.play().catch(() => {})
-            }
-            previousOverflow = document.body.style.overflow
-            viewer.showModal()
-            document.body.style.overflow = 'hidden'
-          },
-          options
-        )
-      })
-    function reset() {
-      video!.pause()
-      video!.removeAttribute('src')
-      video!.load()
-      image!.removeAttribute('src')
-      document.body.style.overflow = previousOverflow
+  declare global {
+    interface Window {
+      __mediaViewerController?: MediaViewerController | null
     }
-    viewer.addEventListener(
-      'click',
-      (event) => {
-        if (event.target === viewer) viewer.close()
-      },
-      options
-    )
-    viewer.addEventListener('close', reset, options)
-    return () => {
-      if (viewer.open) {
-        viewer.close()
-        reset()
+  }
+
+  function initMediaViewer() {
+    window.__mediaViewerController?.destroy()
+
+    const viewer = document.getElementById('media-viewer')
+    const viewerImg = document.getElementById(
+      'media-viewer-img'
+    ) as HTMLImageElement
+    const viewerVideo = document.getElementById(
+      'media-viewer-video'
+    ) as HTMLVideoElement
+    const contentArea =
+      document.querySelector<HTMLElement>('.prose') ||
+      document.querySelector<HTMLElement>('.content') ||
+      document.querySelector<HTMLElement>('article')
+
+    if (!viewer || !viewerImg || !viewerVideo || !contentArea) return
+
+    function showImage(src: string, alt?: string) {
+      viewerVideo!.classList.remove('active')
+      viewerVideo!.src = ''
+      if (viewerImg && src) {
+        viewerImg.src = src
+        viewerImg.alt = alt || ''
       }
-      controller.abort()
-      buttons.forEach((button) => button.replaceWith(...button.childNodes))
+      viewerImg!.classList.add('active')
+      void viewer!.offsetWidth
+      viewer!.classList.add('active')
+      document.body.classList.add('media-viewer-open')
+      document.body.style.overflow = 'hidden'
+      document.body.dataset.scrollY = window.scrollY.toString()
     }
-  })
+
+    function showVideo(src: string) {
+      viewerImg!.classList.remove('active')
+      viewerImg!.src = ''
+      if (viewerVideo && src) {
+        viewerVideo.src = src
+        viewerVideo.load()
+        viewerVideo.play().catch(() => {})
+      }
+      viewerVideo!.classList.add('active')
+      void viewer!.offsetWidth
+      viewer!.classList.add('active')
+      document.body.classList.add('media-viewer-open')
+      document.body.style.overflow = 'hidden'
+      document.body.dataset.scrollY = window.scrollY.toString()
+    }
+
+    function hideViewer() {
+      viewer!.classList.remove('active')
+      document.body.classList.remove('media-viewer-open')
+      document.body.style.overflow = ''
+      viewerVideo!.pause()
+    }
+
+    function handleContentClick(e: MouseEvent) {
+      const target = e.target
+      if (target instanceof HTMLImageElement) {
+        e.preventDefault()
+        showImage(target.src, target.alt || '')
+      } else if (target instanceof HTMLVideoElement) {
+        e.preventDefault()
+        showVideo(target.src || target.currentSrc)
+      }
+    }
+
+    function handleViewerTransitionEnd(e: TransitionEvent) {
+      if (
+        e.propertyName === 'opacity' &&
+        !viewer!.classList.contains('active')
+      ) {
+        viewerImg.src = ''
+        viewerImg.alt = ''
+        viewerVideo.src = ''
+      }
+    }
+
+    function handleViewerTouchMove(e: TouchEvent) {
+      if (viewer!.classList.contains('active')) e.preventDefault()
+    }
+
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && viewer!.classList.contains('active'))
+        hideViewer()
+    }
+
+    viewer.addEventListener('transitionend', handleViewerTransitionEnd)
+    viewer.addEventListener('click', hideViewer)
+    contentArea.addEventListener('click', handleContentClick)
+    viewer.addEventListener('touchmove', handleViewerTouchMove, {
+      passive: false,
+    })
+    document.addEventListener('keydown', handleKeydown)
+    viewer.classList.remove('active')
+
+    const controller: MediaViewerController = {
+      destroy() {
+        viewer.removeEventListener('transitionend', handleViewerTransitionEnd)
+        viewer.removeEventListener('click', hideViewer)
+        viewer.removeEventListener('touchmove', handleViewerTouchMove)
+        contentArea.removeEventListener('click', handleContentClick)
+        document.removeEventListener('keydown', handleKeydown)
+        document.body.classList.remove('media-viewer-open')
+        document.body.style.overflow = ''
+        viewer.classList.remove('active')
+        viewerVideo.pause()
+        if (window.__mediaViewerController === controller) {
+          window.__mediaViewerController = null
+        }
+      },
+    }
+
+    window.__mediaViewerController = controller
+  }
+
+  document.addEventListener('astro:page-load', initMediaViewer)
 </script>
 
 <style>
   @reference "../../styles/global.css";
 
-  dialog {
-    @apply m-auto border-0 bg-transparent p-0 max-w-[95vw] max-h-[95vh];
+  .media-viewer {
+    @apply fixed inset-0 z-9999 flex items-center justify-center
+           opacity-0 invisible pointer-events-none;
+    transition: opacity 0.15s ease-in-out;
+    background: color-mix(in srgb, var(--color-surface) 90%, transparent);
   }
-  dialog::backdrop {
-    @apply bg-black/80;
+
+  .media-viewer.active {
+    @apply opacity-100 visible pointer-events-auto;
   }
-  img,
-  video {
-    @apply max-w-[85vw] max-h-[80vh] object-contain;
+
+  :global(.prose img),
+  :global(.prose video) {
+    @apply cursor-pointer;
   }
-  :global(.media-preview-trigger) {
-    @apply block max-w-full p-0 border-0 bg-transparent cursor-zoom-in;
+
+  .media-viewer img,
+  .media-viewer video {
+    @apply hidden min-w-180 max-w-[60vw] max-h-[80vh] object-contain;
   }
-  :global(.media-preview-trigger:focus-visible) {
-    @apply outline-2 outline-solid outline-current outline-offset-4;
+
+  .media-viewer img.active,
+  .media-viewer video.active {
+    @apply block;
+  }
+
+  @media (max-width: 768px) {
+    .media-viewer img,
+    .media-viewer video {
+      @apply min-w-screen;
+    }
+  }
+
+  body.media-viewer-open {
+    @apply overflow-hidden;
   }
 </style>
