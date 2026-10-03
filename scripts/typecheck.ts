@@ -1,5 +1,12 @@
-// Runs tsc with the Astro content mapper and ignores diagnostics that originate
-// in node_modules (Astro's own .astro components fail under our strict options).
+// Syncs Astro types (.astro/ is gitignored, absent on fresh checkouts), then runs tsc
+// with the content mapper, ignoring diagnostics from node_modules (Astro's own .astro
+// components fail under our strict options).
+const sync = Bun.spawnSync(['bunx', 'astro', 'sync'], {
+  stdout: 'inherit',
+  stderr: 'inherit',
+})
+if (sync.exitCode !== 0) process.exit(sync.exitCode ?? 1)
+
 const proc = Bun.spawn(
   ['bunx', 'tsc', '--noEmit', '--runExternalCode', '--pretty', 'false'],
   {
