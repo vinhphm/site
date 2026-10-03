@@ -11,5 +11,11 @@
     "noImplicitOverride": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": [".astro/types.d.ts", "**/*"]
+  "include": [".astro/types.d.ts", "**/*"],
+  "contentMappers": [
+    {
+      "package": "@astrojs/ts-content-mapper",
+      "extensions": [".astro"]
+    }
+  ]
 }
