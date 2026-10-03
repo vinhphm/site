@@ -10,7 +10,9 @@ const { writings } = Astro.props
 ---
 
 <ul class="p-0 m-0 list-none flex flex-col">
-  {writings.map((writing) => <WritingListItem writing={writing} />)}
+  {writings.map((writing) => (
+    <WritingListItem writing={writing} />
+  ))}
 </ul>
 <div class="h-12"></div>
 

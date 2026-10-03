@@ -14,12 +14,10 @@ const { writing, readingTime } = Astro.props
   <time datetime={writing.data.pubDate.toISOString()}>
     {formatDate(writing.data.pubDate)}
   </time>
-  {
-    readingTime && (
-      <span class="reading-time">
-        <span class="separator">·</span>
-        {readingTime}
-      </span>
-    )
-  }
+  {readingTime && (
+    <span class="reading-time">
+      <span class="separator">·</span>
+      {readingTime}
+    </span>
+  )}
 </div>

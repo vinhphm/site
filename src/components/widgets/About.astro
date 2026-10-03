@@ -10,14 +10,12 @@ const { Content } =
   hasContent && aboutEntry ? await render(aboutEntry) : { Content: null }
 ---
 
-{
-  hasContent && Content && (
-    <div class="about prose">
-      <Content />
-      <SocialLinks />
-    </div>
-  )
-}
+{hasContent && Content && (
+  <div class="about prose">
+    <Content />
+    <SocialLinks />
+  </div>
+)}
 
 <style>
   @reference "../../styles/global.css";

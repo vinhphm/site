@@ -35,8 +35,11 @@ const encodedDomain = btoa(cipher(emailParts[1]))
   data-text={text}
   data-u={encodedUser}
   data-d={encodedDomain}
-  data-suffix={suffix}>{text}{suffix}</span
+  data-suffix={suffix}
 >
+  {text}
+  {suffix}
+</span>
 
 <script is:inline define:vars={{ CLIENT_CIPHER_SHIFT: CIPHER_SHIFT }}>
   // Enhanced client-side email deobfuscation
