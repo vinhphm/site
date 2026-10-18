@@ -88,7 +88,7 @@
   @reference "../../styles/global.css";
 
   dialog {
-    @apply m-auto border-0 bg-transparent p-0 max-w-[95vw] max-h-[95vh] outline-none;
+    @apply m-auto max-h-[95vh] max-w-[95vw] border-0 bg-transparent p-0 outline-none;
     opacity: 0;
     transition:
       opacity 0.15s ease-in-out,
@@ -108,7 +108,7 @@
   }
   img,
   video {
-    @apply min-w-180 max-w-[60vw] max-h-[80vh] object-contain;
+    @apply max-h-[80vh] max-w-[60vw] min-w-180 object-contain;
   }
   @media (max-width: 768px) {
     dialog {
@@ -120,9 +120,9 @@
     }
   }
   :global(.media-preview-trigger) {
-    @apply block max-w-full p-0 border-0 bg-transparent cursor-zoom-in;
+    @apply block max-w-full cursor-zoom-in border-0 bg-transparent p-0;
   }
   :global(.media-preview-trigger:focus-visible) {
-    @apply outline-2 outline-solid outline-current outline-offset-4;
+    @apply outline-2 outline-offset-4 outline-current outline-solid;
   }
 </style>

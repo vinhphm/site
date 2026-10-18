@@ -9,7 +9,7 @@ type Props = {
 const { writings } = Astro.props
 ---
 
-<ul class="p-0 m-0 list-none flex flex-col">
+<ul class="m-0 flex list-none flex-col p-0">
   {writings.map((writing) => (
     <WritingListItem writing={writing} />
   ))}
@@ -29,11 +29,11 @@ const { writings } = Astro.props
     }
 
     ul:hover :global(li:hover .divider) {
-      @apply opacity-75 bg-tertiary;
+      @apply bg-tertiary opacity-75;
     }
 
     ul:hover :global(li:hover .post-date) {
-      @apply opacity-100 text-secondary;
+      @apply text-secondary opacity-100;
     }
   }
 </style>

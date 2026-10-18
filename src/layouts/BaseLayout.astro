@@ -74,7 +74,7 @@ const resolvedImage = imageUrl ? new URL(imageUrl, Astro.site).toString() : null
     <ClientRouter />
   </head>
   <body data-centered="true">
-    <TransitionWrapper class="flex flex-col flex-1 min-h-0">
+    <TransitionWrapper class="flex min-h-0 flex-1 flex-col">
       <slot />
     </TransitionWrapper>
   </body>

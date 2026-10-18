@@ -169,34 +169,31 @@ const socialLinks = structuredClone(siteConfig.socialLinks).filter(
   <nav class="nav">
     <div class="spacer"></div>
     <div class="right tracking-tight print:op0 items-center">
-      {
-        navLinks.map((link) => (
-          <a
-            aria-label={link.text}
-            target={getLinkTarget(link.href)}
-            nav-link
-            href={link.href}
-          >
-            {link.text}
-          </a>
-        ))
-      }
-      {
-        socialLinks.map((link) => (
-          <a
-            aria-label={link.text}
-            class={`${link.icon} lt-md:hidden`}
-            nav-link
-            target={getLinkTarget(link.href)}
-            href={link.href}
-          />
-        ))
-      }
+      {navLinks.map((link) => (
+        <a
+          aria-label={link.text}
+          target={getLinkTarget(link.href)}
+          nav-link
+          href={link.href}
+        >
+          {link.text}
+        </a>
+      ))}
+      {socialLinks.map((link) => (
+        <a
+          aria-label={link.text}
+          class={`${link.icon} lt-md:hidden`}
+          nav-link
+          target={getLinkTarget(link.href)}
+          href={link.href}
+        />
+      ))}
       <a
         target="_blank"
         href="/rss.xml"
         class="lt-md:hidden i-ri-rss-line nav-link"
-        aria-label="RSS"></a>
+        aria-label="RSS"
+      ></a>
       <Search client:visible />
       <ThemeToggle />
     </div>

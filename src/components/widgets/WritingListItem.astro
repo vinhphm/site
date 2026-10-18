@@ -11,16 +11,16 @@ const { writing } = Astro.props
 const displayDate = getDisplayDate(writing)
 ---
 
-<li class="list-none m-0 p-0">
+<li class="m-0 list-none p-0">
   <a
     href={`/writing/${writing.id}`}
-    class="block no-underline transition-opacity duration-150 ease-out text-primary"
+    class="text-primary block no-underline transition-opacity duration-150 ease-out"
   >
-    <div class="h-11 flex justify-between items-center gap-3">
-      <p class="m-0 shrink min-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
+    <div class="flex h-11 items-center justify-between gap-3">
+      <p class="m-0 min-w-0 shrink overflow-hidden text-ellipsis whitespace-nowrap">
         {writing.data.title}
       </p>
-      <div class="divider flex-auto min-w-12 mx-1 h-[0.5px] bg-border"></div>
+      <div class="divider bg-border mx-1 h-[0.5px] min-w-12 flex-auto"></div>
       <p class="date m-0 shrink-0 whitespace-nowrap">
         {formatDate(displayDate)}
       </p>
