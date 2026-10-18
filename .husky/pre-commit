@@ -5,5 +5,4 @@ fi
 
 bun x oxlint --fix .
 bun x oxfmt --no-error-on-unmatched-pattern .
-bun x prettier --write "**/*.astro"
 git add -u
