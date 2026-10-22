@@ -31,7 +31,7 @@ export const config: Config = {
     navLinks: [
       {
         text: '@vinhev',
-        href: 'https://x.com/vinhev',
+        href: 'https://x.com/vinhnr',
       },
       {
         text: 'github',
