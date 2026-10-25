@@ -201,7 +201,7 @@ test('embed fallback appears when the provider request fails', async ({
   await page.goto('/writing/getting-good-at-claude-code')
   await expect(
     page.getByRole('link', { name: 'View original post' })
-  ).toHaveAttribute('href', 'https://x.com/vinhev/status/1943879411696079142')
+  ).toHaveAttribute('href', 'https://x.com/vinhnr/status/1943879411696079142')
   await expect(
     page.getByRole('link', { name: 'View original post' })
   ).toBeVisible()
