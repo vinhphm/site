@@ -1,7 +1,7 @@
 ---
 ---
 
-Engineer, in cloud and code. I work at PwC developing digital solutions. Been
+Engineer in cloud and code. I work at PwC developing digital solutions. Been
 coding for 10+ years, with nights spent on side projects, performance
 puzzles, and the occasional tech rabbit hole.
 
